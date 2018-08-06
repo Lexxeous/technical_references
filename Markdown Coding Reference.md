@@ -1,4 +1,4 @@
-# <img src="/Users/alex/OneDrive - Gibson IT Solutions/Pictures/Gibson/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's MD Coding Reference: <img src="Pics/md_logo.png" width="130px"/>
+# <img src="Pics/lexx_headshot_clear.png" width="100px"/> Lexxeous's MD Coding Reference: <img src="Pics/md_logo.png" width="130px"/>
 
 Certification(s) w/ an external link:
 [![Build Status](https://travis-ci.org/divmain/GitSavvy.svg?branch=master)](https://travis-ci.org/divmain/GitSavvy)

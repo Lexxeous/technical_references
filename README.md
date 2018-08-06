@@ -1,4 +1,4 @@
-# <img src="/Users/alex/OneDrive - Gibson IT Solutions/Pictures/Gibson/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Coding References: <img src="Pics/binary_clock.png" width="100px"/>
+# <img src="Pics/lexx_headshot_clear.png" width="100px"/> Lexxeous's Coding References: <img src="Pics/binary_clock.png" width="100px"/>
 ### Documentation for programming languages and related concepts.
 
 This repository is a collection of documented resources that I have gathered over my time as a programmer. I update and reorganize these files almost constantly as I learn new information. Some conceptual topics included are (but not limited to): `Git`, `Bash`, `HAML`, `JSON`, `Markdown (MD)`, `Redis`, `Regex`, `SQL`, `Ruby`, `Ruby on Rails`, `Javascript (JS)`, `jQuery`, `HTML` & `CSS`. 
