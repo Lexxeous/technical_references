@@ -1,0 +1,204 @@
+/* CSS & Sass Coding Reference */
+
+/* Comment */
+/* CSS = Cascading Style Sheets */
+/* SCSS = Sassy CSS ; upgraded CSS */
+/* SASS = Syntactically Awesome Style Sheets ; upgraded and shorthand CSS */
+/* DNS = Domain Name System */
+
+/*--------------------------------------------------------------------------------------------------------------*/
+
+element{ /* general styling */
+  property: value !important; /* the !important keyword will override any style value no matter how specific */
+}
+
+element.class{ /* more specific styling */
+  property: value;
+}
+
+#id-class{ /* most specific styling */
+  border: width style color;
+  border-radius: px or % or em/* does curved borders */
+} /* an em is a scalable unit that is equal to the current font size ; if 12pt, 0.5em = 6pt ; width of the letter 'm' */
+
+display: none; /* will not be visible and space will NOT be reserved for it */
+visibility: hidden; /* will not be visible but space will be resierved for it */
+
+
+element .class /* element parent with class child styling */
+
+element.class /* element with this class styling */
+
+.class element /* class parent with element child styling */
+
+element > element /* only the immediate child inherits from parent */
+
+/* true HTML class attributes show a "check" in CSS */
+/* false HTML class attributes show a "cross" in CSS */
+
+* {} /* universal selector */
+h1, h2 {} /* type selector */
+.note {} /* class selector */
+p.note {} /* class selector */
+#introduction {} /* id selector */
+li > a {} /* child selector */
+p a {} /* descendant selector */
+h1 + p {} /* adjacent sibling selector */
+h1 ~ p {} /* general sibling selector */
+
+/* pseudo elements */
+:first-letter
+:first-line
+:link
+:visited
+:hover /* when the mouse hovers over */
+:active /* when the element is being activated, mostly by clicking */
+:focus /* when window is in focus */
+
+/* attribute selectors */
+p[class] /* existance */
+p[class="dog"] /* equality */
+p[class~="dog"] /* space ; in a list of space seperated words that contains "dog" */
+p[attr^="d"] /* prefix */
+p[attr*="do"] /* substring */
+p[attr$="g"] /* suffix */
+
+@import url("example.css");
+@import path/to/file.css;
+
+/*--------------------------------------------------------------------------------------------------------------*/
+body {
+  background: #EEE;
+  margin: 0;
+  padding: 0;
+}
+
+h1{
+  text-transform: uppercase, lowercase, capitalize;
+  text-decoration: underline, overline, line-through, blink;
+  letter-spacing: 0px,%,em; /* kerning */
+  word-spacing: 0px,%,em;
+  text-align: left, right, center, justify; /* justify makes the text fill the whole container left to right */
+  vertical-align: baseline, sub, super, top, text-top, middle, bottom, text-bottom;
+  background-image: url("path/to/file.gif");
+  background-repeat: no-repeat;
+  background: -moz|-o|-ms|-linear-gradient(location, #000000, #000000);
+  text-indent: 0px,%,em;
+  text-shadow: 0px 0px 0px #000000;
+  min-height: 0px,%,em;
+  min-width: 0px,%,em;
+  padding: 0px,%,em;
+  border: 0px,%,em, thin, medium, thick;
+  border-style: solid, dotted, dashed, double, groove, ridge, inset, outset, hidden, none;
+  border-color: #000000, #000000, #000000, #000000; /* starts at top and goes clockwise */
+  border-radius: 0px 0px 0px 0px; /* starts at top and goes clockwise */
+  margin: 0px,%,em;
+  overflow: hidden, auto, scroll;
+  display: inline, block, inline-block, none;
+  visibility: hidden, visible;
+  cursor: auto, crosshair, default, pointer, move, text, wait, help, url(path/to/file.gif);
+  position: static, relative, absolute, fixed;
+  z-index: integer; /* stacking context */
+  float: left, right, top, bottom;
+  clear: left, right, both, none; /* no element within the same containing element should touch the left or right sides of a box */
+  background-image: url("path/ti/file.png");
+  background-repeat, background-attachment: repeat, repeat-x, repeat-y, no-repeat, fixed, scroll;\
+  background-position: left top, left center, left bottom, center top, center center, center bottom, right top, right center, right bottom, (%x, %y);
+}
+
+ol {
+  list-style-type: none, disc, circle, square, decimal, decimal-leading-zero, lower-alpha, upper-alpha, lower-roman, upper-roman;
+  list-style-image: url("path/to/file.png");
+  list-style-position: outside, inside;
+  list-style: circle inside url(""); /* shorthand for above properties */
+}
+
+td {
+  empty-cells: show, hide;
+  border-spacing: 0px 0px;
+  border-collapse: collapse, separate;
+}
+
+/* Navigation */
+
+.navigation {
+  box-sizing: border-box;
+  background-color: #3587A4;
+  overflow: auto;
+  padding: 18px 50px;
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  color: #FFF;
+  display: inline-block;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0;
+  padding: 20px 18px 10px 18px;
+  text-transform: uppercase;
+}
+
+.active {
+  color: #88CCF1;
+}
+
+/* Table */
+
+table {
+  height: 40%;
+  left: 10%;
+  margin: 20px auto;
+  overflow-y: scroll;
+  position: static;
+  width: 80%;
+}
+
+thead th {
+  background: #88CCF1;
+  color: #FFF;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+tr {
+  background: #f4f7f8;
+  border-bottom: 1px solid #FFF;
+  margin-bottom: 5px;
+}
+
+table, td {
+  border: 2px solid black;
+}
+
+th, td {
+  font-size: 18px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  padding: 20px;
+  text-align: left;
+  width: 33.3333%;
+}
+
+.search {
+  background-color: #FFF;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  color: #AAA;
+  padding: 20px;
+  margin: 50px auto 0px auto;
+  width: 77%;
+}

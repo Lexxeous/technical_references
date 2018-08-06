@@ -1,0 +1,473 @@
+Rails Coding Reference
+
+# .erb means that you can mix ruby and html code
+
+# MVC = Model Views Controller architecture
+	# Models act as gatekeeper, enforcer, and data store.
+	# Views are responsible for generating the UI, usually based on data in a model
+	# Contollers orchestrate the application ; receive events, interact with model, and display view to the user
+# ACID Properties
+	# Atomic
+	# Consistent
+	# Independent
+	# Durable
+# ABCs = Assignments, Branches, and Conditional statements 	
+
+rake -T # shows all available rake tasks
+
+binding.pry # enables debugging interrupt at location for use in the server terminal
+
+rails new <appName>
+bundle install # Installed all the software packages (gems )needed by the new Rails app
+bundle
+
+rails server # Started the Rails development server so that we could preview the app in the browser
+rails server -e <environment_name> # can create custom environments in config/environments
+rails server -e development
+rails server -e test
+rails server -e production
+rails server -h # display the rails server help menu for more options
+
+rails test # default test location is the controllers
+rails test:pathFolder # to test a different location
+rails log:clear LOGS=test # clear the logs of test reports
+rails test:system # do system tests
+
+rails dbconsole # launches sql database prompt for current working rails app
+rdb # alias for rails dbconsole
+alias | grep <abbreviation> # returns list of avaliable aliased commands/regexs associated with any abbreviation
+=begin
+➜ alias | grep rdb
+=> rdb='rails dbconsole'
+=end
+
+http://localhost:3000.
+
+# We need four parts to build a Rails app: a model, a controller, a route, and a view.
+
+rails generate controller <cont_name> # Creates app/controllers/contName_controller.rb
+rails destroy controller <cont_name> # Deletes/reverses all the files associated with cont_name
+rails d controller <cont_name>
+rd controller <cont_name>
+
+rails generate model <mode_name> # Creates 2 files:
+# File path: app/models/message.rb. The model represents a table in the database.
+# A migration file in db/migrate/. Migrations are a way to update the database.
+rails destroy model <model_name> # Deletes/reverses all the files associated with model_name
+rails d model <model_name>
+
+rails generate scaffold <Capital_Name> <var_name>:<dataType>
+# the default dataType for a variable during scaffold generation is a string
+rails destroy scaffold <Capital_Name> # Deletes/reverses all the files associated with Capital_Name
+rails d scaffold <Capital_Name>
+rd scaffold <Capital_Name>
+
+rake db:migrate # Updates the database with the new messages data model; run all missing migrations
+rake db:migrate VERSION=yyyyMMDDhhmmss
+rake db:migrate:status # shows the current status of all the migration files
+rake db:rollback # rollback to the previous migration
+rake db:rollback STEP=<integer> # rollback an integer number of migrations
+rake db:migrate:redo STEP=<integer> # rollback and redo an integer number of migrations
+rake db:drop # hard reset of the schema and migration table ; migration files still exist
+rake db:schema:dump # dump the current db state
+rake db:setup # creates the db, loads schema, & seed
+rake db:seed # Seeds the database with sample data from db/seeds.rb ; shutdown localhost, seed, then relaunch
+rake routes # shows list of all available routes
+rake -T # quick list description of all rake commands/tasks
+rake -D # full list description of all rake commands/tasks
+# For more info on rake: https://github.com/ruby/rake# readme
+
+rails g # generate
+rails g migration add_<data_name>_to_<table_name> data_name:<dataType>
+rails g migration remove_<data_name>_from_<table_name> data_name:<dataType>
+rails g task <namespace> <task1> <task2> ... <taskN>
+
+bundle exec rails s # will run rails version specified by project instead of local default
+rails s # server
+rails s -b n.n.n.n # gives a host address for other machines to bind to the localhost if on your network
+rackup # Rails integrates with Rack, Rack integrates with (for example) Passenger, and Passenger integrates with Apache httpd.
+lsof -wni tcp:<portNum> # returns the PID of the server running on <portNum>
+kill -9 <PID> # force quit/kill the server running with a particular PID
+
+
+rails c # console
+rc
+rc -e test
+rc -e production
+rc -e development
+reload! # reload the console to access any changes in code
+
+rails stats # shows summary of how much code is written for a particular rails app
+
+Rails.cache.clear # clear rails cache
+
+
+# running rubocop in the terminal to a specific file will activate a "Ruby Formatting Nazi"
+# the output will be "offenses" ; not things wrong with the code, just formatting and consistency changes
+rubocop path/to/filename.ext
+
+
+# run the script and output the result to the console/terminal
+rails runner scripts/script.rb
+						 path/to/script.ext
+						 scripts/path/to/script.ext
+
+# does same actions as with the rails command but on the middleman application
+middleman server
+middleman # alias for command above
+middleman console
+
+
+get '/pathName' => 'pathName# index' # Inside config/routes.rb; Sets the URL path to a certain index
+def index
+@pathName = pathName.all # Defines an index action for a certain URL path
+end # Inside app/controllers/contName_controller.rb
+
+
+
+class CreateMessages < ActiveRecord::Migration
+  def change
+    create_table :messages do |t| # Create a new table in the database for storing messages.
+		t.text :content # Create a text column called "content" in the messages tables.
+    t.timestamps # Creates two more columns in the messages table called "created_at" and "updated_at". 
+      				# These columns are automatically set when a message is created and updated.
+    end
+  end
+end
+
+
+# Incomplete list of validations for potential class variables
+validates_presence_of :status # no empty value where you want a value
+validates_numericality_of :fingers
+validates_uniqueness_of :toothmarks # no two of the same
+validates_confirmation_of :password # make sure that two are the same
+validates_acceptance_of :zombification # like for a check box
+validates_length_of :password, minimum: 3
+validates_format_of :email, with: /regex/i
+validates_inclusion_of :age, in: 21..99
+validates_exclusion_of :age, in: 0...21
+
+# Alternate syntax for the validation statements
+validates :status,
+	presence: true,
+	uniqueness: true
+	numericality: true
+	length: { minimum: 1, maximum: 2000 }
+	format: { with: /.*/ }
+	acceptance: true
+	confirmation: true
+
+
+assert condition
+assert product.invalid?
+assert product.valid?
+assert product.errors[price].any?
+
+
+%w{} # is a "word array" - the elements are delimited by spaces.
+%r{} # is another way to write a regular expression.
+%q{} # is another way to write a single-quoted string (and can be multi-line, which is useful)
+%Q{} # gives a double-quoted string
+%x{} # is a shell command.
+
+# --------------------------------------------------------------------------------------------------------------
+# Using SQL:
+orders = LineItem.find_by_sql("select line_items.* from line_items, orders " + "where order_id = orders.id" 
+and orders.name = 'Dave Thomas')
+
+# --------------------------------------------------------------------------------------------------------------
+# Transactions:
+Account.transaction do
+	account1.deposit(100)
+	account2.withdraw(100)
+end
+# transactions only follow through if every operation within the block is successful, otherwise it will automatically rollback the changes
+# transaction blocks are basically like multi-line AND statements
+# if these two operations were done seperately and one wasnt successful, $100 wouldve been created out of thin air
+
+# --------------------------------------------------------------------------------------------------------------
+# RESTful Approach (Representational State Transfer):
+# GET, PUT, PATCH, POST, DELETE are the typical verbs corresponding to HTTP(S) methods
+            Prefix Verb   URI Pattern                              Controller # Action
+             admin GET    /admin(.:format)                         admin # index
+             login GET    /login(.:format)                         sessions # new
+                   POST   /login(.:format)                         sessions # create
+            logout DELETE /logout(.:format)                        sessions # destroy
+      sessions_new GET    /sessions/new(.:format)                  sessions # new
+   sessions_create GET    /sessions/create(.:format)               sessions # create
+  sessions_destroy GET    /sessions/destroy(.:format)              sessions # destroy
+             users GET    (/:locale)/users(.:format)               users # index
+                   POST   (/:locale)/users(.:format)               users # create
+          new_user GET    (/:locale)/users/new(.:format)           users # new
+         edit_user GET    (/:locale)/users/:id/edit(.:format)      users # edit
+              user GET    (/:locale)/users/:id(.:format)           users # show
+                   PATCH  (/:locale)/users/:id(.:format)           users # update
+                   PUT    (/:locale)/users/:id(.:format)           users # update
+                   DELETE (/:locale)/users/:id(.:format)           users # destroy
+# Parts of the path designtated within parenthesis are optional
+# Field names preceded by a colon are for variables into which the matching part of the path is placed for later processing by the controller.
+
+# --------------------------------------------------------------------------------------------------------------
+# CALLBACKS
+before_action :method # executes method before all controller actions
+after_action	:method, only: [create:, update:] # executes method only after create and update
+around_action	# complicated...look into it if necessary
+
+prepend_before_action :third, :second # puts the second method before_action before the third method before_action
+prepend_after_action # works a similar way, just for after_action(s) instead
+# the prepends would be useful if you are referrencing from a separate controller
+# if in the same controller just build the before_action(s) linearly
+
+skip_before_action
+skip_after_action
+# Place these in a child controller to avoid parent callbacks from effecting the child method/callback chain.
+# If you subclass a controller containing callbacks, the callbacks will be run on the child objects as well as in the parent.
+# However, callbacks defined in the children will not run in the parent.
+# If you don’t want a particular callback to run in a child controller, you can override the default processing with these declarations.
+
+:only # can use this symbol to whitelist controller actions for a callback
+:except # can use this symbol to blacklist contoller actions for a callback
+# --------------------------------------------------------------------------------------------------------------
+
+
+class LegacyBook < ApplicationRecord
+	self.primary_key = "isbn"
+end
+book = LegacyBook.new
+book.id = "0-12345-6789"
+book.title = "My Great American Novel"
+book.save
+# ...
+book = LegacyBook.find("0-12345-6789")
+puts book.attributes # {"isbn" =>"0-12345-6789",
+                   	 # "title"=>"My Great American Novel"}
+# Rails considers two model objects equal (==) if they are instances of the same class and have the same promary_key
+# ActiveRecord automatically creates a sequential id integer value for a newly created object ; no need to do it manually          
+
+
+# To Raise or not to Raise (an exceptional clause/error)
+Person.find(5) # Expects to find based on id==5 ; will raise an exception RecordNotFound if not found
+Person.where(name: "Dave") # Doesn't expect to find ; will return first record if name=="Dave" ; return nil if not found ; non-exceptional response
+
+
+# For 1-to-1 and 1-to-Many relationships between model classes
+class Zombie < ActiveRecord::Base
+	has_many :tweets, dependent: :destroy # the existance of the tweets is dependent on the existance of the Zombie
+end
+
+class Tweet < ActiveRecord::Base
+	belongs_to :zombie
+end
+=begin
+This creates a relationship between two sets of data in both directions
+belongs_to goes in the class with the foreign key
+belongs_to goes in the class of the child object
+has_one goes in the class of the parent object
+has_many goes in the class of the parent object
+=end
+
+
+# For Many-to-Many relationships between model classes
+class Categories < ActiveRecord::Base
+	has_and_belongs_to_many :products
+end
+
+class Products < ActiveRecord::Base
+	has_and_belongs_to_many :categories
+end
+=begin
+Many-to-Many relationships are created by adding the "HaBtM" keyword in both model classes
+The join declaration that is created between the two model classes is symmetrical
+Rails implements many-to-many associations using an intermediate join table of foreign keys.
+Active Record assumes that this join table’s name is the concatenation of the two target table names in alphabetical order.
+Active Record will look for a join table named categories_products
+=end
+
+
+
+< % EVALUATE RUBY : code inside here is embedded ruby inside of html code% > # example, inside /app/view/tweets/show.html.erb (Embedded RuBy)
+< %= EVALUATE RUBY AND PRINT RESULT% >
+
+
+
+# /app/views/layouts/application.html.erb
+# this file is the default file where all the html view format will be
+# every new webpage created will use the template by default
+<!DOCTYPE html>
+<html>
+	<head><title>Twitter for Zombies</title></head>
+	<body>
+	<header>...</header>
+ 		<%= yield % >
+ 	</body>
+</html>
+# /app/views/tweets/show.html.erb
+# this is the code that is called by the "<%= yield % >"
+# this helps keep our code D.R.Y (Don't Repeat Yourself)
+<% tweet = Tweet.find(1) %>
+ <h1><%= tweet.status %></h1>
+ <p>Posted by <%= tweet.zombie.name %></p>
+
+
+
+<%= link_to text_to_show, object_to_show % > # this is the recipe
+# this is how we can create a link with rails
+<%= link_to tweet.zombie.name, 
+				tweet.zombie 
+				confirm: "Are you sure you want to leave this page?" % > # this is an example
+<%= link_to "All Tweets,", all_tweets_path % >
+<%= link_to "All Tweets", root_path % >
+<%= link_to "Tweets in 32828" ,local_tweets_path(32828) % >
+<%= link_to "Gregg", zombie_tweets_path('greggpollack') % >
+<%= link_to "Alex", zombie_tweets_path('lexxeous') % >
+
+redirect_to product_url # this produces the whole enchilada as http://example.com/products/1.
+link_to product_path # this produces only the last necessary part of the url as /products/1
+# in some cases you can use these interchangably, but use the proper one if you can
+
+
+
+<h1>Listing tweets</h1> # lists all the tweets in a two column table
+<table>
+	<tr>
+		<th>Status</th>
+		<th>Zombie</th>
+	</tr>
+<% tweets = Tweet.all % >	
+<% tweets.all.each do |tweet| %>
+	<tr>
+		<td><%= tweet.status % > </td>
+		<td><%= tweet.zombie.name % > </td>
+	</tr>
+<% end % >
+<% if tweets.size == 0% >
+	<em>No Tweets Found</em>
+<% end % >
+</table>
+
+
+# /app/controllers/tweets_controller.rb
+class TweetsController < ApplicationController
+	# functions inside controllers can be called actions
+	
+	# this runs actions before the body of an array of certain actions
+	before_action :get, only: [:edit, :update, :destroy]
+	before_action :checkAuthorization, only: [:edit, :update, :destroy]
+
+	def get
+		@tweet = Tweet.find(params[:id]) # the @ characters give access for variable across scopes
+	end # params[:id] gives lets through any tweet to render to the screen
+
+	def checkAuthorization
+		if session[:zombie_id] != @tweet.zombie_id # dont allow other zombies to edit your tweets
+			flash[:notice] = "Sorry, you can't edit that tweet."
+			redirect_to(tweets_path)
+		end 
+	end
+
+	def show # show individual tweet
+		render action: 'status'
+		respond_to do |format| # allows the controller to respond to other web backends
+			format.html # show.html.erb
+			format.json {render json: @tweet}
+			format.xml {render xml: @tweet}
+	end 
+
+	def edit # edit a current tweet
+		
+	end
+
+	def update # update a current tweet
+
+	end
+
+	def destroy # destroy a current tweet
+
+	end
+
+	def index # show all currently indexed tweets
+		if params[:zipcode]
+			@tweets = Tweet.where(zipcode: params[:zipcode])
+		elsif params[:name]
+			@zombie = Zombie.where(name: params[:name]).first
+			@tweets = @zombie.tweets
+		else
+			@tweets = Tweet.all
+		end
+		respond_to do |format|
+			format.html # index.html.erb
+			format.xml {render xml: @tweets}
+		end
+	end
+end
+# /app/views/tweets/show.html.erb
+<h1><%= @tweet.status % ></h1>
+<p>Posted by <%= @tweet.zombie.name % ></p>
+
+
+# /config/routes.rb
+ZombieTwitter::Application.routes.draw do
+	resources :tweets
+	root to: "tweets# index" # default root path, tweets controller, index action
+	get '/new_tweet' => 'tweets# new' # custom url route to the tweets controller and new action
+	get '/all' => 'tweets# index', as: 'all_tweets' # shows all tweets
+	get '/all' => redirect('/tweets') # url is /tweets instead of /all
+	get '/google' => redirect('http://www.google.com/') # example
+	get '/local_tweets/:zipcode' => 'tweets# index', as: 'local_tweets'\
+	get ':name' => 'tweets# index', as: 'zombie_tweets'
+end
+
+
+# this is an example of strong parameters
+# strong parameters are only necessary when creating or updating with multiple attributes
+@tweet = Tweet.create(params.require(:tweet).permit([:status, :location]))
+
+
+
+# app/models/tweet.rb contains a class model called "Tweet" and references the information contained in "tweets"
+
+
+
+# examples of useful migration actions
+rename_column :zombies, :bio, :description # renames the bio column to description
+rename_table :zombies, :ghouls # renames the zombies table to ghouls
+drop_table :zombies # removes the zombies table
+change_column :zombies, :age, :integer, limit: 4 # edits the age column to have an age limit of 4
+change_column_default :zombies, :isadmin, default: true
+
+
+
+
+# $ rails g migration RemoveAgeFromZombies age:integer
+class RemoveAgeFromZombies < ActiveRecord::Migration
+	def up
+		add_column :zombies, :age, :integer # add the age column from the zombies table
+	end
+
+
+	def down # action run with the "rake db:rollback" command
+		remove_column :zombies, :age
+		raise ActiveRecord::IrreversibleMigration # can manually raise an irreversable migration fault if necessary
+	end
+
+	def change # DRY up the code by using the "change" method ; Rails will recognize the opposite migration operation automatically
+		add_column :zombies, :age, :integer
+	end
+end
+
+
+# $ rails g migration DropZombiesTable
+class DropZombiesTable < ActiveRecord::Migration
+	def up
+		create_table :zombies do |t|
+			t.string :name
+			t.text :bio
+			t.integer :age
+			t.timestamps
+		end
+	end
+
+	def down
+		drop_table :zombies
+	end
+end
