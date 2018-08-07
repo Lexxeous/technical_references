@@ -207,6 +207,12 @@ end
 # Parts of the path designtated within parenthesis are optional
 # Field names preceded by a colon are for variables into which the matching part of the path is placed for later processing by the controller.
 
+# Locales using i18n default to a nested structure starting with the controller name
+	# controller_name > action_name > custom_key
+	# welcome_controller > index > welcome: Welcome to this page!
+	# simply put t(".welcome") in the index action of the welcome_controller to get the custom welcome message
+
+
 # --------------------------------------------------------------------------------------------------------------
 # CALLBACKS
 before_action :method # executes method before all controller actions
