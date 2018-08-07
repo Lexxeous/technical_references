@@ -1,4 +1,4 @@
-// JS & jQuery Coding Reference:
+// JS & jQuery Coding Reference
 
 /*
 "Every piece of information must have a single, unambiguous, authoritative representation within a system"

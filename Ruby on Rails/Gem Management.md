@@ -1,4 +1,6 @@
-# <img src="../Pics/lexx_headshot_clear.png" width="100px"/> Lexxeous's Gem Management: <img src="../Pics/RoR/gem_logo.jpeg" width="100px"/>
+<!-- Gem Management -->
+
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Gem Management: <img src="../.pics/RoR/gem_logo.jpeg" width="100px"/>
 ### Basics for Ruby Gem Building and Usage.
 
 ##### Building a Ruby Gem.

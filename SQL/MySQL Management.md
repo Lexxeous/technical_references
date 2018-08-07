@@ -1,4 +1,6 @@
-# <img src="../Pics/lexx_headshot_clear.png" width="100px"/> Lexxeous's MySQL Management: <img src="../Pics/SQL/sql_logo.png" width="150px"/>
+<!-- MySQL Management -->
+
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's MySQL Management: <img src="../.pics/SQL/sql_logo.png" width="150px"/>
 ### Multiple MySQL Versions with Homebrew.
 
 ##### Install the current version of MySQL.

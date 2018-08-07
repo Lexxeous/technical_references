@@ -1,0 +1,12 @@
+Add code to:
+	Python
+	Matlab
+	C & C++ & C#
+	Bash & Unix
+	R
+	LaTeX & BibTeX
+	YAML
+	Assembly
+
+Add Reference Sheets/Instruction Sets to Assembly etc...
+Convert Git Management to Markdown

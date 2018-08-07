@@ -1,4 +1,6 @@
-# <img src="Pics/lexx_headshot_clear.png" width="100px"/> Lexxeous's Redis Management: <img src="Pics/redis_logo.png" width="100"/>
+<!-- Redis Management -->
+
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Redis Management: <img src="../.pics/Redis/redis_logo.png" width="100"/>
 ### Manage your local Redis Server.
 
 ##### Start the Redis server.

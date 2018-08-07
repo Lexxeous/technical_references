@@ -1,4 +1,4 @@
-# Git Coding Reference:
+# Git Management
 
 #Local user info is pulled from /Users/alex/.gitconfig
 

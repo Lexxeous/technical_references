@@ -1,22 +1,21 @@
-SQL Reference:
+-- SQL Reference
 
-/* Comment */
-/* KPI = Key Performance Indicator */
-/* DAU = Daily Active Users */
-  /* WAU = Weekly Active Users */
-  /* MAU = Monthly Active Users*/
-/* DARPPU = Daily Average Revenue Per Purchasing User */
-  /*      = sum(revenue)/# purchases daily */
-/* DARPU = Daily Average Revenue Per User */
-  /*     = sum(revenue)/# of users */
-/* CTE = Common Table Expression */
-/* Retention = The number of players who returned the next ___ divided by the number of original players, per ___. */
+-- KPI = Key Performance Indicator
+-- DAU = Daily Active Users
+  -- WAU = Weekly Active Users
+  -- MAU = Monthly Active Users
+-- DARPPU = Daily Average Revenue Per Purchasing User
+  --      = sum(revenue)/# purchases daily
+-- DARPU = Daily Average Revenue Per User
+  --     = sum(revenue)/# of users
+-- CTE = Common Table Expression
+-- Retention = The number of players who returned the next ___ divided by the number of original players, per ___.
 
 sqlite3 -line db/development.sqlite3
 .quit
-/* use SQL commands to select desired data from the database */
+-- use SQL commands to select desired data from the database
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE table_name (
    column_1 data_type, 
@@ -34,13 +33,13 @@ CREATE TABLE celebs (
 
 CREATE TABLE awards 
 (
-  id INTEGER PRIMARY KEY, /* These columns are used to uniquely identify rows. Identical rows are prohibited. */
-  recipient TEXT NOT NULL, /* must contain a value when row created */
-  award_name TEXT DEFAULT "Grammy" /* sets the default value */
-  another TEXT UNIQUE /* must have a different value for every row */
+  id INTEGER PRIMARY KEY, -- These columns are used to uniquely identify rows. Identical rows are prohibited.
+  recipient TEXT NOT NULL, -- must contain a value when row created
+  award_name TEXT DEFAULT "Grammy" -- sets the default value
+  another TEXT UNIQUE -- must have a different value for every row
 );
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
 SELECT name,
   CASE
@@ -109,81 +108,81 @@ SELECT state,
 FROM airports
 GROUP BY state;
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO celebs (id, name, age) 
 VALUES (1, 'Justin Bieber', 21);
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
-SELECT * FROM tableName; /* selects all information from the the table */
-SELECT colName1, colName2, ... FROM tableName /* selects only a certain column of info from the table */
-SELECT DISTINCT colName FROM tableName; /* removes duplicates and includes NULL type */
-SELECT name AS 'Movies' FROM movies; /* returns */
-SELECT colName FROM celebs WHERE twitter_handle IS NOT NULL; /* filtering using the WHERE keyword */
-SELECT * FROM tableName WHERE colName LIKE 'Se_en'; /*  '_' as a wildcard character */
-SELECT * FROM tableName WHERE colName LIKE '%man%'; /* '%' as a wildcard character for colName that contain the string "man" */
-/* A% for begins with 'A' */
-/* a% for ends with 'a' */
-/* The LIKE keyword is not case sensitive */
+SELECT * FROM tableName; -- selects all information from the the table
+SELECT colName1, colName2, ... FROM tableName -- selects only a certain column of info from the table
+SELECT DISTINCT colName FROM tableName; -- removes duplicates and includes NULL type
+SELECT name AS 'Movies' FROM movies; -- returns
+SELECT colName FROM celebs WHERE twitter_handle IS NOT NULL; -- filtering using the WHERE keyword
+SELECT * FROM tableName WHERE colName LIKE 'Se_en'; --  '_' as a wildcard character
+SELECT * FROM tableName WHERE colName LIKE '%man%'; -- '%' as a wildcard character for colName that contain the string "man"
+-- A% for begins with 'A'
+-- a% for ends with 'a'
+-- The LIKE keyword is not case sensitive
 SELECT * FROM tableName WHERE colName BETWEEN 'D' AND 'G';
 SELECT * FROM movies WHERE year BETWEEN 1990 AND 1999;
-/* BETWEEN letters is not inclusive of the latter letter */
-/* BETWEEN numbers is inclusive of the latter number */
-SELECT * FROM tableName ORDER BY colName DESC; /* always put ORDER BY after WHERE but before LIMIT */
-/* DESC will sort high to low */
-/* ASC will sort low to high */
-SELECT * FROM tableName LIMIT 10; /* the LIMIT keyword always goes at the very end of a query */
+-- BETWEEN letters is not inclusive of the latter letter
+-- BETWEEN numbers is inclusive of the latter number
+SELECT * FROM tableName ORDER BY colName DESC; -- always put ORDER BY after WHERE but before LIMIT
+-- DESC will sort high to low
+-- ASC will sort low to high
+SELECT * FROM tableName LIMIT 10; -- the LIMIT keyword always goes at the very end of a query
 SELECT year, AVG(imdb_rating) FROM movies GROUP BY year ORDER BY year DESC;
-/* SQL lets us use column reference(s) in GROUP BY that makes it easier */
-/* where integer i refers to the i'th column in the SELECT statement rather than the explicti colName */
+-- SQL lets us use column reference(s) in GROUP BY that makes it easier
+-- where integer i refers to the i'th column in the SELECT statement rather than the explicti colName
 SELECT year, genre, COUNT(name) FROM movies GROUP BY 1, 2 HAVING COUNT(name) > 10;
-/* HAVING is very similar to WHERE and comes after GROUP BY but before ORDER BY and LIMIT */
+-- HAVING is very similar to WHERE and comes after GROUP BY but before ORDER BY and LIMIT
 SELECT DATETIME(delivery_time) FROM baked_goods;
-/* DATETIME returns the date-timestamp in the form of YYYY:MM:DD hh:mm:ss */
+-- DATETIME returns the date-timestamp in the form of YYYY:MM:DD hh:mm:ss
 SELECT DATE(delivery_time), COUNT(*) AS count_baked_goods FROM baked_goods GROUP BY DATE(delivery_time);
-/* DATE returns the datestamp in the form of YYY:MM::DD exlcusive from the timestamp */
+-- DATE returns the datestamp in the form of YYY:MM::DD exlcusive from the timestamp
 SELECT DATETIME(delivery_time, '+5 hours', '20 minutes', '2 days') AS package_time FROM baked_goods;
-/* can use DATETIME to look into the future by specific time amounts */
+-- can use DATETIME to look into the future by specific time amounts
 SELECT first_name || ' ' || last_name AS full_name FROM bakeries ORDER BY full_name ASC;
-/* string concatenation is acheived by this weird 3 part operator: ||''|| */
-/* put whatever you want to be in the middle of the strings inside the single quotes ; most often a single space */
+-- string concatenation is acheived by this weird 3 part operator: ||''||
+-- put whatever you want to be in the middle of the strings inside the single quotes ; most often a single space
 SELECT DATE(ordered_at), COUNT(1) FROM orders GROUP BY 1 ORDER BY 1;
-/* can also reference the colName inside othere colName functions ; aggregation */
+-- can also reference the colName inside othere colName functions ; aggregation
 SELECT name, round(sum(amount_paid) / (SELECT sum(amount_paid) FROM order_items) * 100.0, 2) AS "Pct" FROM order_items GROUP BY 1 ORDER BY 2 DESC;
-/* using sub-query calculations for more advanced aggregation */
+-- using sub-query calculations for more advanced aggregation
 SELECT DATE(created_at), platform, COUNT(DISTINCT user_id) AS "DAU" FROM gameplays GROUP BY 1,2 ORDER BY 1,2;
-/* selects the distinct DAUs for each day for each gaming platform and ordered accordingly */
+-- selects the distinct DAUs for each day for each gaming platform and ordered accordingly
 SELECT DATE(created_at), ROUND(SUM(price) / COUNT(distinct user_id), 2) AS "DARPPU" FROM purchases WHERE refunded_at IS NULL GROUP BY 1 ORDER BY 1;
-/* computatoin of DARPPU */
+-- computatoin of DARPPU
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
 SELECT *
 FROM orders
 JOIN subscriptions ON orders.subscription_id = subscriptions.subscription_id
 WHERE subscriptions.description = 'Fashion Magazine';
-/* JOIN statements merge the rows */
+-- JOIN statements merge the rows
 
 SELECT *
 FROM newspaper
-LEFT JOIN online /* LEFT JOIN keeps all rows from the first table regardless of whether there is a match in the second table */
+LEFT JOIN online -- LEFT JOIN keeps all rows from the first table regardless of whether there is a match in the second table
   ON newspaper.id = online.id;
 
 SELECT *
 FROM classes
 JOIN students
-  ON classes.id = students.class_id; /* primary_key = foreign_key */
+  ON classes.id = students.class_id; -- primary_key = foreign_key
 
 SELECT *
 FROM table1
-UNION /* tables must have the same number of cols and the cols must have the same data types in the same order as table1 */
+UNION -- tables must have the same number of cols and the cols must have the same data types in the same order as table1
 SELECT *
 FROM table2;
-/* UNION statements merge the columns */
-/* must use UNION ALL to allow duplicates */
+-- UNION statements merge the columns
+-- must use UNION ALL to allow duplicates
 
-/* template of a CTE */
+-- template of a CTE
 WITH previous_results AS 
 (
     SELECT ...
@@ -194,7 +193,7 @@ JOIN other_table
   ON ... = ...;
 
 
-/* examples of CTE */
+-- examples of CTE
 WITH daily_revenue AS 
 (
   SELECT
@@ -219,7 +218,7 @@ JOIN customers
   ON previous_query.customer_id = customers.customer_id;
 
 
-/* computing DARPU */
+-- computing DARPU
 WITH daily_revenue AS 
 (
   SELECT
@@ -242,16 +241,16 @@ SELECT
   daily_revenue.rev / daily_players.players AS "DARPU"
 FROM daily_revenue
   JOIN daily_players USING (dt);
-/* in this case the JOIN has a USING clause for a special case */
-/* when both columns to join have the same name in both tables, USING (colName) is then equivalent to the alternative */
-/* The alternative being:
+-- in this case the JOIN has a USING clause for a special case
+-- when both columns to join have the same name in both tables, USING (colName) is then equivalent to the alternative
+-- The alternative being:
 FROM daily_revenue
   JOIN daily_players ON
     daily_revenue.dt = daily_players.dt;
-*/
 
 
-/* calculating retention */
+
+-- calculating retention
 SELECT
   DATE(g1.created_at) AS dt,
   ROUND(100 * COUNT(distinct g2.user_id) /
@@ -311,12 +310,12 @@ SELECT id, AVG(a.sale_price) AS 'Avg_Price' FROM
 
 
 SELECT category FROM new_products
-INTERSECT /* returns only rows that are identical from the first to the second SELECT statement */
+INTERSECT -- returns only rows that are identical from the first to the second SELECT statement
 SELECT category FROM legacy_products;
 
 
 SELECT category FROM legacy_products
-EXCEPT /* returns only rows that are not included from the first to the second SELECT statement */
+EXCEPT -- returns only rows that are not included from the first to the second SELECT statement
 SELECT category FROM new_products;
 
 
@@ -328,32 +327,32 @@ FROM order_items
     orders.id = order_items.order_id
 GROUP BY 1
 ORDER BY 2 DESC;
-/* if reorder_rate is low -> first purchases ; if reorder_rate is high -> reorders */
+-- if reorder_rate is low -> first purchases ; if reorder_rate is high -> reorders
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
-UPDATE celebs /* updates the specified value at (col,row) */
+UPDATE celebs -- updates the specified value at (col,row)
 SET age = 22 
 WHERE id = 1; 
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
-ALTER TABLE celebs ADD COLUMN twitter_handle TEXT; /* obvious */
-/* upon creation and non initialization, all unknown or missing values are simply NULL */
+ALTER TABLE celebs ADD COLUMN twitter_handle TEXT; -- obvious
+-- upon creation and non initialization, all unknown or missing values are simply NULL
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
-DELETE FROM celebs WHERE twitter_handle IS NULL; /* manipulation */
+DELETE FROM celebs WHERE twitter_handle IS NULL; -- manipulation
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
-COUNT(): /* count the number of rows */
-SUM(): /* the sum of the values in a column */
-MAX()/MIN(): /* the largest/smallest value */
-AVG(): /* the average of the values in a column */
-ROUND(arg, numDecimalPlaces): /* round the values in the column */
-CAST(type1 AS type2); /* just like other datatype casting */
+COUNT(): -- count the number of rows
+SUM(): -- the sum of the values in a column
+MAX()/MIN(): -- the largest/smallest value
+AVG(): -- the average of the values in a column
+ROUND(arg, numDecimalPlaces): -- round the values in the column
+CAST(type1 AS type2); -- just like other datatype casting
 REPLACE(stringCol,from_this,to_that)
 
-/*---------------------------------------------------------------------------------------------------------------------------*/
+-- ---------------------------------------------------------------------------------------------------------------------------
 
