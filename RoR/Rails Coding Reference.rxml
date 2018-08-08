@@ -330,6 +330,7 @@ Active Record will look for a join table named categories_products
 redirect_to product_url # this produces the whole enchilada as http://example.com/products/1.
 link_to product_path # this produces only the last necessary part of the url as /products/1
 # in some cases you can use these interchangably, but use the proper one if you can
+# use "link_to '#!' to not link the anchor tag to any path"
 
 
 

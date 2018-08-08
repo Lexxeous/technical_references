@@ -1,7 +1,9 @@
 # <img src=".pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Coding References: <img src=".pics/Misc/binary_clock.png" width="100px"/>
 ### Documentation for programming languages and related concepts.
 
-This repository is a collection of documented resources that I have gathered over my time as a programmer. I update and reorganize these files almost constantly as I learn new information. Some conceptual topics included are (but not limited to): `Assembly`, `Bash & Unix`, `C`, `C++`, `C#`, `Git`, `HAML & YAML`, `HTML & CSS`, `Javascript (JS) & jQuery`, `Javascript Object Notation (JSON)`, `LaTeX & BibTeX`, `Markdown (MD)`, `MATLAB`, `Python`, `R`, `Redis`, `Regular Expression (Regex)`, `Ruby on Rails`, & `SQL`. 
+This repository is a collection of documented resources that I have gathered over my time as a programmer. I update and reorganize these files almost constantly as I learn new information. Some conceptual topics included are (but not limited to): `Assembly`, `Bash & Unix`, `C`, `C++`, `C#`, `Git`, `HAML & YAML`, `HTML & CSS`, `Javascript (JS) & jQuery`, `Javascript Object Notation (JSON)`, `LaTeX & BibTeX`, `MATLAB`, `Markdown (MD)`, `Python`, `R`, `Redis`, `Regular Expression (Regex)`, `Ruby on Rails (RoR)`, & `SQL`.
+
+With any empty files or folders, I have simply not moved my current/available resources to the corresponding directory.
 
 Most of the documentation contained within this repository has been aquired from the internet, college courses, internships, online tutorials, and/or tutorial books. I claim no ownership of any code contained within this repository. This repository is simply my interpretation of concepts revealed to me through my professional development.
 Some informational sources are (but not limited to):

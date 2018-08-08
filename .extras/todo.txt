@@ -7,6 +7,7 @@ Add code to:
 	LaTeX & BibTeX
 	YAML
 	Assembly
+	HTTP
 
 Add Reference Sheets/Instruction Sets to Assembly etc...
 Convert Git Management to Markdown

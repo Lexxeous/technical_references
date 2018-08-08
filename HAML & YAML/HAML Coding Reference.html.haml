@@ -1,15 +1,23 @@
 / HAML Code Reference
 
+
+/ HAML is just shorthanded HTML
 / HAML = HTML Abstraction Markup Language
 / YAML = YAML Ain't Markup Language ; recursive definition
 
+
 / !!! opening <!DOCTYPE HTML>
+
+
 / % basic HAML syntax for conversion to HTML
 / %p for paragraphs
-/ %h_i for any ith type of header
+/ %table for table element
+/ etc...
+
+
 / # for ids
 / . for classes
-/ - use ROR interpreter and DO NOT display output
+/ - use ROR interpreter and DO NOT display output (mostly for conditional logic)
 / = use ROR interpreter and DO display output
 / : assuming javascript???
 
@@ -21,6 +29,17 @@
 / this helps keep thed code clean, DRY, readable, and easier to debug
 
 
+.class
+/ by default, every base class (if not prefixed by an element type) is automatically a div
+.class{ name: "string", content: "string", href: "string", rel: "string", style: "property: value;",  }
+/ HAML can take block data using curly brackets
+.class String Output
+/ use plain text for basic string output
+.class= variable.output
+/ use "=" for more complex (dynamic) output
+
+
+/ --------------------------------------------------------------------------------------------------------------
 
 
 :javascript

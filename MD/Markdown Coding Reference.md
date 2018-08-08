@@ -115,7 +115,7 @@ SASS:
 ```
 
 JS:
-```js
+```java
 //= require n2_styles
 $("#new-note-modal form")[0].reset();
 ```
@@ -125,6 +125,23 @@ JSON:
 "dependencies": {
   "n2-styles": "github:n2publishing/n2-styles",
 }
+```
+
+<br>
+
+Use two spaces `"  "` at the end of a line or the HTML line break element `<br>` to initialize a line break.
+> Typically it's better to use `<br>` since it's actually visable and some text editors/interpreters trailing rid white space.
+
+```sh
+# Both
+Hello  # has 2 spaces here
+World
+# and
+Hello<br>
+World
+# generate
+Hello # no spaces here
+World
 ```
 
 For a more extensive coverage of Markdown, please visit the `Markdown Cheatsheet` [here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
