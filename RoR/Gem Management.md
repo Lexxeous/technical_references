@@ -9,6 +9,23 @@
 $ bundle gem <gem_name>
 ```
 
+> Code for your package is placed within the lib directory. The convention is to have one Ruby file with the same name as your gem, since that gets loaded when `require 
+<gem_name>` is run. That one file is in charge of setting up your gem’s code and API.
+
+It's also best practice that a file name dictate the module/class name under the root namespace. Here are couple examples:<br>
+`lib/<gem_name>/file_two.rb => GemName::FileOne`<br>
+`lib/<gem_name>/file_one.rb => GemName::FileTwo`<br>
+
+```sh
+# Deploy your Ruby gem.
+$ rake -T
+rake build # build <gem_name>.<version_num>.gem into the pkg directory
+rake install # build and install <gem_name>.<version_num>.gem into system gems
+rake release # create tag v.<version_num> and build and push <gem_name>.<version_num>.gem to Rubygems
+# OR
+gem push path/to/<gem_name>-<version_num>.gem # manually push to https://rubygems.org
+```
+
 ##### Define Gem Specifications:
 ```ruby
 # Gem specifications passed as a block.
@@ -38,12 +55,12 @@ spec.add_dependency
 
 ##### Using TDD (Test Driven Development).
 ```sh
-# Run tests using Rspec
+# Run tests using Rspec.
 rake spec
 rspec spec
 rspec # shorthand command
 
-# Run tests using Minitest
+# Run tests using Minitest.
 rails test
 ```
 
@@ -59,8 +76,8 @@ rails test
 
 
 ##### List of Useful Gems.
+> Use `gem list` to show all the gems currently installed on your system.
 ```sh
-# gem install
  $ better_errors # provides better development errors for your localhost
  $ cancancan
  $ devise

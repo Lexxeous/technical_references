@@ -10,4 +10,3 @@ Add code to:
 	HTTP
 
 Add Reference Sheets/Instruction Sets to Assembly etc...
-Convert Git Management to Markdown
