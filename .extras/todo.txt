@@ -10,3 +10,4 @@ Add code to:
 	HTTP
 
 Add Reference Sheets/Instruction Sets to Assembly etc...
+Install MacTeX "http://www.tug.org/mactex/mactex-download.html"

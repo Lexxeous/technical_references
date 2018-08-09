@@ -17,7 +17,7 @@ rake -T # shows all available rake tasks
 
 binding.pry # enables debugging interrupt at location for use in the server terminal
 
-rails new <appName>
+rails new <appName> -T # can use the "-T" flag to skip default testing framework at creation
 bundle install # Installed all the software packages (gems )needed by the new Rails app
 bundle
 
@@ -32,6 +32,7 @@ rails test # default test location is the controllers
 rails test:pathFolder # to test a different location
 rails log:clear LOGS=test # clear the logs of test reports
 rails test:system # do system tests
+rails test path/to/file.rb <line_number> # will run just one test at (closest to) <line_number>
 
 rails dbconsole # launches sql database prompt for current working rails app
 rdb # alias for rails dbconsole
@@ -61,6 +62,10 @@ rails generate scaffold <Capital_Name> <var_name>:<dataType>
 rails destroy scaffold <Capital_Name> # Deletes/reverses all the files associated with Capital_Name
 rails d scaffold <Capital_Name>
 rd scaffold <Capital_Name>
+
+
+rails generate rspec:install # initializes rspec testing framework inside working directory
+rails generate rspec:<type> <spec_name> # creates <spec_name>_spec.rb in spec/<type>/
 
 rake db:migrate # Updates the database with the new messages data model; run all missing migrations
 rake db:migrate VERSION=yyyyMMDDhhmmss

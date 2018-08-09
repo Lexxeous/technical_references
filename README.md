@@ -20,6 +20,7 @@ Some informational sources are (but not limited to):
     - [Codecademy](https://www.codecademy.com/)
     - [Udemy](https://www.udemy.com/)
     - [Ruby On Rails In 60 Minutes](https://www.youtube.com/watch?v=pPy0GQJLZUM&t=2209s)
+    - [Testing with RSpec by Drifting Ruby](https://www.youtube.com/watch?v=71eKcNxwxVY)
     - [RegexOne](https://regexone.com/)
   * Misc.
     - [Building a Ruby Gem by Brandon Hilkert](https://brandonhilkert.com/)

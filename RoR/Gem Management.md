@@ -5,7 +5,7 @@
 
 ##### Building a Ruby Gem.
 ```sh
-# Create directory and files for "gem_name".
+# Create directory and files for <gem_name>.
 $ bundle gem <gem_name>
 ```
 
@@ -79,10 +79,10 @@ rails test
 > Use `gem list` to show all the gems currently installed on your system.
 ```sh
  $ better_errors # provides better development errors for your localhost
- $ cancancan
- $ devise
+ $ devise # login management
  $ faker # provides randomized functionality ; good for seeding
  $ letter_opener # preview "sent" email via a web browser
  $ pry       # 
  $ pry-rails # the popular ruby on rails debugger(s) we all know and love
+ $ simplecov
 ```

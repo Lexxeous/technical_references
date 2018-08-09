@@ -70,7 +70,7 @@ launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql56.plist
 rm ~/Library/LaunchAgents/homebrew.mxcl.mysql56.plist
 ```
 
-##### Other MySQL commands (from Terminal prompt).   
+##### Other MySQL commands (From Terminal Prompt).   
 ```sh
 # Login to MySQL user without password.
 mysql -u user
@@ -84,7 +84,7 @@ sudo mysql
 mysql -u root <db_name> < path/to/db_dump.sql
 ```
 
-##### Other MySQL commands (from MySQL prompt).
+##### Other MySQL commands (From MySQL Prompt).
 ```sql
 CREATE USER 'user'@'%' IDENTIFIED BY 'password';
 DROP USER user;
