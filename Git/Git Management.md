@@ -13,6 +13,12 @@ open .gitignore_global
 ```
 > Create a local git ignore with `touch .gitignore` in any project; Add files like .DS_Store and dump.rdb to .gitignore_global to remove them from all project commits.
 
+##### Create New Git Repository from Command Line.
+```sh
+# Using the Git API.
+curl -u 'username' https://api.github.com/user/repos -d '{"name":"repo_name"}'
+```
+
 ##### Initialize a Git Project.
 ```sh
 # Initialize the master branch of a new project.
@@ -58,6 +64,7 @@ git add/rm <file> # updates the stage for what would potentially be commited
 git add <file> # stage a file to the commit queue
 git add . # add all changes (in currrent directory) files to the commit queue
 git commit -m "message" # commit changes with a "message" about what you did ; awaits to be pushed
+git commit --ammend
 ```
 
 ##### View Current Branch Information.
@@ -69,8 +76,11 @@ git status # monitor the current staging status
 ##### Manage Branch Pushes.
 ```sh
 git push <remoteName> <branchName> # push <branchName> commit queue to <remoteName> repository/forkRepo ; upstream/mine
+git push --force <remoteName> <branchName> # force push <branchName> to <remoteName>
 git push --set-upstream <remoteName> <branchName> # push and set tracking remote/branch ; must be on first push
 git push -u <remoteName> <branchName> # shorthand for above command
+
+git push heroku master # push master branch for production after application setup
 ```
 
 ##### Merge Particular Branch Changes.
@@ -115,3 +125,16 @@ git merge <branchName> # merge branchName with current working branch
 git rev-list --left-right --count upstream/master...<branchName> # show the commit difference count between upstream/master and branchName
 git rev-list --left-right --count <leftBranch>...<rightBranch> # show the commit difference count between leftBranch and rightBranch
 ```
+
+##### Rebase Branches.
+```sh
+git rebase -i <sha> # edit commits strictly after <sha>
+```
+
+##### Bisect Management.
+```sh
+
+```
+
+
+

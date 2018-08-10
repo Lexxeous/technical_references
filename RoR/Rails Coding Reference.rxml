@@ -13,6 +13,33 @@
 	# Durable
 # ABCs = Assignments, Branches, and Conditional statements 	
 
+# -------------------------------------------------------------------------------------------------
+# HOW TO DEPLOY APP TO PRODUCTION WITH HEROKU
+Navigate to project directory.
+Add ruby version to gemfile.
+Move "sqlite3" to :development, :test group.
+Add "pg" and "rails_12factor"
+$ bundle
+Move "pg" and "rails_12factor" to :production group.
+$ bundle install --without production.
+Verify that a .bundle/config file was created with this configuration.
+$ heroku --version # verify heroku installation ; optional
+$ heroku update # get latest version of heroku ; optional
+$ heroku login # login to account ; first time setup 
+$ heroku keys:add # sync public rsa key ; first time setup
+$ keroku create # create new https heroku application
+$ heroku rename <app-name> # rename http ; optional
+$ git push heroku master
+
+May need...
+libv8-linux gem.
+rake tasks shouldnt depend on development or testing.
+rake assets:precompile
+$ RAILS_ENV=production bundle exec rake assets:precompile
+
+# -------------------------------------------------------------------------------------------------
+
+
 rake -T # shows all available rake tasks
 
 binding.pry # enables debugging interrupt at location for use in the server terminal
@@ -20,6 +47,9 @@ binding.pry # enables debugging interrupt at location for use in the server term
 rails new <appName> -T # can use the "-T" flag to skip default testing framework at creation
 bundle install # Installed all the software packages (gems )needed by the new Rails app
 bundle
+bundle install --without production # create .bundle/config to bundle only development and test gems
+bundle package # create vendor/cache with all necessary zipped gems
+bundle update # get latest versions of gems
 
 rails server # Started the Rails development server so that we could preview the app in the browser
 rails server -e <environment_name> # can create custom environments in config/environments
@@ -58,7 +88,7 @@ rails destroy model <model_name> # Deletes/reverses all the files associated wit
 rails d model <model_name>
 
 rails generate scaffold <Capital_Name> <var_name>:<dataType>
-# the default dataType for a variable during scaffold generation is a string
+# the default <dataType> for <var_name> during scaffold generation is a string
 rails destroy scaffold <Capital_Name> # Deletes/reverses all the files associated with Capital_Name
 rails d scaffold <Capital_Name>
 rd scaffold <Capital_Name>
@@ -123,7 +153,9 @@ middleman # alias for command above
 middleman console
 
 
-get '/pathName' => 'pathName# index' # Inside config/routes.rb; Sets the URL path to a certain index
+get "path/name", to: "controller#action" # Inside config/routes.rb; Sets the URL path to certain controller action
+resources :<table_name> #creates all routes for this MVC resource ; this is the symbol name from "schema.rb" and/or the corresponding migration
+
 def index
 @pathName = pathName.all # Defines an index action for a certain URL path
 end # Inside app/controllers/contName_controller.rb
@@ -420,8 +452,8 @@ end
 # /config/routes.rb
 ZombieTwitter::Application.routes.draw do
 	resources :tweets
-	root to: "tweets# index" # default root path, tweets controller, index action
-	get '/new_tweet' => 'tweets# new' # custom url route to the tweets controller and new action
+	root to: "tweets#index" # default root path, tweets controller, index action
+	get '/new_tweet' => 'tweets#new' # custom url route to the tweets controller and new action
 	get '/all' => 'tweets# index', as: 'all_tweets' # shows all tweets
 	get '/all' => redirect('/tweets') # url is /tweets instead of /all
 	get '/google' => redirect('http://www.google.com/') # example
