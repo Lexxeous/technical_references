@@ -12,9 +12,16 @@ brew uninstall <packageName>
 # HEROKU
 # do while inside project directory
 
+heroku logs --tail # gives latest heroku error logs
 heroku update # get latest version of heroku
 heroku login # login to account
 keroku create # create new https heroku application
 heroku keys:add # sync public rsa key
 heroku rename <app-name> # https://<app-name>.herokuapp.com
 git push heroku master
+
+
+# -------------------------------------------------------------------------------------------------
+# CRONTAB
+
+crontab -e # open the crontab scheduler via vim
