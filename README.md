@@ -1,4 +1,4 @@
-# <img src=".pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Coding References: <img src=".pics/Misc/binary_clock.png" width="100px"/>
+# <img src=".pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Technical References: <img src=".pics/Misc/binary_clock.png" width="100px"/>
 ### Documentation for programming languages and related concepts.
 
 This repository is a collection of documented resources that I have gathered over my time as a programmer. I update and reorganize these files almost constantly as I learn new information. Some conceptual topics included are (but not limited to): `Assembly`, `Bash & Unix`, `C`, `C++`, `C#`, `Git`, `HAML & YAML`, `HTML & CSS`, `Javascript (JS) & jQuery`, `Javascript Object Notation (JSON)`, `LaTeX & BibTeX`, `MATLAB`, `Markdown (MD)`, `Protocols`, `Python`, `R`, `Redis`, `Regular Expression (Regex)`, `Ruby on Rails (RoR)`, `SQL`, & `VHDL`.
