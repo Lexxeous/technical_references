@@ -1,6 +1,6 @@
 <!-- HTTP Management -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's HTTP Management: <img src="../.pics/HTTP/http_logo.png" width="130"/>
+# <img src="../../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's HTTP Management: <img src="../../.pics/Protocols/HTTP/http_logo.png" width="130"/>
 ### Manage HTTP & HTTPS Pages.
 
 ##### General HTTP Information.
