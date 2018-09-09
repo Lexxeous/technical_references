@@ -30,6 +30,7 @@ $ heroku keys:add # sync public rsa key ; first time setup
 $ keroku create # create new https heroku application
 $ heroku rename <app-name> # rename http ; optional
 $ git push heroku master
+$ heroku open # opens the url for the application
 
 May need...
 libv8-linux gem.

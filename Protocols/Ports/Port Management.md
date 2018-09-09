@@ -12,5 +12,5 @@ Code
 
 ##### Useful Links.
 
-* [Common Port Numbers](http://www.meridianoutpost.com/resources/articles/well-known-tcpip-ports.php)
-* [All Port Numbers](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)
+* [Common Port Numbers (0 ~ 1023)](http://www.meridianoutpost.com/resources/articles/well-known-tcpip-ports.php)
+* [All Port Numbers (0 ~ 65535)](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)

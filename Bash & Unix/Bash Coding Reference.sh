@@ -19,6 +19,7 @@ keroku create # create new https heroku application
 heroku keys:add # sync public rsa key
 heroku rename <app-name> # https://<app-name>.herokuapp.com
 git push heroku master
+heroku open # opens the url for the application
 
 
 # -------------------------------------------------------------------------------------------------
