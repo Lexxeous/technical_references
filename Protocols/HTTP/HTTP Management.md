@@ -7,7 +7,9 @@
 
 HTTP stands for "Hyper-Text Transfer Protocol".<br>
 It's how browsers & web servers communicate; it's important to understand if you want to write any kind of web application.<br>
-HTTP is a stateless protocol. Every request is different from the last, that's why we need to use Cookies for user sessions.<br>
+HTTP is a stateless protocol (the server retains no information about the client). Every request is different from the last, that's why we need to use Cookies for user sessions.<br>
+By default, HTTP uses persistent connections, but clients and/or server can be configured to us non-persistent connections instead.<br>
+HTTP is primarily a `pull` protocol.<br>
 
 * **Version 1.1** (the most common) is text-based. This means that you can understand it without any special tools.
 * **Version 2.0** is binary based. Binary protocols require special tools to work with but they are more efficient.
@@ -19,11 +21,13 @@ HTTP request messsages consist of a request line, header lines, a blank line, an
 
 ```
 # Example request message.
-GET /somedir/page.html HTTP/1.1
+METHOD /somedir/page.html HTTP/1.1
 Host: www.someurl.com
 Connection: close
 User-agent: Mozilla/5.0
 Accept-language: fr
+If-modified-since: Wed, 9 Sep 2015 09:23:34 GMT # conditional header
+Cookie: 1678
 
 (request message data ...)
 ```
@@ -39,9 +43,10 @@ HTTP/1.1 200 OK
 Connection: close
 Date: Sun, 09 Sep 2018 15:12:46 GMT
 Server: Apache/2.2.3 (CentOS)
-Last-Modified: Sun, 09 Sep 2018 14:06:35 GMT
+Last-Modified: Sun, 9 Sep 2018 14:06:35 GMT
 Content-Length: 6821
 Content-Type: text/html
+Set-cookie: 1678
 
 (response message data ...)
 ```
@@ -55,6 +60,14 @@ Content-Type: text/html
 | 400        | Bad Request                | Generic error code indicating that the request could not be understood by the server.        |
 | 404        | Not Found                  | The requested document/file/page does not exist on the server.                               |
 | 500        | HTTP Version Not Supported | The requested HTTP protocol version is not supported by the server.                          |
+
+##### Web Caching.
+
+Web caches (proxy servers) are network entities that satisfy HTTP requests on behalf of an origin web server. The proxy has its own disk storage and keeps copies of recently and commonly requested objects in this storage (similar to L1 CPU cache), ready for use to clients. The proxy acts as a sever and a client at the same time.
+<img src="../../.pics/Protocols/HTTP/proxy_server.png" width="500px"/><br>
+
+Adding a proxy server to a network (like an institutional network such as this) can decrease and/or eliminate the effects of bottlenecking within the network core. Otherwise, the institutional network would automatically be subject to the speed of the 15Mbps access link and not take full advantage of thier 100Mbps router.
+<img src="../../.pics/Protocols/HTTP/inst_cache.png" width="500px"/>
 
 ### Use HTTP Requests with RoR.
 
