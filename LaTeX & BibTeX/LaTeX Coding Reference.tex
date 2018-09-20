@@ -1,1 +1,110 @@
 % LaTeX Coding Reference
+
+\begin{figure}
+ \centering
+ \label{fig:bar}
+ \captionof{figure}{caption_title}
+ \includegraphics[width=\linewidth, height=6cm]{image_title.ext}
+\end{figure}
+
+
+
+\begin{table}
+\caption{caption_title}
+\centering
+\resizebox{0.3\textwidth}{!}{%
+	\begin{tabular}{lll} % left(l), right(r), or center(c) aligned for each column
+	\toprule
+    Col1 & Col2 & Col3\\
+    \midrule
+    cell & cell & cell\\
+    cell & cell & cell\\
+    \bottomrule
+	\end{tabular}
+}
+\end{table}
+
+
+\begin{itemize}
+\item \textbf{Item}
+	\begin{itemize}
+	\item Subitem
+	\end{itemize}
+\item \textbf{Item}
+	\begin{itemize}
+  \item Subitem
+	\item Subitem
+	\end{itemize}
+\end{itemize}
+
+
+% SYNTAX
+$something$ % removes spaces and/or does math mode
+
+% COMMANDS
+\command % uses the default version of the command (also defined potentially by packages used)
+\command* % uses the alternative version of the command
+
+% A
+\approx % outputs ≈
+\author{}
+% B
+\begin{media_type}
+\bibliographystyle{citation_style} % sets the styling for the biliography ; apacite, mlacite
+\bibliography{bib_file} % creates the biblography referenes automatically ; dont use .bib extention
+% C
+\caption
+\captionof{media_type}{}
+\centering
+\cfoot
+\cite{bib_code};
+% D
+\date % displays date
+% E
+\end{media_type}
+% F
+% G
+% H
+% I
+\includegraphics[width= ,height=, scale=, valign=, halign=]{image_title.ext}
+\item
+% J
+% K
+% L
+\lfoot{}
+% M
+% N
+% O
+% P
+\paragraph{paragraph_title} % small bold section title
+% Q
+% R
+\resizebox{}
+\rfoot
+% S
+\section
+\subsection
+\subsubsection
+% T
+\textsinglequote % outputs '
+\textbf % boldface
+\textit % italicized
+\textwidth
+\title{}
+\today % outputs todays date
+% U
+% V
+% W
+% X
+% Y
+% Z
+
+
+
+
+
+
+
+
+
+

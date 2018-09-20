@@ -10,9 +10,11 @@ It's how browsers & web servers communicate; it's important to understand if you
 HTTP is a stateless protocol (the server retains no information about the client). Every request is different from the last, that's why we need to use Cookies for user sessions.<br>
 By default, HTTP uses persistent connections, but clients and/or server can be configured to us non-persistent connections instead.<br>
 HTTP is primarily a `pull` protocol.<br>
+Version **1.1** (the most common) is text-based. This means that you can understand it without any special tools.<br>
+Version **2.0** is binary based. Binary protocols require special tools to work with but they are more efficient.<br>
 
-* **Version 1.1** (the most common) is text-based. This means that you can understand it without any special tools.
-* **Version 2.0** is binary based. Binary protocols require special tools to work with but they are more efficient.
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
 
 ##### HTTP Request Messages.
 
@@ -21,7 +23,8 @@ HTTP request messsages consist of a request line, header lines, a blank line, an
 
 ```
 # Example request message.
-METHOD /somedir/page.html HTTP/1.1
+METHOD /somedir/page.html HTTP/version_num
+Header: value
 Host: www.someurl.com
 Connection: close
 User-agent: Mozilla/5.0
@@ -31,6 +34,10 @@ Cookie: 1678
 
 (request message data ...)
 ```
+> A full list of HTTP `request methods` can be found [here](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods).
+
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
 
 ##### HTTP Response Messages.
 
@@ -39,7 +46,8 @@ HTTP response messsages consist of a status line, header lines, a blank line, an
 
 ```
 # Example response message.
-HTTP/1.1 200 OK
+HTTP/version_num status_code_value status_code_title
+Header: value
 Connection: close
 Date: Sun, 09 Sep 2018 15:12:46 GMT
 Server: Apache/2.2.3 (CentOS)
@@ -51,6 +59,11 @@ Set-cookie: 1678
 (response message data ...)
 ```
 
+> A full list of HTTP `header options` can be found [here](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields).
+
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+
 ##### HTTP Status Codes.
 
 | Value      | Title                      | Description                                                                                  |
@@ -61,13 +74,21 @@ Set-cookie: 1678
 | 404        | Not Found                  | The requested document/file/page does not exist on the server.                               |
 | 500        | HTTP Version Not Supported | The requested HTTP protocol version is not supported by the server.                          |
 
+> A full list of HTTP `status codes` can be found [here](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes).
+
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+
 ##### Web Caching.
 
-Web caches (proxy servers) are network entities that satisfy HTTP requests on behalf of an origin web server. The proxy has its own disk storage and keeps copies of recently and commonly requested objects in this storage (similar to L1 CPU cache), ready for use to clients. The proxy acts as a sever and a client at the same time.
+Web caches (proxy servers) are network entities that satisfy HTTP requests on behalf of an origin web server. The proxy has its own disk storage and keeps copies of recently and commonly requested objects in this storage (similar to CPU cache), ready for use to clients. The proxy acts as a sever and a client at the same time.
 <img src="../../.pics/Protocols/HTTP/proxy_server.png" width="500px"/><br>
 
 Adding a proxy server to a network (like an institutional network such as this) can decrease and/or eliminate the effects of bottlenecking within the network core. Otherwise, the institutional network would automatically be subject to the speed of the 15Mbps access link and not take full advantage of thier 100Mbps router.
 <img src="../../.pics/Protocols/HTTP/inst_cache.png" width="500px"/>
+
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
 
 ### Use HTTP Requests with RoR.
 
@@ -78,6 +99,9 @@ Adding a proxy server to a network (like an institutional network such as this) 
 Code
 ```
 
+<br>
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+
 ##### Useful HTTP Related RoR Gems.
 
 * [faraday](https://github.com/lostisland/faraday)
@@ -86,6 +110,6 @@ Code
 * [typhoeus](https://github.com/typhoeus/typhoeus)
 
 
-For more information visit the site(s):
+For more information regarding HTTP with RoR, visit the site(s):
 
 * [The Ultimate Guide to HTTP Requests in Ruby by Jesus Castello](https://www.rubyguides.com/2018/08/ruby-http-request/?tl_inbound=1&tl_target_all=1&tl_form_type=1&tl_period_type=3)
