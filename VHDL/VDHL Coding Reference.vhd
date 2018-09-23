@@ -20,7 +20,7 @@
 -- In general, lowercase operators and keywords are from the default VHDL library ; uppercase ones come from the IEEE 1164 standard library
 
 ------------------------------------------------------------------------------------------------------------------------------------
--- BOOLEAN OPERATOR & KEYWORDS:
+-- BOOLEAN OPERATORS & KEYWORDS:
 
 -- for boolean operations
 and
@@ -155,6 +155,7 @@ Time
 	sec -- seconds ; 10E+0
 	min -- minutes
 	hr -- hours
+Severity_Level
 Enumeration -- special case ; use the "type" keyword ; 
 	type enum_name is (item_1, item_2, ...);
 STD_LOGIC -- similar to the "Bit" datatype ; multi-logic
