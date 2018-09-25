@@ -17,7 +17,8 @@
 	-- Names cannot have two underscores in a row (__) or end with a single underscore
 	-- Names cannot be keywords
 
--- In general, lowercase operators and keywords are from the default VHDL library ; uppercase ones come from the IEEE 1164 standard library
+-- In general, lowercase operators and keywords are from the default VHDL library
+	-- uppercase ones come from the IEEE 1164 standard library
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- BOOLEAN OPERATORS & KEYWORDS:
@@ -271,6 +272,61 @@ end case;
 identifier : for i in start to final loop
 	do_something
 end loop ; -- identifier
+
+
+-- For "component" statements
+	-- Like Entities but without the "is" keyword
+component component_name
+	port( signal_name : signal_mode signal_type;
+		    signal_name : signal_mode signal_type);
+end component;
+
+
+-- For "generate" statements
+label : for identifier in range generate
+	component instantiation
+end generate
+
+
+-- For "generic" statements
+	-- Declared inside Entities
+generic (GEN_NAME : gen_data_type := init_val);
+
+
+-- For "constnant" statements
+	-- Declared inside Architectures
+constant (const_name : const_data_type := init_val);
+
+
+-- For "conditional" signal assignments
+identifier <= value_true when condition else value_false;
+
+
+-- For "truth table" statements 
+with expression select
+	thing <= value when something,
+	...,
+	value <= value when something;
+
+------------------------------------------------------------------------------------------------------------------------------------
+-- STRUCTURE EXAMPLES
+
+
+-- Creating a vector
+data_bus_1 : in Bit_Vector(bus_max downto 4) -- MSB first
+data_bus_2 : in Bit_Vector(3 downto 0)
+data_bus_3 : out STD_LOGIC_VECTOR(0 to bus_max) -- LSB first
+variable explicit_vector : STD_LOGIC_VECTOR(7 downto 0) := ('1','0','X','W','0','1','0','Z');
+	-- Using vector concatentation
+	new_data_bus <= ( data_bus_1 & data_bus_2 )
+
+
+-- Creating a string
+message : String (0 to 19) := "Lexxeous is awesome!"
+
+
+-- Creating an Enumeration
+type Colors is (Red, Yellow, Green); -- double quotes not necessary
 
 
 

@@ -3,7 +3,7 @@
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Redis Management: <img src="../.pics/Redis/redis_logo.png" width="100"/>
 ### Manage your local Redis Server.
 
-##### Start the Redis server.
+#### Start the Redis server.
 ```sh
 # Start the server and exit cursor.
 redis-server
@@ -13,12 +13,12 @@ redis-server
 redis-server &
 ```
 
-##### Stop the Redis server.
+#### Stop the Redis server.
 ```sh
 redis-cli shutdown
 ```
 
-##### Monitor Redis processes.
+#### Monitor Redis processes.
 ```sh
 # Monitor and exit cursor.
 redis-cli monitor

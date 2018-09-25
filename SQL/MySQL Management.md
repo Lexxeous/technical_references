@@ -3,7 +3,7 @@
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's MySQL Management: <img src="../.pics/SQL/sql_logo.png" width="150px"/>
 ### Multiple MySQL Versions with Homebrew.
 
-##### Install the current version of MySQL.
+#### Install the current version of MySQL.
 ```sh
 # Install current MySQL version.
 brew install mysql
@@ -13,7 +13,7 @@ ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 ```
 
-##### Install the older version of MySQL.      
+#### Install the older version of MySQL.      
 ```sh
 # Find older MySQL versions.
 brew search mysql  
@@ -26,7 +26,7 @@ ln -sfv /usr/local/opt/mysql56/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql56.plist
 ```
 
-##### Then to switch to the older version.    
+#### Then to switch to the older version.    
 ```sh  
 # Unlink current MySQL version.
 brew unlink mysql 
@@ -38,7 +38,7 @@ ls /usr/local/Cellar/mysql56 # => 5.6.27
 brew switch mysql56 5.6.27
 ```  
 
-##### And to switch back to the current version.    
+#### And to switch back to the current version.    
 ```sh  
 # Unlink older MySQL version.
 brew unlink mysql56 
@@ -50,7 +50,7 @@ ls /usr/local/Cellar/mysql # => 5.7.10
 brew switch mysql 5.7.10
 ```  
 
-##### To verify which MySQL version you're on at any time.
+#### To verify which MySQL version you're on at any time.
 ```sh
 # Check which version of MySQL is currently symlinked.
 ls -l /usr/local/bin/mysql # => /usr/local/bin/mysql@ -> ../Cellar/mysql56/5.6.27/bin/mysql
@@ -59,7 +59,7 @@ ls -l /usr/local/bin/mysql # => /usr/local/bin/mysql@ -> ../Cellar/mysql56/5.6.2
 mysql --version
 ```
 
-##### And to unload a MySQL agent for a given version.    
+#### And to unload a MySQL agent for a given version.    
 ```sh 
 # Stop agent for current version of MySQL.
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
@@ -70,7 +70,7 @@ launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql56.plist
 rm ~/Library/LaunchAgents/homebrew.mxcl.mysql56.plist
 ```
 
-##### Other MySQL commands (From Terminal Prompt).   
+#### Other MySQL commands (From Terminal Prompt).   
 ```sh
 # Login to MySQL user without password.
 mysql -u user
@@ -84,7 +84,7 @@ sudo mysql
 mysql -u root <db_name> < path/to/db_dump.sql
 ```
 
-##### Other MySQL commands (From MySQL Prompt).
+#### Other MySQL commands (From MySQL Prompt).
 ```sql
 CREATE USER 'user'@'%' IDENTIFIED BY 'password';
 DROP USER user;

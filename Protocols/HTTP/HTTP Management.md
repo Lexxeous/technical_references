@@ -3,7 +3,7 @@
 # <img src="../../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's HTTP Management: <img src="../../.pics/Protocols/HTTP/http_logo.png" width="130"/>
 ### Manage HTTP & HTTPS Pages.
 
-##### General HTTP Information.
+#### General HTTP Information.
 
 HTTP stands for "Hyper-Text Transfer Protocol".<br>
 It's how browsers & web servers communicate; it's important to understand if you want to write any kind of web application.<br>
@@ -16,9 +16,9 @@ Version **2.0** is binary based. Binary protocols require special tools to work 
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
-##### HTTP Request Messages.
+#### HTTP Request Messages.
 
-HTTP request messsages consist of a request line, header lines, a blank line, and the message (entity) body.<br>
+HTTP request messsages consist of a request line, header lines, a blank line, and the entity (message) body. Files and data being downloaded, via the HTTP request, are contained in the entity body.<br>
 <img src="../../.pics/Protocols/HTTP/request_format.png" width="500px"/>
 
 ```
@@ -39,9 +39,9 @@ Cookie: 1678
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
-##### HTTP Response Messages.
+#### HTTP Response Messages.
 
-HTTP response messsages consist of a status line, header lines, a blank line, and the message (entity) body.<br>
+HTTP response messsages consist of a status line, header lines, a blank line, and the entity (message) body. Files and data being uploaded, via the HTTP response, are contained in the entity body.<br>
 <img src="../../.pics/Protocols/HTTP/response_format.png" width="500px"/>
 
 ```
@@ -64,7 +64,7 @@ Set-cookie: 1678
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
-##### HTTP Status Codes.
+#### HTTP Status Codes.
 
 | Value      | Title                      | Description                                                                                  |
 |:----------:|:--------------------------:|:---------------------------------------------------------------------------------------------|
@@ -79,7 +79,7 @@ Set-cookie: 1678
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
-##### Web Caching.
+#### Web Caching.
 
 Web caches (proxy servers) are network entities that satisfy HTTP requests on behalf of an origin web server. The proxy has its own disk storage and keeps copies of recently and commonly requested objects in this storage (similar to CPU cache), ready for use to clients. The proxy acts as a sever and a client at the same time.
 <img src="../../.pics/Protocols/HTTP/proxy_server.png" width="500px"/><br>
@@ -90,9 +90,18 @@ Adding a proxy server to a network (like an institutional network such as this) 
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
+
+#### Peer-to-Peer (P2P) File Distribution and Communication.
+
+While many applications used are controlled/managed by a server-client infastructure (with significant reliance on "always-on" servers), there also exists a collection of intermittently connected hosts, called peers, that communicate directly with eachother. These peers are typically not owned by any company, institution, or ISP, but instead are desktops & laptops controlled by genernal users.
+
+<!--------------------------------------------------------------------------------------------------------------------------------------->
+
+
+
 ### Use HTTP Requests with RoR.
 
-##### Doing something specific.
+#### Doing something specific.
 
 ```sh
 # Comment
@@ -102,7 +111,7 @@ Code
 <br>
 <!--------------------------------------------------------------------------------------------------------------------------------------->
 
-##### Useful HTTP Related RoR Gems.
+#### Useful HTTP Related RoR Gems.
 
 * [faraday](https://github.com/lostisland/faraday)
 * [httparty](https://github.com/jnunemaker/httparty)
