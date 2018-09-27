@@ -20,8 +20,26 @@
 -- In general, lowercase operators and keywords are from the default VHDL library
 	-- uppercase ones come from the IEEE 1164 standard library
 
+
+-- Structural design
+	-- The VHDL code simply describes a “netlist” of instantiated components.
+	-- Top-level design entity describes the interconnection of lower-level design entities.
+	-- Each lower-level design entity, in turn, describes even lower-level entities. And, so on.
+	-- Best suited for complex systems that can modeled as a interconnection of (up to) moderately complex entities.
+		-- Allows for each entity to be independently designed and verified before being used in higher-levels.
+
+
+-- Dataflow design
+	-- VHDL code describes how data “flows” through the system.
+	-- Data elements typically correspond to physical hardware data.
+	-- Dataflow design descriptions imply a corresponding gate-level implementation.
+	-- Dataflow design descriptions consist of one or more concurrent signal assignments.
+		-- All signal assignments are done concurrently.
+		-- Be sure to include every possible input condition, or else you haven't described the full operation of the circuit.
+		-- If you synthesize an incomplete description, the tool will make something up!
+
 ------------------------------------------------------------------------------------------------------------------------------------
--- BOOLEAN OPERATORS & KEYWORDS:
+-- KEYWORDS:
 
 -- for boolean operations
 and
@@ -32,7 +50,8 @@ nor
 xor
 xnor
 
--- for variable assignment delays
+-- for variable assignment & delays
+variable
 after
 transport
 
@@ -85,6 +104,7 @@ if
 then
 else
 elsif
+return
 end if
 
 -- for loop statement structure
@@ -101,22 +121,26 @@ assert
 report
 severity
 
--- misc blue
-true
-false
+-- for "process" statement structure
+process
+	wait
+	for
+	until
+
+
+-- for "selected signal assignments" (truth table / case statements)
+with
+select
+others
+
+-- ???
 sign
 natural
 exp
 finish
 positive
+output
 
--- misc red
-wait
-with
-select
-others
-return
-variable
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- DATATYPES:
@@ -173,18 +197,21 @@ STD_LOGIC_VECTOR -- similar to the "Bit_Vector" datatype
 	"UXXZ01001-WLH-10"
 
 ------------------------------------------------------------------------------------------------------------------------------------
--- VARIABLE ASSIGNMENT OPERATORS:
+-- ASSIGNMENT OPERATORS:
 
 := -- used for signals and variables ; happens immediately
 <= -- used for signals only ; happens at next Δ (delta) time ; result on the left, signal(s) on the right
-=>
+=> -- ???
 
 -- Examples:
 A := 5;
-B <= not A;
+variable temp : Integer := 0;
 
-B <= not A after t ns; -- Intertial Delay (Gate Delay) ; doesnt propagate if < t
-B <= transport not A after t_delay; -- Transport Delay ; propagates though system
+B <= not A;
+B <= not A after t ns; -- intertial Delay (Gate Delay) ; doesnt propagate if < t
+B <= transport not A after t_delay; -- transport Delay ; propagates though system
+
+identifier <= value_true when condition else value_false; -- signal assignment
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- NUMERICAL OPERATORS:
@@ -208,7 +235,7 @@ abs -- absolute value
 > -- is greater than
 >= -- is greater than or equal to
 
-|
+| -- ???
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- COMMANDS & MISC OPERATORS:
@@ -255,17 +282,22 @@ end architecture architecture_name; -- architecture_name
 -- CREATING OTHER STRUCTURES
 
 -- For "if" statements:
-if condition then return something;
-elsif expression then return something_else;
-else return something_else_else;
+if boolean_condition_1 then return sequential_statement_1;
+elsif boolean_condition_2 then return sequential_statement_2;
+...
+else return sequential_statement_N;
 end if;
 
 
+
 -- For "case" statements
-case(signal_name) is
-	when IDLE => null;
-	when others => result;
+case expression is
+	when choice_1 => sequential_statement_1;
+	when choice_2 => sequential_statement_2;
+	... 
+	when others => sequential_statement_N;
 end case;
+
 
 
 -- For "for loop" statements
@@ -274,12 +306,29 @@ identifier : for i in start to final loop
 end loop ; -- identifier
 
 
+
 -- For "component" statements
 	-- Like Entities but without the "is" keyword
+	-- Structural VHDL designs will always have components
+	-- All components are executed concurrently
 component component_name
 	port( signal_name : signal_mode signal_type;
 		    signal_name : signal_mode signal_type);
 end component;
+
+
+
+-- For "component" instantiation
+label : component_name port map (positional ~ explicit port_mapping)
+
+-- Positional Port Map
+	-- Arguments are used in the exact order that they come in
+(signal_name1, signal_name2, signal_name3, ...);
+
+-- Explicit Port Map
+	-- Arguments are declared explicitly and not required to be in order
+(signal_name1 => signal1, signal_name2 => signal2, signal_name3 => signal3, ...);
+
 
 
 -- For "generate" statements
@@ -288,9 +337,11 @@ label : for identifier in range generate
 end generate
 
 
+
 -- For "generic" statements
 	-- Declared inside Entities
-generic (GEN_NAME : gen_data_type := init_val);
+generic (gen_name : gen_data_type := init_val);
+
 
 
 -- For "constnant" statements
@@ -298,15 +349,43 @@ generic (GEN_NAME : gen_data_type := init_val);
 constant (const_name : const_data_type := init_val);
 
 
+
 -- For "conditional" signal assignments
 identifier <= value_true when condition else value_false;
 
 
--- For "truth table" statements 
+
+-- For "selected signal assignments" (truth table / case statements) 
 with expression select
-	thing <= value when something,
-	...,
-	value <= value when something;
+	signal_name <= signal_value when condition,
+	signal_name <= signal_value when condition,
+	... ,
+	signal_name <= signal_value when others;
+
+
+
+-- For "process" statements
+	-- Statements inside of a process occur sequentially instead of concurrently
+	-- Signal assignments occur concurrently at the moment of process suspension (independent of eachother)
+	-- Variable assignments happen instantly (dependent on eachother)
+	-- When any signals (OR logic) within the sensitivity list change, process_name executes ; event trigger list
+		-- this is semi-asynchronous ; the sensetivity list can have multiple parameters
+		-- if there is no sensitivity list, the process executes continuously forever from t=0
+	-- You CANNOT declare a signal inside of a process
+	-- "wait" statements inside of a process will suspsend the process for a certain amount of time
+		wait for Time;
+		wait until Boolean;
+		-- can place wait statements anywhere within the process
+process_name : process (sensitivity_list)
+	declarations;
+	begin
+		sequential_statement_1;
+		sequential_statement_2;
+		...
+		sequential_statement_N;
+end process process_name;
+
+
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- STRUCTURE EXAMPLES
@@ -327,6 +406,44 @@ message : String (0 to 19) := "Lexxeous is awesome!"
 
 -- Creating an Enumeration
 type Colors is (Red, Yellow, Green); -- double quotes not necessary
+
+
+
+-- Creating a generator
+Gen1 : for i in 1 to bus_width generate
+	U1 : inv1 port map (In1 => X(i), Out1 => Y(i));
+end generate
+
+
+
+-- Creating a process
+	-- 2 phase clock ; 100ns period ; 5ns clock edge gap on each side
+
+--					v--------100ns--------v
+--			1		 _________     55ns    _________
+-- φ1: 	0	__|		45ns	|___________|					|__
+
+--			1 _          5ns _______ 5ns           _
+-- φ2: 	0  |____________|  45ns |_____________|
+
+phi_12_clock : process
+	begin
+		phi1 <= '0'; phi2 <= '0';
+		wait for 5 ns;
+		phi1 <= '0'; phi2 <= '1';
+		wait for 45 ns;
+		phi1 <= '0'; phi2 <= '0';
+		wait for 5 ns;
+		phi1 <= '1'; phi2 <= '0';
+		wait for 45 ns;
+end process phi_12_clock;
+------------------------------------------------------------------------------------------------------------------------------------
+-- MISC
+
+-- For signal assignment
+identifier <= value_true when condition else value_false;
+
+
 
 
 
