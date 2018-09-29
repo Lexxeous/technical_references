@@ -13,9 +13,13 @@ Some informational sources are (but not limited to):
     - [Oak Ridge National Laboratory (ORNL) ](https://ornl.gov)
     - [Neighborhood Network (N2) Publishing](https://n2pub.com)
   * Books.
+    - [Agile Web Development with Rails 5](https://pragprog.com/book/rails5/agile-web-development-with-rails-5)
+    - [Computer Networking, A Top-Down Approach (6th Edition)](https://www.pearson.com/us/higher-education/product/Kurose-Computer-Networking-A-Top-Down-Approach-6th-Edition/9780132856201.html)
+    - [Digital Design, Principles and Practices (4th Edition)](https://www.pearson.com/us/higher-education/product/Wakerly-Digital-Design-Principles-and-Practices-4th-Edition/9780131863897.html)
+    - [The HCS12/9S12: An Introduction to Software and Hardware Interfacing](https://dl.acm.org/citation.cfm?id=1593057)
     - [HTML & CSS Book](http://www.htmlandcssbook.com/)
     - [JS & jQuery Book](http://www.javascriptbook.com/)
-    - [Agile Web Development with Rails 5](https://pragprog.com/book/rails5/agile-web-development-with-rails-5)
+    - [MATLAB: A Practical Introduction to Programming and Problem Solving](https://www.mathworks.com/academia/books/matlab-attaway.html)
   * Tutorials.
     - [Codecademy](https://www.codecademy.com/)
     - [Udemy](https://www.udemy.com/)

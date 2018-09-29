@@ -20,14 +20,12 @@
 -- In general, lowercase operators and keywords are from the default VHDL library
 	-- uppercase ones come from the IEEE 1164 standard library
 
-
 -- Structural design
 	-- The VHDL code simply describes a “netlist” of instantiated components.
 	-- Top-level design entity describes the interconnection of lower-level design entities.
 	-- Each lower-level design entity, in turn, describes even lower-level entities. And, so on.
 	-- Best suited for complex systems that can modeled as a interconnection of (up to) moderately complex entities.
 		-- Allows for each entity to be independently designed and verified before being used in higher-levels.
-
 
 -- Dataflow design
 	-- VHDL code describes how data “flows” through the system.
@@ -61,7 +59,7 @@ subtype
 is
 array
 range
-natural
+record
 
 -- 
 begin
@@ -127,19 +125,24 @@ process
 	for
 	until
 
-
 -- for "selected signal assignments" (truth table / case statements)
 with
 select
 others
 
+-- for "subtypes" ; subsets of datatypes
+subtype
+	natural
+	positive
+	complex
+
 -- ???
 sign
-natural
 exp
 finish
-positive
 output
+log
+
 
 
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -148,29 +151,54 @@ output
 Boolean -- not 0s & 1s
 	true
 	false
+
+
 Character -- denoted with single quotes
 	'a'
 	'0'
 	'+'
 	'v'
+
+
 Integer -- 32 bit range ; -2,147,483,647 ~ +2,147,483,647
 	1
 	12
 	132
+
+
 Real -- ranges from -1.0E308 ~ +1.0E308
 	0.1
 	1.2
 	3.14
+
+	23_456_789 -- can separate groups of three digits with underscores instead of commas
+
+	97E6 -- 97000000
+	12.7E-9 -- 0.0000000127
+
+	2#1100_0100# -- decimal value 196 in base 2 (binary)
+	4#301#E1 or 4#3010# -- decimal value 196 in base 4 (quaternary)
+	16#C4# -- decimal value 196 in base 16 (hexadecimal)
+
+
 Bit -- 0s & 1s
 	'0'
 	'1'
+
+
 Bit_Vector -- vector/string of bits
-	"100100100011"
+	B"1100_0100" -- decimal value 196 in base 2 (binary)
+	O"304" -- decimal value 196 in base 4 (octal)
+	X"C4" -- decimal value 196 in base 16 (hexadecimal)
 	(0 to 7)
 	(7 downto 0)
+
+
 String -- denoted with double quotes
 	"hello"
 	"world"
+
+
 Time
 	fs -- femtoseconds ; 10E-15
 	ps -- picoseconds ; 10E-12
@@ -180,9 +208,28 @@ Time
 	sec -- seconds ; 10E+0
 	min -- minutes
 	hr -- hours
+
+
 Severity_Level
+	note
+	warning
+	error
+	failure
+
+
+
+Null
+	null
+
+
+
 Enumeration -- special case ; use the "type" keyword ; 
 	type enum_name is (item_1, item_2, ...);
+	type byte_int is range 0 to 255;
+	type arr is array (low_lim to up_lim) of Data_Type;
+
+
+
 STD_LOGIC -- similar to the "Bit" datatype ; multi-logic
 	'U' -- uninitialized
 	'X' -- forcing unknown
@@ -193,8 +240,48 @@ STD_LOGIC -- similar to the "Bit" datatype ; multi-logic
 	'L' -- weak low
 	'H' -- weak high
 	'-' -- dont care
+
+
 STD_LOGIC_VECTOR -- similar to the "Bit_Vector" datatype
 	"UXXZ01001-WLH-10"
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+-- ATTRIBUTES
+attribute
+
+-- Types and objects declared in VHDL can have additional information (attributes) associated with them
+	-- Referencing an attribute is use with ' notation
+		-- thing'attr
+
+-- For any scalar type T, the following attributes can be used:
+	-- For ascending range (T'left == T'low) and (T'right == T'high)
+	-- For descending range (T'left == T'high) and (T'right == T'low)
+T'left -- left most bound of T
+T'right -- right most bound of T
+T'low -- lower most bound of T
+T'high -- upper most bound of T
+
+
+-- For any discrete or physical type T, X as a member of T, and Integer N, the following attributes can be used:
+	-- For ascending range (T'leftof == T'pred) and (T'rightof == T'succ)
+	-- For descending range (T'leftof == T'succ) and (T'rightof == T'pred)
+T'pos(X) -- Position number of X in T
+T'val(N) -- Value at position N in T
+T'leftof(X) -- Value in T which is one position left of T
+T'rightof(X) -- Value in T which is one position right of T
+T'pred(X) -- Value in T which is one position lower than T
+T'succ(X) -- Value in T which is one position higher than T
+
+
+-- For any array type or object A and Integer N bounded by the dimensions of A, the following attributes can be used:
+T'left() -- left most bound of index range of dim'n N of A
+T'right() -- right most bound of index range of dim'n N of A
+T'low() -- lower most bound of index range of dim'n N of A
+T'high() -- upper most bound of index range of dim'n N of A
+A'range() -- Index range of dim'n N of A
+A'reverse_range() -- Reverse of index range of dim'n N of A
+A'length() -- Length of index range of dim'n N of A
 
 ------------------------------------------------------------------------------------------------------------------------------------
 -- ASSIGNMENT OPERATORS:
@@ -340,13 +427,13 @@ end generate
 
 -- For "generic" statements
 	-- Declared inside Entities
-generic (gen_name : gen_data_type := init_val);
+generic (gen_name : gen_Data_Type := init_val);
 
 
 
 -- For "constnant" statements
 	-- Declared inside Architectures
-constant (const_name : const_data_type := init_val);
+constant (const_name : const_Data_Type := init_val);
 
 
 
@@ -384,6 +471,38 @@ process_name : process (sensitivity_list)
 		...
 		sequential_statement_N;
 end process process_name;
+
+
+
+-- For "physical units" enumeration statements
+type metric_name is range low_lim to up_lim
+	units
+		base_unit;
+		new_unit_1 = Real base_unit;
+		new_unit_2 = Real any_prev_unit_declaration;
+		...
+		new_unit_N = Real any_prev_unit_declaration;
+	end units;
+
+
+
+-- For "record" enumeration statements
+	-- Records are similar to C structs and python dictionaries
+	-- Key : Value pairs can be called via "rec.key_n"
+	-- They keys are also called "record fields"
+type rec is 
+	record
+		key_1 : value_1;
+		key_2 : value_2;
+		...
+		key_N : value_N;
+	end record;
+
+
+
+
+-- For "subtype" statements
+subtype subtype_name is Data_Type range low_lim to up_lim;
 
 
 
@@ -437,6 +556,24 @@ phi_12_clock : process
 		phi1 <= '1'; phi2 <= '0';
 		wait for 45 ns;
 end process phi_12_clock;
+
+
+
+-- Creating a physical unit
+type length is range 0 to 1E9
+	units
+		um;
+		mm = 1000 um;
+		cm = 10 mm;
+		m = 1000 mm;
+		inch = 25.4 mm;
+		ft = 12 inch;
+		yd = 3 ft;
+		rod 198 inch;
+		chain = 22 yard;
+		furlong = 10 chain;
+	end units;
+
 ------------------------------------------------------------------------------------------------------------------------------------
 -- MISC
 
