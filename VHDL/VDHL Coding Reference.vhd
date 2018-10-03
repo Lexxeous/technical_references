@@ -97,6 +97,13 @@ use
 	package
 	body
 
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.STD_LOGIC_ARITH.all;
+use IEEE.STD_LOGIC_UNSIGNED.all;
+
+
+
 -- for "if" statement structure
 if
 then

@@ -7,11 +7,13 @@
 
 DNS stands for "Domain Naming System".<br>
 <br>
-A **registrar** is a commercial entity that verifies the uniqueness of a domain name and enters the domain name into the DNS database. Prior to 1999, a single registrar (Network Solutions) had a monopoly on domain name registration. Now the Internet Corporation for Assigned Names and Numbers (ICANN) manages and accredits many different registrars. A full list is avaliable [here](https://www.internic.net).
+A **registrar** is a commercial entity that verifies the uniqueness of a domain name and enters the domain name into the DNS database. Prior to 1999, a single registrar (Network Solutions) had a monopoly on domain name registration. Now the Internet Corporation for Assigned Names and Numbers (ICANN) manages and accredits many different registrars. A full list is avaliable [here](https://www.internic.net).<br>
+<br>
+DNS uses UDP protocol instead of TCP.
 
 #### DNS Hierarchy.
 
-No single DNS server has all the mappings for all the hosts connected to the Internet. Instead, the mappings are distributed across all DNS servers.
+No single DNS server has all the mappings for all the hosts connected to the Internet. Instead, the mappings are distributed across all DNS servers. Also, DNS cache exists at every level of the DNS hierarchy, which can make DNS queries faster.
 
  * Root
  * Top-Level Domain (TLD)
@@ -33,7 +35,8 @@ No single DNS server has all the mappings for all the hosts connected to the Int
 
 #### Iterative Queries.
 
-**Iterative queries** pass information from the DNS heirarchy to the requesting host's local DNS server one at a time.
+**Iterative queries** pass information from the DNS heirarchy to the requesting host's local DNS server one at a time.<br>
+For DNS queries in general, iterative queries can be faster than recursive queries because iterative queries deal with less Root and TLD traffic. In many situations, the additional traffic (due to the recursive path) creates more delay than the additional queries with faster return paths. Since DNS chache exists at every level of DNS, this can make both versions of queries faster independently than if chache didn't exist.
 
 <img src="../../.pics/Protocols/DNS/iterative_query.png" width="300"/>
 
@@ -57,21 +60,21 @@ The **additionals section** can contain other helpful records that are relative 
 
 #### Resource Records (RRs).
 
-(Name, Value, Type, TLL)
+Resource Records are stored on DNS servers as `key-value` pairs for lookup purposes. They follow the following format: (Name, Value, Type, TLL). **TTL** (Time To Live) is ... ???
 
-**Type A:** Name is a hostname and Value is the IP address for the hostname.
+**Type A:** Name (key) is a hostname and Value is the IP address for the hostname.
 
  * (relay1.bar.foo.com, 145.37.93.126, A)
 
-**Type NS:** Name is a domain (such as foo.com) Value is the host name of an authoritative DNS server that knows how to obtain the IP addresses for hosts in the domain.
+**Type NS:** Name (key) is a domain (such as foo.com) Value is the host name of an authoritative DNS server that knows how to obtain the IP addresses for hosts in the domain.
 
  * (foo.com, dns.foo.com, NS)
 
-**Type CNAME:** Value is a canonical hostname for the alias hostname Name.
+**Type CNAME:** Value is a canonical hostname for the alias hostname Name (key).
 
  * (foo.com, relay.bar.foo.com, CNAME)
 
-**Type MX:** Value is a canonical name of a mail server that has an alias hostname Name. MX records allow the hostnames of mail servers to have simple aliases.
+**Type MX:** Value is a canonical name of a mail server that has an alias hostname Name (key). MX records allow the hostnames of mail servers to have simple aliases.
 
  * (foo.com, mail.bar.foo.com, MX)
 
