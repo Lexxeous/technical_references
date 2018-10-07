@@ -13,12 +13,13 @@
 	-- An Architecture describes the internal behavior of the logic block ; many can exist per logic block
 
 -- VHDL is a very strongly typed programming language ; no nonsense
-	-- Names must start with a letter
-	-- Names cannot have two underscores in a row (__) or end with a single underscore
-	-- Names cannot be keywords
+  -- VHDL is NOT case sensitive.
+	-- Names must start with a letter.
+	-- Names cannot have two underscores in a row (__) or end with a single underscore.
+	-- Names cannot be keywords.
 
 -- In general, lowercase operators and keywords are from the default VHDL library
-	-- uppercase ones come from the IEEE 1164 standard library
+	-- uppercase ones come from the IEEE 1164 standard library.
 
 -- Structural design
 	-- The VHDL code simply describes a “netlist” of instantiated components.

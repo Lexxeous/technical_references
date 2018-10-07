@@ -15,6 +15,7 @@
 
 # -------------------------------------------------------------------------------------------------
 # HOW TO DEPLOY APP TO PRODUCTION WITH HEROKU
+
 Navigate to project directory.
 Add ruby version to gemfile.
 Move "sqlite3" to :development, :test group.
@@ -27,7 +28,7 @@ $ heroku --version # verify heroku installation ; optional
 $ heroku update # get latest version of heroku ; optional
 $ heroku login # login to account ; first time setup 
 $ heroku keys:add # sync public rsa key ; first time setup
-$ keroku create # create new https heroku application
+$ keroku create # create new https heroku application ; first time setup
 $ heroku rename <app-name> # rename http ; optional
 $ git push heroku master
 $ heroku open # opens the url for the application
