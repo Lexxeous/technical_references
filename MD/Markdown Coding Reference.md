@@ -22,6 +22,8 @@ This is what normal text looks like.
 
 **This is what bold text looks like.**
 
+*This is what italicized text looks like.*
+
 > This is how to make a block comment or prospective user question.
 
 This is how to make a [link](http://www.ascii-middle-finger.com/) to a specific web page.
@@ -258,19 +260,25 @@ Here's a full list of supported languages:
 <br>
 
 Use two spaces `"  "` at the end of a line or the HTML line break element `<br>` to initialize a line break.
-> Typically it's better to use `<br>` since it's actually visable and some text editors/interpreters trailing rid white space.
+> Typically it's better to use `<br>` since it's actually visable and some text editors/interpreters rid trailing white space.
 
 ```sh
-# Both
 Hello  # has 2 spaces here
 World
-# and
-Hello<br>
+
+Hello<br> #has HTML line break element here
 World
-# generate
+
 Hello # no spaces here
 World
 ```
 
-For additional information about Markdown, please visit the `Markdown Cheatsheet` [here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+Emojis can be inserted into markdown using a colon on each side of the descriptor like: `:descriptor:`. <br>
+:bowtie: `:bowtie:` <br>
+:trollface: `:trollface:` <br>
+:octocat: `:octocat:` <br>
+:dog2: `:dog2:` <br>
+A full list of the markdown emoji descriptors can be found here: [https://github.com/ikatyang/emoji-cheat-sheet](https://github.com/ikatyang/emoji-cheat-sheet).
+
+For additional information about Markdown, please visit the `Markdown Cheatsheet` here: [https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
 
