@@ -1,11 +1,11 @@
 # <img src=".pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Technical References: <img src=".pics/Misc/binary_clock.png" width="100px"/>
 ### Documentation for programming languages and related concepts.
 
-This repository is a collection of documented resources that I have gathered over my time as a programmer. I update and reorganize these files almost constantly as I learn new information. Some conceptual topics included are (but not limited to): `Assembly`, `Bash & Unix`, `C`, `C++`, `C#`, `Git`, `HAML & YAML`, `HTML & CSS`, `Javascript (JS) & jQuery`, `Javascript Object Notation (JSON)`, `LaTeX & BibTeX`, `MATLAB`, `Markdown (MD)`, `Protocols`, `Python`, `R`, `Redis`, `Regular Expression (Regex)`, `reST`, `Ruby on Rails (RoR)`, `SQL`, `Verilog`, & `VHDL`.
+This repository is a collection of documented resources that I have gathered over my time as a programmer and engineering student. I update and re-organize these files almost constantly as I learn new information. Some conceptual topics and programs included are (but not limited to): `Assembly`, `Bash & Unix`, `C`, `C++`, `C#`, `Git`, `HAML & YAML`, `HTML & CSS`, `Javascript (JS) & jQuery`, `Javascript Object Notation (JSON)`, `LaTeX & BibTeX`, `Logisim`, `LTspice`, `MATLAB`, `Markdown (MD)`, `Protocols`, `Python`, `R`, `Redis`, `Regular Expression (Regex)`, `reST`, `Ruby on Rails (RoR)`, `SQL`, `Unity`, `Verilog`, & `VHDL`.
 
 With any empty files or folders, I have simply not moved my current/available resources to the corresponding directory.
 
-Most of the documentation contained within this repository has been aquired from the internet, college courses, internships, online tutorials, and/or tutorial books. I claim no ownership of any code contained within this repository. This repository is simply my interpretation of concepts revealed to me through my professional development.
+Most of the documentation contained within this repository has been acquired from the internet, college courses, internships, online tutorials, and/or tutorial books. I claim no ownership of any code contained within this repository. This repository is simply my interpretation of concepts revealed to me through my professional development.
 Some informational sources are (but not limited to):
 
   * Organizations.
