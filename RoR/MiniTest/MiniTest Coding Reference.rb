@@ -1,0 +1,1 @@
+# MiniTest Coding Reference.rb
