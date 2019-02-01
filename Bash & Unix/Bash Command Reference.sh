@@ -13,6 +13,44 @@ ls # list all files and folders (excluding hidden and excluding details)
 lsa # list all files and folders (including hidden and including details)
 ls -a # list all files and folders (including hidden and excluding details)
 
+less <file_name> # view contents of <file_name> ; 'q' to exit
+nano <file_name> # view and edit contents of <file_name> ; "CRTL+x" to exit
+pico <file_name> # view and edit contents of <file_name> ; "CRTL+x" to exit
+emacs <file_name> # view and edit contents of <file_name> ; "CRTL+x+c" to save and exit
+vim <file_name> # view and edit contents of <file_name> ; ":wq" to save and exit
+
+# -------------------------------------------------------------------------------------------------
+# SFTP
+
+sftp <user_name>@shell.<server>.<domain> # open sftp connection with remote server ; jagibson44@shell.hpc.tntech.edu
+put <file_name> # move file from local to remote
+get <file_name> # move file form remote to local
+bye # quit sftp connection
+
+
+# -------------------------------------------------------------------------------------------------
+# SLURM (Simple Linux Utility for Resource Management)
+
+# compiler directives:
+#!/bin/bash
+#SBATCH --nodes=1 ; cores to reserve
+#SBATCH --cpus-per-task=1 ; cores per job
+#SBATCH --time=00:01:00 ; time to reserve
+
+slurm-<job_id>.out # output file in executable directory
+
+# -------------------------------------------------------------------------------------------------
+# HPCSHELL (High Performance Computer)
+
+hpcshell # reserves a compute node separate from the login node
+ssh <compute_node_name> # login directly to a compute node ; Example <compute_node_name> = gpunode001
+top # view activity on a node
+squeue -u <user_name> # view queued jobs by a certain user
+scancel <job_id> # cancel an HPC job
+sbatch <executable_name>.sh # submit job to the HPC cluster with SLURM
+
+g++ -fopenmp -o <executable_name> <file_name>.cpp # compile a C++ file for OpenMP
+gcc -fopenmp -o <executable_name> <file_name>.c # compile a C file for OpenMP
 
 # -------------------------------------------------------------------------------------------------
 # BREW
@@ -50,7 +88,7 @@ atom . # open Atom at the current directory location
 # -------------------------------------------------------------------------------------------------
 # SUBLIME TEXT
 
-stt # open sublime text at the current directory location
+stt # open sublime text at the current directory location ; dependent on .zshrc plugins
 
 
 # -------------------------------------------------------------------------------------------------
