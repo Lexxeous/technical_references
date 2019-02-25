@@ -103,6 +103,113 @@ $something$ % removes spaces and/or does math mode
 
 
 
+% –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
+
+
+Coding Reference:
+
+Symbol Reference Webpage:
+https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols
+
+Most, if not all, commands in LaTeX start with '\'.
+
+Syntax:
+%: comments
+$text$: italicize your "text"
+X_x: make a subscript
+X^x: make a superscript
+*{}: cancel enumeration
+&=: aligns equal signs (mathmode)
+\\: end line
+
+Special Characters:
+\cdot: dot product symbol
+\dots: elipsis (dot dot dot) (...)
+\mu: mu
+\sigma: sigma
+\infty: infinity (lemniscate)
+
+
+Math Symbols:
+\frac: create a fraction
+\sum_{from}^{to}: capital sigma (additive result)
+\sqrt: square root
+\mathcal: typeset characters
+
+
+
+Commands:
+\documentclass[]{}: type of paper that you are writing
+\usepackage[]{}: specify which libraries to include
+\title{paperTitle}: the title of your paper
+\author{authorName}: the author of the paper
+\begin{area}: begin an area
+\end{area}: end an area
+\maketitle: include title, author, and date
+\section{secTitle}: begins a new section (automatically numbered) [1..n]
+\subsection{subSecTitle}: begins a new subsection (automatically numbered)[m.1 .. m.n]
+\centering: will center until the end of the figure
+\ref{fig.figName}: will add a clickable link to correct figure
+\includegraphics[options]{file.extention}
+	Options:
+		width = :specify the width of the picture
+\caption{caption}
+\label{fig:figName}	
+\textwidth: can specify the width of your inserted picture
+\todo[options]{comment}
+	Options:
+		inline: makes the comment "inline"
+		color = :specify the color if the comment
+\footnote{footNoteTxt}: creates a footnote
+\item: denote an item in a enumerated or bulleted or etc... list
+\verb|text|: plain text font (good for fileName.text inserts)
+\textit{sentence}: italicise sentence
+\textbf{sentence}: bold sentence
+\href{url}{shownText}: creates a highlighted link to "url" but shown as "shownText"
+\url{url}: creates a highlighted link shown as "url"
+\cite{refUsrName}: creates a link to a specific citation
+\text{text}: plain text (mathmode)
+\paragraph: title a new paragraph
+\big{chars}: makes chars bigger
+\times: cross multiple symbol
+\pagebreak[num]
+	-requests a pagebreak with a [0..4] magnitude of demand variable "num"
+\newpage
+	-ends the curent page
+
+
+
+Beginning and Ending Keyword Sections:
+document
+abstract
+verbatim: good for adding small snippets of program code (cant use tabs, only spaces)
+figure
+table
+tabular{options}:
+	Options:
+		l|r:
+enumerate: list of items in an enumerated list
+	\item: starts each item
+itemize: list of items in bulleted list
+	\item: starts each item
+align: align all the lines within (mathmode)
+equation: (mathmode)
+
+
+
+
+Bibliography:
+\bibliographystyle{style}: different styles for references
+\bibliography{fileName}: pulls reference data from "fileName"
+
+
+
+
+
+
+
 
 
 
