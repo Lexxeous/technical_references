@@ -23,6 +23,7 @@ http://srecord.sourceforge.net/man/man5/srec_mif.html
 
 %
 # Instructions to be stored in memory.
+# Only using 12 of 256 available memory block words.
 addi $t0, $t0, 0x00000003 # initialize $t0 with 3
 addi $s0, $s0, 0xFFFFFFFF # initialize $s0 with 0xFFFFFFFF
 add $t1, $t0, $t0 # double $t0 into $t1 ; 6		 ; 0x00000006
@@ -38,13 +39,13 @@ and $s1, $t9, $s0 # AND all $t9 bits with $s0 into $s1 ; 1536 ; 0x00000600
 %
 
 
-DEPTH = 32;          −− the size of data in bits
-WIDTH = 32;          −− the size of memory in words
+DEPTH = 256;         −− the size of memory block in words
+WIDTH = 32;          −− the size of single instruction in bits
 ADDRESS_RADIX = HEX; −− the radix for address values
 DATA_RADIX = HEX;    −− the radix for data values
 CONTENT              −− start of (<mem_addr> : <inst>) pairs
-BEGIN
-00000000 : 21080003; −− <mem_addr> : <inst>
+BEGIN								 −− <mem_addr> : <inst>
+00000000 : 21080003; 
 00000004 : 2210FFFF;
 00000008 : 01084820;
 0000000C : 01295020;
