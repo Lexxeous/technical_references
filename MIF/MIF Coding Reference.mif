@@ -1,0 +1,61 @@
+-- MIF Coding Reference.mif
+
+%
+Multi-line comment.
+%
+
+-- Single line comment.
+
+%
+MIF (Memory Initialization File) files are used to import a set of pre-defined, hard-coded instructions
+as part of the "fetch" part of a microprocessor. These hard-coded instructions are typically contatined within
+the instruction memory (after the program counter) and stored as machine code, either in hexadecimal or binary
+(converted from assembly).
+%
+
+%
+More information/documentation can be found here.
+http://srecord.sourceforge.net/man/man5/srec_mif.html
+%
+
+------------------------------------------------------------------------------------------------------------------------------------
+-- EXAMPLE MIPS32 .MIF FILE
+
+%
+# Instructions to be stored in memory.
+addi $t0, $t0, 0x00000003 # initialize $t0 with 3
+addi $s0, $s0, 0xFFFFFFFF # initialize $s0 with 0xFFFFFFFF
+add $t1, $t0, $t0 # double $t0 into $t1 ; 6		 ; 0x00000006
+add $t2, $t1, $t1 # double $t1 into $t2 ; 12	 ; 0x0000000C
+add $t3, $t2, $t2 # double $t2 into $t3 ; 24	 ; 0x00000018
+add $t4, $t3, $t3 # double $t3 into $t4 ; 48	 ; 0x00000030
+add $t5, $t4, $t4 # double $t4 into $t5 ; 96	 ; 0x00000060
+add $t6, $t5, $t5 # double $t5 into $t6 ; 192	 ; 0x000000C0
+add $t7, $t6, $t6 # double $t6 into $t7 ; 384	 ; 0x00000180
+add $t8, $t7, $t7 # double $t7 into $t8 ; 768	 ; 0x00000300
+add $t9, $t8, $t8 # double $t8 into $t9 ; 1536 ; 0x00000600
+and $s1, $t9, $s0 # AND all $t9 bits with $s0 into $s1 ; 1536 ; 0x00000600
+%
+
+
+DEPTH = 32;          −− the size of data in bits
+WIDTH = 32;          −− the size of memory in words
+ADDRESS_RADIX = HEX; −− the radix for address values
+DATA_RADIX = HEX;    −− the radix for data values
+CONTENT              −− start of (<mem_addr> : <inst>) pairs
+BEGIN
+00000000 : 21080003; −− <mem_addr> : <inst>
+00000004 : 2210FFFF;
+00000008 : 01084820;
+0000000C : 01295020;
+00000010 : 014A5820;
+00000014 : 016B6020;
+00000018 : 018C6820;
+0000001C : 01AD7020;
+00000020 : 01CE7820;
+00000024 : 01EFC020;
+00000028 : 0318C820;
+0000002C : 03308824;
+END;
+
+------------------------------------------------------------------------------------------------------------------------------------
