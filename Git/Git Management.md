@@ -13,6 +13,13 @@ open .gitignore_global
 ```
 > Create a local git ignore with `touch .gitignore` in any project; Add files like .DS_Store and dump.rdb to .gitignore_global to remove them from all project commits.
 
+#### Remove already committed files from future commits.
+```sh
+git rm --cached path/to/file # removes file from git commit cache
+git rm --cached -r path/to/dir # recursively removes all files within <dir> from git commit cache
+```
+> These commands only remove the file reference(s) from the Git commit cache; this does not affect the local copies of files or directories stored on your computer. Future commits will no longer include the desired file(s) and/or folder(s).
+
 #### Create New Git Repository from Command Line.
 ```sh
 # Using the Git API.
