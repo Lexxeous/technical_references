@@ -87,10 +87,22 @@ Local, session, and cookies data cannot be cross referenced/accessed unless all 
 	4. :3000			; Port
 */
 
+
+/*
+When attempting to access elements outside of the bounds of an array, JS does not return a segmentation fault, it simply returns "undefined".
+*/
+
+
+// For some more detailed documentation, specifications, and browser compatability, visit:
+"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar"
+
 /*--------------------------------------------------------------------------------------------------------------*/
 // KEYWORDS & STRUCTURES
-var <variable> = <value>; // defines a variable globally or locally to an entire function regardless of block scope.
-let <variable> = <value>; // defines a variable locally
+	// variables that are defined without given a value will automatically be initialized to "undefined"
+
+var <variable> = <value>; // defines a variable globally or locally to an entire function regardless of block scope ; can change value
+let <variable> = <value>; // defines a variable locally ; can change value
+const <variable> = <value>; // defines a variable locally ; CANNOT change value ; MUST be assigned a value when declared
 document; // supported by many major modern web browsers ; creates new object for each element on the page for manipulation
 window;
 Object; // under the hood, arrays and functions are considered objects
@@ -104,11 +116,11 @@ enum();
 function{}; // normal functions in JS do not need to be prototyped ; function expressions need to be declared before they are called
 this; // evaluates to the value of the ThisBinding of the current execution context ; access the current element being evaluated
 $(this); // creates a jQuery selection; allows jQuery methods to be used on the current element being evaluated
-null;
-NaN;
-undefined
-true
-false
+null; // nothing
+NaN; // number is too big ; number overflow ; Not a Number
+undefined // default when "var" or "let" variable declarations are not initialized
+true // boolean true
+false // boolean false
 throw
 try
 catch()
@@ -121,15 +133,15 @@ while()
 for()
 do
 with()
-typeof()
+typeof() // returns the type of the input variable
 switch()
 	{case 'One': <expression>; break;
 	 case 'Two': <expression>; break;
 	 default: 	 <expression>; break;}
 delete;
 return; // could return a single value as normal or an array of values
-break
-continue
+break; // break out of a loop
+continue; // jump to the next iteration of a loop
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
@@ -152,7 +164,7 @@ continue
 // METHODS
 
 alert("string")
-console.log("string")
+console.log(value) // <value> can be a string, concatenated strings, a number, or an equation with numerical operators
 console.group("string")
 console.table(object_variable) // take JSON formatted data
 
@@ -241,10 +253,20 @@ array.forEach() // executes a function once for each item in array
 array.some() // checks if some/any items in array pass test specified by function
 array.every() // checks if all items in array pass test specified by function
 array.concat() // creates new array containing its and other array values
-array.filter() // creates new array with item(s) that pass test specified by function
+array.filter() // creates new array with item(s) that pass test specified by function ; new array is not necessarily same length as original
 array.sort() // reorders item(s) in array using a function ; by default the sorting is lexicographically for numbers and strings
 array.reverse() // reverses the order of the item(s) in array
-array.map() // call a function on each element in array and creates a new array with results
+array.map() // call a function on each element in array and creates a new (same length) array with results
+array.findIndex() // returns the index value of the first element that evaluates true to the callback function ; returns -1 otherwise
+array.reduce((total, curr_val, curr_index, arr) => {}, init_val);
+	/*
+	<total> is <init_val> or the previously returned value of the function ; REQUIRED
+	<curr_val> is the value of the current element ; REQUIRED
+	<curr_index> is the index of the current element ; OPTIONAL
+	<arr> is the array object that the current element belongs to ; OPTIONAL
+	<init_val> initializes <total> to some value other than 0 ; OPTIONAL
+	*/
+array.every() // returns true if every element in <array> passes the callback function test
 
 string.replace(/^the /i, "") // takes a regex as first argument and what to replace with as the second ; replace "the " with ""
 
@@ -274,6 +296,18 @@ selectBox.remove(index) // removes option at "index"
 
 element.isRequired() // checks whether the element has a required value
 element.isEmpty() // checks whether the element has a value
+
+
+/*--------------------------------------------------------------------------------------------------------------*/
+// THE MATH AND NUMBER OBJECTS
+
+Math.random() // returns a random value between 0 ~ 1
+Math.random() * n // returns a random value between 0 ~ (n - 1)
+Math.floor(n) // rounds a numerical down to the nearest Integer
+Math.ceil(n) // rounds a numerical value up to the nearest Integer
+
+
+Number.isInteger(n) // true if 'n' is an Integer and false otherwise
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
@@ -365,24 +399,53 @@ $("li").on("click" events[, selector][, data], function(e) { // the event object
 title = "Mollys Special Offers"; // can use a single single quote inside double quotes
 message = '<a href=\"sale.html\">25% OFF!</a>'; // use \ to escape characters inside of a single or double quoted string
 
+"string".length() // returns the total number of characters in the string ; returns 6
+"s t r ".trim() // removes the whitespace from a string ; returns "str"
+"string".toUpperCase() // converts all characters in the string to upper case ; returns STRING
+"string".startsWith("s") // true if string starts with the given character and false otherwise ; returns true
+
+"str" + "ing" = "string"; // can concatenate strings together with the '+' operator
+
+var s = "string"; // s[2] returns 'r'
+
+"Single quotes (') can be used explicitly inside of double quoted strings, they don't have to be escaped (\')."
 
 /*--------------------------------------------------------------------------------------------------------------*/
 // ARRAYS
+	// apparently you can change elements in an array even if it is declared with a "const"????????
+
 var <arrayName> = ['hello', true, 69]; // array literal
 var <arrayName> = new Array('hello', true, 69); // array dynamic constructor
 // two ways to declare an array
 // elements inside arrays in JS do not all need to be of the same datatype
 <arrayName>[<index>] // classic array access
 <arrayName>.item(<index>) // can access the items inside an array with the item() function/method
+<arr>.push(<elem>) // append <elem> to the end of <arr>
+<arr>.pop() // remove last element from <arr>
+<arr>.join() // join all elements of <arr> into a single string, including the commas.......
+<arr>.slice(<start_i>, <end_i>) // copy <arr> elements from <start_i> to less than <end_i> ; <end_i> is optional
+<arr>.splice(<p>, <n>) // remove <n> items from the array, starting from position <p> ; removes elements toward the and of the array
+<arr>.shift() // remove element from the front of the array
+<arr>.unshift(<elem>) // add <elem> to the front of <arr>
+<arr>.concat(<elements> || <arr2>) // elements or another array to <arr> ; can also assign to an independent variable
+<arr>.length() // returns the 1-based length of <arr>
+<arr>.forEach(function(item, index, array){/* do something for each element in the array */}); // <item>, <index>, & <arr> are usable parameters inside the function
+<arr>.indexOf(<elem>) // returns the 0-based index of <elem> if found, returns ???? otherwise
+
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
 // OPERATORS
+
 1+2 // 3
 3-4 // -1
 5/6 // .83333333333
 7*8 // 56
 9%10 // 9
+a+=2 // a = a + 2
+b-=4 // b = b - 4
+c*=6 // c = c * 6
+d/=10 // d = d / 10
 i++ // increment by 1
 j-- // decrement by 1
 <var1> = <var2> // assignment
@@ -396,12 +459,60 @@ j-- // decrement by 1
 <var1> <= <var2>
 a&&b // logical AND
 c||d // logical OR
+	let <var> = <first_val> || <second_val> // if <first_val> is defined, <var> takes its value but takes <second_val> otherwise ; short circuit statement
 !<expression>
-conditional ? "do it true" : "do if false" // ternary
+conditional ? "do it true" : "do if false"; // ternary ; replaces if..else statement/structure(s)
+
+
+/*--------------------------------------------------------------------------------------------------------------*/
+// TEMPLATE LITERALS
+
+console.log(`This is a sentence that will be printed literally with a ${placeholder}.`);
+console.log(`Single and double quote characters (' & ") will also be printed literally without escacping (\' & \").`);
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
 // FUNCTIONS (Inside objects they are called methods)
+	// by default, the return value of any JS function is "undefined"
+	// In JS functions are "first class objects", which means that they can have properties and methods just like any other object
+	// In JS functions can also accept other functions as parameters and/or have a function as a return value, these are "higher order functions"
+
+function func_name(param1 = "default", param2, ...) // defines a function called <func_name> with a list of parameters and one default parameter
+{
+	// do something
+	return something; // explicit return
+};
+
+const func_name = function(param1, param2, ...)
+{
+  // do something
+};
+
+const func_name = (param1, param2, ...) =>
+{
+  // do something
+};
+
+const func_name = param => 3.14159265358*param; // single line function with implicit return
+
+
+const f = func_name; // assigning a variable to a function allows for shorter reference to the function and associated properties
+	f.name() // returns the original function name "func_name"
+
+
+// FOR EXAMPLE THE RUN TIME OF ANY DESIRED FUNCTION COULD BE ANALYZED BY PASSING THE FUNCTION INTO A "HIGHER ORDER FUNCTION"
+const timeFuncRuntime = fParam => {
+  let t1 = Date.now();
+  fParam();
+  let t2 = Date.now();
+  return t2 - t1;
+};
+const func_name_time = timeFuncRuntime(func_name);
+
+
+func_name(arg1, arg2, ...); // calls func_name
+
+
 
 // JS has what is called "Lexical Scope" (or Static Scope)
 	// nested functions have access to variables contained within thier parents
@@ -546,6 +657,44 @@ finally
 
 throw new Error("message");
 
+
+/*--------------------------------------------------------------------------------------------------------------*/
+// STATEMENTS/CONSTRUCTS
+	// null, undefined, 0, false, NaN, "", & '' will all evaluate to false for logic conditions
+
+if(condition1)
+{
+
+}
+else if (condition2)
+{
+
+}
+else
+{
+
+};
+
+
+
+switch (condition)
+{
+	case option1:
+		// do something
+		break;
+	case option2:
+		// do something
+		break;
+	default:
+		// do something
+		break;
+}
+
+
+for(let i = 0; i < n; i++)
+{
+	// do something 'n' times
+}
 
 /*--------------------------------------------------------------------------------------------------------------*/
 // MISC
