@@ -19,6 +19,9 @@ pico <file_name> # view and edit contents of <file_name> ; "CRTL+x" to exit
 emacs <file_name> # view and edit contents of <file_name> ; "CRTL+x+c" to save and exit
 vim <file_name> # view and edit contents of <file_name> ; ":wq" to save and exit
 
+export PATH=$PATH:path/to/desired/directory # add directory to your "$PATH"
+export PATH=$PATH:$HOME/.composer/vendor/bin # example for adding composer's "bin" folder to $PATH
+
 # -------------------------------------------------------------------------------------------------
 # SFTP
 
