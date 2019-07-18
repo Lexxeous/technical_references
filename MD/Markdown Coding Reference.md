@@ -262,6 +262,24 @@ Here's a full list of supported languages:
 Use two spaces `"  "` at the end of a line or the HTML line break element `<br>` to initialize a line break.
 > Typically it's better to use `<br>` since it's actually visable and some text editors/interpreters rid trailing white space.
 
+<br>
+
+### Indent with Markdown
+
+Markdown does not have indenting properties by default but there is a fairly simple way (using non-breaking space HTML entities `&nbsp;`) to indent sub-sections of Markdown so that they are in line vertically. If you use a double comment operator `>>`, comment lines will be pushed out even farther than normal. To match this indention, use 7 `&nbsp;` characters on paragraphs. For code blocks, indent every line of the code block out by 3 spaces (not `&nbsp;` characters). For HTML headers `<Hn>`(anchor tags/titles), use `n+2` `&nbsp;` characters after the `#` characters. For example:
+
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; H3 Anchor using 5 `&nbsp;` Characters
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; H6 Anchor using 8 `&nbsp;` Characters
+>> Double comment indent.
+
+```
+   Triple
+   Space
+   Indent
+```
+
+### Markdown Whitespace
+
 ```sh
 Hello  # has 2 spaces here
 World
