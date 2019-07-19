@@ -15,8 +15,8 @@ Cercification(s) w/o an external link:
 ## This is a smaller title heading (h2).
 ### This is a smaller-er title heading (h3).
 #### This is a smaller-er-er title heading (h4).
-#### This is a smaller-er-er-er title heading (h5).
-##### This is a smaller-er-er-er-er title heading (h6) ; The h6 is also grey.
+##### This is a smaller-er-er-er title heading (h5).
+###### This is a smaller-er-er-er-er title heading (h6) ; The h6 is also grey.
 
 This is what normal text looks like.
 
