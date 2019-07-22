@@ -278,6 +278,8 @@ Markdown does not have indenting properties by default but there is a fairly sim
    Indent
 ```
 
+Or you can use unordered sub-list item notation `  - ` to indent paragraphs and nested code blocks if you don't want to deal with non-breaking space characters.
+
 ### Markdown Whitespace
 
 ```sh
