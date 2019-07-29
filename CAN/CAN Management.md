@@ -27,8 +27,13 @@ CAN bus was created to fill the need of a reliable, robust, multi-master communi
     - Balanced signaling
       - current flowing in each signal line is equal but opposite in direction, resulting in electric field-canceling that is the key to low noise signal emissions (especially in twised pair cabling)
   - Error Confinement
+    - A node can voluntarily remove itself from the CAN bus if it generates continuous errors, to avoid dead-lock on the bus.
+      - Error Active State
+      - Error Passive State
+      - Bus Off State
   - Error Detection
   - Low Cost
+  - Low Complexity
   - Automatic Re-transmission of Faulty Messages
   - Automatic Disconnect from Faulty Nodes
   - Multi-Master Protocol
@@ -43,13 +48,48 @@ CAN bus was created to fill the need of a reliable, robust, multi-master communi
     - This is not an advantage, but rather a small disadvantage
   - Carrier-Sense Multiple-Access with Collision Detection and Arbitration on Message Priority
   - (CSMA/CD+AMP)
-    - CSMA means that the nodes must wait for a specific period of bus inactivity (5 or more recessive bits in a row?) to start transmitting
+    - CSMA means that the nodes must wait for a specific period of bus inactivity (6 or more recessive bits in a row) to start transmitting
     - CD+AMP means that collisions are resolved throuh bit-wise arbitration
       - Nodes also "hear-back" what they put on the bus. If they "hear" a potential difference of 2V (dominant 0) when they expect a potetial difference of 0V (recessive 1) then the node understand that it lost the arbitration from bit N and enters *listen only mode* and stops transmitting.
 
 ### Disadvantages of CAN Bus
+  - No clock
+  - Entire System Shutdown
+    - If the main CAN wire(s) are damaged no no nodes can transmit/receive signals properly.
+  - No Encryption
+
 
 ### CAN Bus Physical Layer
+As mentioned before, the CAN bus requires terminating resistors to minimize signal reflections on the bus. Most often, people tend to use two 120Ω resistors (one on each end of the bus).
+
+Requires CAN controller and CAN transiever to convert the digital signals (CAN_Tx & CAN_Rx) to the differential signals (CAN_H & CAN_L). <br>
+MCU node IMAGE
+
+Standard bus termination IMAGE <br>
+Split bus termination IMAGE
+
+CAN bus protocol uses *differential* signaling instead of *single-ended* signaling.
+<img src="../.pics/CAN/single_vs_differential.png" width="700"/>
+
+Many companies will use the standard DE-9 connector to interface between a CAN tranceiver and the CAN bus.
+
+
+| Male Pin Configuration                              | Female Pin Configuration                              |
+|-----------------------------------------------------|-------------------------------------------------------|
+| <img src="../.pics/CAN/de-9_male.png" width="300"/> | <img src="../.pics/CAN/de-9_female.png" width="300"/> |
+
+
+|   Pin#   |      Signal Names      |    Description    |
+|----------|------------------------|-------------------|
+| 1        | Reserved               | Upgrade Path      |
+| 2        | CAN_L                  | Dominant Low      |
+| 3        | CAN_GND                | Ground            |
+| 4        | Reserved               | Upgrade Path      |
+| 5        | CAN_SHLD               | Shield, *optional*|
+| 6        | GND                    | Ground, *optional*|
+| 7        | CAN_H                  | Dominant High     |
+| 8        | Reserved               | Upgrade Path      |
+| 9        | V+                     | Power, *optional* |
 
 ### CAN 2.0A
 
@@ -62,8 +102,12 @@ CAN bus was created to fill the need of a reliable, robust, multi-master communi
 
 #### Data Frame
 
+Data frame IMAGE
+
 ##### Start of Frame (SOF) Field
 ##### Arbitration Field
+###### Identifier
+###### RTR
 ##### Control Field
 ##### Data Field
 ##### CRC Field
@@ -77,14 +121,65 @@ CAN bus was created to fill the need of a reliable, robust, multi-master communi
 
 #### Overload Frame
 
-### Time Quanta
-For time quanta table calculation/generation go [here](http://www.bittiming.can-wiki.info/).
-SJW - Syncronization Jump Width = SYNC_SEG = 1 tq (for most applications)
+### Extended CAN Frame
+
+### Bit Timing
+
+> For time quanta table calculation/generation go [here](http://www.bittiming.can-wiki.info/).
+
+> For a detailed explaination about CAN module bit timing by *Microchip*, see [Understanding Microchip’s CAN Module Bit Timing](http://ww1.microchip.com/downloads/en/appnotes/00754.pdf).
 
 
-### Acceptance Filter
+
+  - NRZ (Non-Return to Zero)
+    - signals can stay on the bus for a long time without changing states (no edges)
+    - this makes syncronization very difficult
+    - however, bit stuffing ensures that a frame cannot occupy the bus at the same polarity for mor than 5 bits, which helps to syncronize bus data
+
+All nodes on a CAN bus are syncronized by the (dominant) falling edge the the SOF bit (after the 10 recessive EOF and ITM bits).
+
+An internal, high frequency oscillator provides the maximum clock rate for the CAN bus and can be programmatically divided by using the Baud Rate prescaler (BRP). The resulting clock rate is then used as the system *baud rate*, which determines the timing of the bit stream(s).
+
+Nominal Bit Time (NBT)
+
+Nominal Bit Rate (NBR) = `1 / NBT`
+
+  - Synchronization Segment
+  - Propagation Segment
+  - Phase Buffer Segment 1
+  - Phase Buffer Segment 2
+  - Syncronization Jump Width `1 T_q ≤ SJW ≤ 4 T_q)`
+
+> Considering all of the segments, the possible range for nominal bit time is: `5 T_q ≤ NBT ≤ 25 T_q`.
+
+
+
+### Acceptance Filters (Receive Filters)
+
+> All nodes on the CAN bus will *receive* every frame, but not all the nodes will *accept* every frame.
+> Message IDs, acceptance masks, and acceptance filters are set by engineers who design and maintain thier own CAN network to fit thier needs.
+
   - Mask Mode
     - Apply compare bits in the mask register
     - Apply rule in the identifier register
   - List/ID Mode
     - List of exact message IDs you want to accept
+
+
+### Bit Stuffing
+
+
+### CAN Bus Error Confinement
+
+<img src="../.pics/CAN/can_error_states.png"/>
+
+  - Error Active State
+  - Error Passive State
+  - Bus Off State
+    - Transmit Error Counter (TEC)
+    - Receive Error Counter (REC)
+
+
+### Misc.
+
+  - 6 or more bits of either polarity in a row is in violation of the CAN bus standard protocol.
