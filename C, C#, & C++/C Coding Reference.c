@@ -17,6 +17,7 @@
 	#pragma warn – rvl // if function doesn’t return a value, such warnings are suppressed
 	#pragma warn – par // if function doesn’t use passed function parameter, such warnings are suppressed 
 	#pragma warn – rch // if a non-reachable code is written inside a program, such warnings are suppressed
+#line <digit-sequence> [<"filename">] // can manually alter the predefined __LINE__ and __FILE__ macros respectively
 
 
 // Examples:
@@ -41,6 +42,13 @@ int incomplete_or_broken_function()
 	#error *** long doubles need 12 digit resolution. \
 				 Do not use this compiler! *** 
 #endif
+
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ENUMERABLES:
+
+// learn about enumerables
+enum colors {"black", "brown", "red", "orange", "yellow", "green", "blue", "purple", "grey", "white"};
 
 
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -312,5 +320,19 @@ Trigraph   Replaces
 ??!        |
 ??-        ~
 */
+
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// KEYWORDS:
+
+<label>:
+goto <label >; // unconditional jump statement
+
+
+
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// MISC:
+
 
 

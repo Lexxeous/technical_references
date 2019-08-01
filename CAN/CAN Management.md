@@ -63,6 +63,7 @@ CAN bus was created to fill the need of a reliable, robust, multi-master communi
 As mentioned before, the CAN bus requires terminating resistors to minimize signal reflections on the bus. Most often, people tend to use two 120Ω resistors (one on each end of the bus).
 
 Requires CAN controller and CAN transiever to convert the digital signals (CAN_Tx & CAN_Rx) to the differential signals (CAN_H & CAN_L). <br>
+SPI - Serial Peripheral Interface <br>
 MCU node IMAGE
 
 Standard bus termination IMAGE <br>
@@ -125,7 +126,7 @@ Data frame IMAGE
 
 ### Bit Timing
 
-> For time quanta table calculation/generation go [here](http://www.bittiming.can-wiki.info/).
+> For a time quanta (`T_q`) table calculation/generation go [here](http://www.bittiming.can-wiki.info/).
 
 > For a detailed explaination about CAN module bit timing by *Microchip*, see [Understanding Microchip’s CAN Module Bit Timing](http://ww1.microchip.com/downloads/en/appnotes/00754.pdf).
 
@@ -179,6 +180,20 @@ Nominal Bit Rate (NBR) = `1 / NBT`
     - Transmit Error Counter (TEC)
     - Receive Error Counter (REC)
 
+### CAN Hardware and Software
+> It is important to note that there is a fine distinction between a microproccesing unit (MCU) and a microprocessing unit (MPU). The main difference is that an MPU requires other external components for operation that an MCU already has "on-chip" like: program memory, data memory, I/O devices, system clock, timer circuits, interrupt handlers, etc. In general, MCUs require less additional components, have a smaller footprint, consume less power, and are cheaper than MPUs.
+
+#### The dsPIC33EV256GM106 MCU
+64 pins
+256 KB of Flash
+16,384 bytes of RAM
+140 MHz Clock
+
+##### The dsPIC33EV 5V CAN-LIN Starter Kit
+
+
+#### The PIC32MX570F512L
+##### The PIC32MX1/2/5 Starter Kit
 
 ### Misc.
 
