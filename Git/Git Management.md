@@ -144,4 +144,11 @@ git rebase -i <sha> # edit commits strictly after <sha>
 ```
 
 
+#### Specific File Changes
+```sh
+git blame # shows what revision and author last modified each line of a committed file
+git diff # "git blame" does not show lines deleted or replaced, but "git diff" does
+```
+
+
 
