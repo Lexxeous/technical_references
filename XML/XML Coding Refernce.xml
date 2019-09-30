@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XML Coding Refernce.xml -->
+
+<!-- XML stands for "eXtensible Markup Language". -->
+<!-- XML was designed to store and transport data. -->
+<!-- XML separates its information from a view. -->
+<!-- XML is an underlying data layer that can be used behind HTML, CSS, and JS for its presentation. -->
+<!-- XML is a good abstraction layer that allows an application to send only data, rather than data and tags (like with HTML). -->
+<!-- XML can also be used as the lower level data layer for a database system rather then a relational SQL server. -->
+<!-- XML has no "pre-defined" tags like HTML does. You use custom named tags to express specific descriptions of internal data for better readability. -->
+<!-- XML is a tree structure, unlike SQL relational databses which rely on table structure(s). -->
+
+
+<custom_root_tag title="title_for_root"> <!-- only 1 root tag -->
+	<custom_child_tag_1>
+		<descriptive_element_1>This is data for element 1 for child 1</descriptive_element_1>
+		<descriptive_element_2>This is data for element 2 for child 1</descriptive_element_2>
+		<descriptive_element_3>This is data for element 3 for child 1</descriptive_element_3>
+	</custom_child_tag_1>
+
+	<custom_child_tag_2>
+		<descriptive_element_1>This is different data for element 1 for child 2</descriptive_element_1>
+		<descriptive_element_2>This is different data for element 2 for child 2</descriptive_element_2>
+		<descriptive_element_3>This is different data for element 3 for child 2</descriptive_element_3>
+	</custom_child_tag_2>
+</custom_root_tag>
