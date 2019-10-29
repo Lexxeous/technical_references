@@ -86,6 +86,7 @@ git push <remoteName> <branchName> # push <branchName> commit queue to <remoteNa
 git push --force <remoteName> <branchName> # force push <branchName> to <remoteName>
 git push --set-upstream <remoteName> <branchName> # push and set tracking remote/branch ; must be on first push
 git push -u <remoteName> <branchName> # shorthand for above command
+git push <remoteName> HEAD:<branchName> # push a detached head to a remote branch
 
 git push heroku master # push master branch for production after application setup
 ```
