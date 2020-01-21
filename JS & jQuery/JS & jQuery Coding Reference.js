@@ -546,6 +546,13 @@ prices.sort(function(a, b){
 /*--------------------------------------------------------------------------------------------------------------*/
 // OBJECTS
 
+// JS Objects are similar to Python dictionaries
+// The value of an element in a JS Object can also be a function, another Object, or any of the default JS datatypes
+// Keys are strings, but dont require the use of surrounding quotation marks if there are no special characters
+// Attempting to access data that does not exist within an object will return "undefined"
+// Objects are mutable, which means thier keys and values can be updated ; "const" Object values can be updated, but the direct value of the object cannot be reassigned
+// Objects are passed by reference, refering to the place in memory which they are stored, rather than the data that the variable stores ; can update Object properties, not fully reassign Object
+
 var hotel = { // creating an object using literal notation
 	name: 'Quay',
 	rooms: 40,
@@ -557,9 +564,45 @@ var hotel = { // creating an object using literal notation
 
 var object = {} // empty curly brackets will create an empty object using literal notation
 
-var parksHotel = new hotel("Park", 69, 42);
-parksHotel.rooms // 69
 // create instances of already created objects using the object constructor notation
+var parksHotel = new hotel("Park", 69, 42);
+parksHotel.rooms; // can access Object data using dot notation ; 69
+parksHotel[booked]; // can also access Object data using bracket notation, it is required to use this notation when keys have special characters ; 42
+parksHotel.checkAvailability() // will call the function defined within the Object ; 69-42=27
+delete parksHotel.checkAvailability; // removing data from an Object is also possible using the "delete" keyword
+
+
+let spaceship = {
+  crew: {
+	  captain: { 
+      name: 'Lily', 
+      degree: 'Computer Engineering', 
+      cheerTeam() { console.log('You got this!') } 
+    },
+	  'chief officer': { 
+      name: 'Dan', 
+      degree: 'Aerospace Engineering', 
+      agree() { console.log('I agree, captain!') } 
+    },
+	  medic: { 
+      name: 'Clementine', 
+      degree: 'Physics', 
+      announce() { console.log(`Jets on!`) }
+    },
+	  translator: {
+      name: 'Shauna', 
+      degree: 'Conservation Science', 
+      powerFuel() { console.log('The tank is full!') } 
+    }
+  }
+}; 
+
+
+// it is also possible to loop through the elements in an Object
+// however, the returned <crewMember> variable does not return the internal Object with `${crewMember}`, so to access the <name> property, you must delve through all the Object layers
+for (let crewMember in spaceship.crew) {
+  console.log(`${crewMember}: ${spaceship.crew[crewMember].name}`)
+};
 
 
 /*--------------------------------------------------------------------------------------------------------------*/

@@ -326,7 +326,7 @@ Trigraph   Replaces
 // KEYWORDS:
 
 <label>:
-goto <label >; // unconditional jump statement
+goto <label>; // unconditional jump statement
 
 
 
