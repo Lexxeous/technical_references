@@ -1,15 +1,64 @@
 // JS & jQuery Coding Reference
 
 /*
-"Every piece of information must have a single, unambiguous, authoritative representation within a system"
+"Every piece of information must have a single, unambiguous, authoritative representation within a system."
 	-Andrew Hunt, The Pragmatic Programmer, 1999
 */
 
-// AJAX = Asyncronous JavaScript and XML
-// XML = eXtensible Markup Language
-// XHR = XML HTTP Request
-// JSON = JavaScript Object Notations
-// XSS = Cross-Site Scripting
+/*
+	VISIT: "caniuse.com" for compatibility information regarding different web browsers for
+	JS versions (ES5, ES6, etc.), keywords (let, const, etc.), and concepts (modules).
+
+	Three reasons for the ES5 to ES6 updates are listed below:
+
+	1. 
+		Readability and economy of code:
+		The new syntax is often easier to understand (more readable) and requires fewer characters to create the same functionality (economy of code).
+	2. 
+		Addresses sources of ES5 bugs:
+		Some ES5 syntax led to common bugs. With ES6, Ecma introduced syntax that mitigates some of the most common pitfalls.
+	3. 
+		A similarity to other programming languages:
+		JavaScript ES6 is syntactically more similar to other object-oriented programming languages.
+		This leads to less friction when experienced, non-JavaScript developers want to learn JavaScript.
+	
+	Because ES6 addressed the above issues, Ecma knew that adoption by web developers would occur quickly, while web browser support lagged behind.
+
+	To limit the impact of ES6 browser compatibility issues, Ecma made the new syntax backwards compatible, which means you can map JavaScript ES6 code to ES5.
+	Although the majority ES6 is supported for web browsers now, you can still use a Node package called "babel" that supports conversion between ES6 and ES5.
+
+	Ensure that your "package.json" file has a "build" script:
+		`npm init` // initializes Node Package Manager requirements by creating an appropriate "package.json"
+	```
+	"scripts": {
+    "build": "babel src -d lib" // <babel_cmd> <source> <dest> ; the "-d" flag to designate that all of the source files will be written to one directory
+  }
+	```
+
+	You should also have a local ".babelrc" file that looks like:
+	```
+	{
+  	"presets": ["env"]
+	}
+	```
+	so that "babel" understands what version of JS you want to convert from (most commonly ES6 and ES6+).
+
+	Then, by running:
+	```
+	npm install babel-cli -D // the "-D" flag adds the package to the list of "devDependencies" in the local "package.json" file automatically
+	npm install babel-present-env -D
+	npm build
+	```
+	all of the source files contained in the "src" directory will be duplicated, converted to ES5 syntax, and stored in the "lib" directory.
+*/
+
+/*
+	AJAX = Asyncronous JavaScript and XML
+	XML = eXtensible Markup Language
+	XHR = XML HTTP Request
+	JSON = JavaScript Object Notation
+	XSS = Cross-Site Scripting
+*/
 
 /*
 XSS Attacks
@@ -101,8 +150,8 @@ When attempting to access elements outside of the bounds of an array, JS does no
 	// variables that are defined without given a value will automatically be initialized to "undefined"
 
 var <variable> = <value>; // defines a variable globally or locally to an entire function regardless of block scope ; can change value
-let <variable> = <value>; // defines a variable locally ; can change value
-const <variable> = <value>; // defines a variable locally ; CANNOT change value ; MUST be assigned a value when declared
+let <variable> = <value>; // defines a variable locally ; can change value ; ES6
+const <variable> = <value>; // defines a variable locally ; CANNOT change value ; MUST be assigned a value when declared ; ES6
 document; // supported by many major modern web browsers ; creates new object for each element on the page for manipulation
 window;
 Object; // under the hood, arrays and functions are considered objects
@@ -466,6 +515,8 @@ conditional ? "do it true" : "do if false"; // ternary ; replaces if..else state
 
 /*--------------------------------------------------------------------------------------------------------------*/
 // TEMPLATE LITERALS
+
+// Template literals were introduced in ES6
 
 console.log(`This is a sentence that will be printed literally with a ${placeholder}.`);
 console.log(`Single and double quote characters (' & ") will also be printed literally without escacping (\' & \").`);
