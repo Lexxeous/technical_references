@@ -572,6 +572,12 @@ parksHotel.checkAvailability() // will call the function defined within the Obje
 delete parksHotel.checkAvailability; // removing data from an Object is also possible using the "delete" keyword
 
 
+
+/*
+	It is also possible to loop through the elements in an Object,
+	however, the returned <crewMember> variable does not return the internal Object with `${crewMember}`,
+	so to access the <name> property, you must delve through all the Object layers
+*/
 let spaceship = {
   crew: {
 	  captain: { 
@@ -596,13 +602,202 @@ let spaceship = {
     }
   }
 }; 
-
-
-// it is also possible to loop through the elements in an Object
-// however, the returned <crewMember> variable does not return the internal Object with `${crewMember}`, so to access the <name> property, you must delve through all the Object layers
 for (let crewMember in spaceship.crew) {
   console.log(`${crewMember}: ${spaceship.crew[crewMember].name}`)
 };
+
+
+
+/*
+	Arrow functions inherently bind, or tie, an already defined <this> value to the function itself that is NOT the calling object.
+	In the following code snippet below, the value of <this> is the global object, or an object that exists in the global scope,
+	which doesn’t have a <prop1> property and therefore returns undefined.
+*/
+const goat = {
+  prop1: "value1",
+  arrow_func: () => {console.log(this.prop1);}
+};
+
+
+
+/*
+	There are 3 things to notice about the code snippet below:
+	
+	1.
+		property value shorthand
+	2.
+		property, functions (require () when called/used), getters and setters (do not require () when called/used)
+	3.
+		factory functions return objects based on the parameters that are passed in and set to thier property values, quick new obj creation
+*/
+const robot = {
+  model: 'B-4MI',
+  mobile: true,
+  greetMaster() {console.log(`I'm model ${this.model}, how may I be of service?`);},
+  get robotCapacity() {return this._robotCapacity;}
+}
+
+const massProdRobot = (model, mobile) => {
+  return {
+    model,
+    mobile,
+    greetMaster() {console.log(`I'm model ${this.model}, how may I be of service?`);}
+  }
+}
+
+const chargingStation = {
+  _name: 'Electrons-R-Us',
+  _robotCapacity: 120,
+
+  set robotCapacity(newCapacity) {
+    if (typeof newCapacity === 'number') {
+      this._robotCapacity = newCapacity;
+    } else {
+      console.log(`Change ${newCapacity} to a number.`)
+    }
+  },
+  get robotCapacity() {
+    return this._robotCapacity;
+  }
+}
+
+const shinyNewRobot = massProdRobot('TrayHax', true); // using the factory function to quickly create a new, custom object instance
+shinyNewRobot.mobile = false // ERROR: will not work because the <robot> object does not have a setter method
+console.log(shinyNewRobot.mobile); // will return "true"
+
+console.log(chargingStation.robotCapacity); // using a "getter" method to get <robotCapacity()> ; will return 120 ; does not require "()"
+chargingStation.robotCapacity = 200;
+console.log(chargingStation.robotCapacity); // using a "setter" method to set <robotCapacity()> ; will set to 200 ; does not require "()"
+
+
+
+/*
+	Destructured Assignment allows you to assign a variable to an Object's property.
+	The code snippet below shows how the <functionality> property of the <robot> object is able to be accessed directly after "destructured assignment".
+	A similar use of "destructured assignment" is commonly used with "require()" statements at the beginning of a JS script for accessability.
+		e.g. "const { shell } = require("shelljs")"
+*/
+const robot = {
+  model: '1E78V2',
+  functionality: {
+    fireLaser() {console.log('Pew Pew');}
+  }
+};
+const { functionality } = robot;
+functionality.fireLaser();
+
+
+
+// Object Methods
+const <obj_keys_var> = Object.keys(<obj_name>); // will return array of all the available properties for <obj_name>
+const <obj_entries_var> = Object.entries(<obj_name>); // will return array of all available properties and thier values for <obj_name>
+const <obj_new_assign_var> = Object.assign(<target_obj>, <source_obj>) // will merge <source_obj> with <target_obj> without modifying <source_obj>
+
+
+/*--------------------------------------------------------------------------------------------------------------*/
+// CLASSES:
+
+/*
+	JavaScript is an object-oriented programming (OOP) language we can use to model real-world items.
+	Classes are a tool that developers use to quickly produce similar objects.
+	The code snippet below shows how to interact with class constructors and properties.
+	By convention, we capitalize and CamelCase class names.
+	Class method and getter syntax is the same as it is for objects EXCEPT YOU CANNOT INCLUDE COMMAS BETWEEN METHODS.
+*/
+
+class Dog {
+  constructor(name) {
+    this._name = name;
+    this._behavior = 0;
+  }
+
+  get name() {return this._name;}
+  get behavior() {return this._behavior;}   
+  incrementBehavior() {this._behavior++;}
+}
+
+const sparky = new Dog('Sparky'); // new instance of Dog class
+console.log(sparky.name); // "Sparky"
+console.log(sparky.behavior); // 0
+sparky.incrementBehavior();
+console.log(sparky.behavior); // 1
+
+
+/*
+	Below is another code snippet example of how to use classes with getter methods and properties.
+	For practical implementation of creating lots of instances of a single class,
+	an array or a .csv file could be used as proper indexing within a loop.
+*/
+
+
+class Surgeon {
+  constructor(name, department) {
+    this._name = name;
+    this._department = department;
+    this._remainingVacationDays = 20;
+  }
+  get name() {return this._name}
+  get department() {return this._department}
+  get remainingVacationDays() {
+    return this._remainingVacationDays
+  }
+  
+  takeVacationDays(daysOff) {
+    this._remainingVacationDays -= daysOff;
+  }
+}
+
+const surgeonCurry = new Surgeon("Curry", "Cardiovascular");
+const surgeonDurant = new Surgeon("Durant", "Orthopedics");
+
+console.log(surgeonCurry.name);
+surgeonCurry.takeVacationDays(3);
+console.log(surgeonCurry.remainingVacationDays);
+
+
+/*
+	When multiple classes share properties or methods, they become candidates for inheritance,
+	a tool developers use to decrease the amount of code they need to write.
+	With inheritance, you can create a parent class (also known as a superclass) with properties and methods that multiple child classes
+	(also known as subclasses) share. The child classes inherit the properties and methods from their parent class.
+	The benefits (time saved, readability, efficiency) of inheritance grow as the number and size of your subclasses increase.
+	One benefit is that when you need to change a method or property that multiple classes share, you can change the parent class, instead of each subclass.
+	You can also create methods that are available to the entire class, rather than available to only an instance of that class.
+	Using the keyword "static", you can create a function that does not require the creation of a "new" class instance.
+*/
+
+class HospitalEmployee { // the parent class (superclass)
+  constructor(name) {
+    this._name = name;
+    this._remainingVacationDays = 20;
+  }
+  
+  get name() {return this._name;}
+  get remainingVacationDays() {return this._remainingVacationDays;}
+
+  takeVacationDays(daysOff) {this._remainingVacationDays -= daysOff;}
+  static generatePassword() {return Math.floor(Math.random() * 10000);}
+}
+
+class Nurse extends HospitalEmployee {
+  constructor(name, certifications) {
+    super(name);
+    this._certifications = certifications;
+  }
+  
+  get certifications() {return this._certifications;}
+  
+  addCertification(newCertification) {this._certifications.push(newCertification);}
+}
+
+const nurseOlynyk = new Nurse('Olynyk', ['Trauma','Pediatrics']);
+console.log(nurseOlynyk.name); // "Olynyk"
+console.log(nurseOlynyk.certifications) // ['Trauma', 'Pediatrics']
+console.log(nurseOlynyk.remainingVacationDays); // 20
+nurseOlynyk.takeVacationDays(5);
+console.log(nurseOlynyk.remainingVacationDays); // 15
+nurseOlynyk.addCertification("Genetics");
+console.log(nurseOlynyk.certifications); // ['Trauma', 'Pediatrics', 'Genetics']
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
@@ -709,7 +904,7 @@ if(condition1)
 {
 
 }
-else if (condition2)
+else if(condition2)
 {
 
 }
@@ -720,7 +915,7 @@ else
 
 
 
-switch (condition)
+switch(condition)
 {
 	case option1:
 		// do something
