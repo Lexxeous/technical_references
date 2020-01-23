@@ -852,6 +852,90 @@ console.log(nurseOlynyk.certifications); // ['Trauma', 'Pediatrics', 'Genetics']
 
 
 /*--------------------------------------------------------------------------------------------------------------*/
+// MODULES
+
+/*
+	JavaScript modules are reusable pieces of code that can be exported from one program and imported for use in another program.
+	Modules are particularly useful for a number of reasons. By separating code with similar logic into files called modules, we can:
+
+	1. Find, fix, and debug code more easily
+	2. Reuse and recycle defined logic in different parts of our application
+	3. Keep information private and protected from other modules
+	4. Prevent pollution of the global namespace and potential naming collisions, by cautiously selecting variables and behavior we load into a program
+*/
+
+
+// The ES6 Way:
+// ES6 allows for default & named exports and imports, as well as aliased modules, where multiple parent objects or functions can be exported per file
+	// "airplane.js"
+		let Airplane = {
+		  availableAirplanes: [
+		    {name: "AeroJet", fuelCapacity: 800},
+		    {name: "SkyJet", fuelCapacity: 500 }
+		  ]
+		};
+
+		let availableAirplanes = [{
+			name: 'AeroJet',
+			fuelCapacity: 800,
+			availableStaff: ['pilots', 'flightAttendants', 'engineers', 'medicalAssistance', 'sensorOperators'],
+		}, 
+		{
+			name: 'SkyJet',
+			fuelCapacity: 500,
+			availableStaff: ['pilots', 'flightAttendants']
+		}];
+
+		let flightRequirements = {requiredStaff: 4};
+
+		export { availableAirplanes as planes, flightRequirements as f_reqs }; // using named export of specific module file objects ; also aliasing
+		export default Airplane; // using default export of the main/default module file object
+
+	// "missionControl.js"
+		import { planes, f_reqs } from './airplane'; // using named import of specific module file objects ; also aliasing
+		import Airplane from './airplane'; // using default import of the main/default module file object
+
+		// This function will reference/use the default import
+		function displayFuelCapacity() {
+		  Airplane.availableAirplanes.forEach(function(element) {
+		    console.log(`Fuel Capacity of ${element.name}: ${element.fuelCapacity}`);
+		  });
+		}
+
+		// This function will reference/use the named import
+		function displayFuelCapacity() {
+		  planes.forEach(function(element) {
+		    console.log('Fuel Capacity of ' + element['name'] + ': ' + element['fuelCapacity']);
+		  });
+		}
+
+		displayFuelCapacity();
+
+
+// The ES5 Way:
+// ES5 only allows for default exports and imports where one parent object or function is exported per file
+	// "airplane.js"
+		let Airplane = {};
+		Airplane.myAirplane = "StarJet";
+		module.exports = Airplane;
+
+	// "missionControl.js"
+		const Airplane = require('./1-airplane.js');
+
+		function displayAirplane() {
+		  console.log(Airplane.myAirplane);
+		}
+
+		displayAirplane(); // "StarJet"
+
+
+/*--------------------------------------------------------------------------------------------------------------*/
+// PROMISES
+
+
+
+
+/*--------------------------------------------------------------------------------------------------------------*/
 // AJAX, JSON, AND XML
 
 // browsers only let AJAX load HTML and XML if the data is from the same domain
