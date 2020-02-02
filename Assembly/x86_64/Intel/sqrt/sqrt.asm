@@ -1,5 +1,5 @@
 ; Compile: nasm -f elf64 sqrt.asm
-; Run: gcc -static -o sqrt sqrt.o -lm
+; Link: gcc -static -o sqrt sqrt.o -lm
 
 	global main
 	extern printf
