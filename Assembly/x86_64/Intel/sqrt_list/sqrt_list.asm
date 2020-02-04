@@ -1,21 +1,20 @@
 ; Filename: sqrt_list.asm
 ; Author: Jonathan A. Gibson
 ; Compile: nasm -f elf64 sqrt_list.asm
-; Link: gcc -static -o sqrt sqrt_list.o -lm
+; Link: gcc -static -o sqrt_list sqrt_list.o -lm
 ; Run: ./sqrt_list <value(s)>
 
-	global main
-	extern printf
+	global main ; allow this code to be used externally
+	extern printf ; "printf" manipulates the value in ecx
 	extern strtod ; string to double
-	extern sqrt
-	extern puts
+	extern sqrt ; caluculates sqare root of xmm0 and stores in xmm0
+	extern puts ; put string
 
-	section .text
+	section .text ; section of executable code
 	
 main:
-	; Boilerplate to preserve the state of the stack
-	push rbp
-	mov rbp, rsp
+	push rbp ; push the base pointer onto the stack
+	mov rbp, rsp ; boilerplate to preserve the state of the stack
 
 	sub rsp, 32 ; "sub rsp, 20" & "and rsp, -16" ; reserve space for edi and rsi and align the stack
 	
@@ -31,15 +30,15 @@ main:
 	jmp done
 
 okay1:
-	mov ecx, 1 ; use ecx to as counter for the argument array
+	mov r15, 1 ; use r15 to as counter for the argument array ; "printf" manipulates the value of in ecx
 
 again:
-	mov rdi, QWORD [rbp-12] ; rdi = addr for argv[0]
-	mov rdi, QWORD [rdi+rcx*8] ; rdi = addr for argv[ecx]
+	mov rdi, QWORD [rbp-12] ; rdi = address for argv[0]
+	mov rdi, QWORD [rdi+r15*8] ; rdi = address for argv[r15] ; 8 bytes is the size of a double
 
 	mov rsi, 0 ; second argument to "strtod" should be NULL (\0 = 0).
 	call strtod ; first argument is rdi, second argument is rsi, stores result in xmm0 ; xmm0 = original
-	movsd QWORD [rbp-20], xmm0 ; store the original value on the top 8 bytes of the stack
+	movsd QWORD [rbp-20], xmm0 ; store the original value on the stack
 	call sqrt ; calculates the result ; xmm0 = sqrt(xmm0); xmm0 = result
 	movsd xmm1, xmm0 ; move the result to xmm1 ; xmm1 = result
 	movsd xmm0, QWORD [rbp-20] ; move the original to xmm0 ; xmm0 = original
@@ -48,18 +47,33 @@ again:
 	mov eax, 2 ; move 2 into eax ; printf requires the quantity of xmm<n> registers to print for the "%f" symbols
 	call printf ; print the result
 
-	inc ecx ; increment the argument counter
-	cmp ecx, edi ; compare the argument array counter with edi on the stack
+	inc r15 ; increment the argument counter
+	cmp r15, QWORD [rbp-4] ; compare the argument array counter with edi on the stack
 	jl again
 
 done:
 	mov eax, 0 ; return code = 0 = success
-	; clear the top 20 bytes of the stack so there are no loose ends
-	leave
+	; clear the top 20 bytes of the stack so there are no loose ends ???
+	add rsp, 32 ; move the stack pointer back to where the base pointer was pushed
+	pop rbp
 	ret
 
-	section .data
+	section .data ; section of non-executable code
 
 eargs: db "ERROR: Expected at least one argument.",10,0
 fmt: db "sqrt(%f) = %f",10,0 ; "%f" will print xmm0, xmm1, xmm2, ..., xmm<n> from left to right in the string when stored in rdi ; eax tells how many to print
+
+; What the stack should look like:
+; rsp
+; -32         -24    -20         -12         -4     rbp           
+; -40         -32    -28         -20         -12    -8          -0                     
+;  |   extra   |extra |  arg[n]   |    rsi    | edi  |    rbp    |
+;  | 0000_0000 | 0000 | 0000_0000 | 0000_0000 | 0000 | 0000_0000 |
+;  |           |      |           |           |      |           |
+
+
+
+
+
+
 
