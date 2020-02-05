@@ -1,5 +1,4 @@
-; Compile: nasm -f elf64 sqrt.asm
-; Link: gcc -static -o sqrt sqrt.o -lm
+; nasm -f elf64 max.asm && gcc -static -o max max.o -lm
 
 	global main
 	extern printf

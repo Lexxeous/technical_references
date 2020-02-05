@@ -15,11 +15,17 @@ ls -a # list all files and folders (including hidden and excluding details)
 echo <data> # will print <data> to the screen
 	./<program_name>; echo $? # alternatively, you can print the return value of a program 
 
+# -------------------------------------------------------------------------------------------------
+# DEFAULT CODE EDITORS
+
 less <file_name> # view contents of <file_name> ; 'q' to exit
 nano <file_name> # view and edit contents of <file_name> ; "CRTL+x" to exit
 pico <file_name> # view and edit contents of <file_name> ; "CRTL+x" to exit
 emacs <file_name> # view and edit contents of <file_name> ; "CRTL+x+c" to save and exit
 vim <file_name> # view and edit contents of <file_name> ; ":wq" to save and exit
+
+# -------------------------------------------------------------------------------------------------
+# COMPILATION
 
 g++ -c <program_name>.cpp # compiles the cpp program into a binary object file (.o)
 g++ -o <program_name> <program_name>.o # links the binary object file with other cpp libraries into an executable
@@ -33,8 +39,17 @@ gcc -o <program_name> <program_name>.o # links the binary object file with other
 
 gcc -fsanitize=address -g -o <program_name> <program_name>.c # compiles and links with an address sanitizer tool ; used for memory checks
 
+# -------------------------------------------------------------------------------------------------
+# PATH EXPORTS
+
+# PATH files are in the home directory /Users/<username>/ and will be called .bashrc, .zshrc, yarnrc, mkshrc, etc...
 export PATH=$PATH:path/to/desired/directory # add directory to your "$PATH"
 export PATH=$PATH:$HOME/.composer/vendor/bin # example for adding composer's "bin" folder to $PATH
+
+# -------------------------------------------------------------------------------------------------
+# FUNCTIONS
+
+function <func_name>() { eval $( head -1 $1 | cut -c3- ) ; } # will compile file into an executable if the very first contains the compilation instructions as a comment
 
 # -------------------------------------------------------------------------------------------------
 # SFTP

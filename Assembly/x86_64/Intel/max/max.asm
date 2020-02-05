@@ -1,13 +1,9 @@
-; Compile: nasm -f elf64 max.asm
-; Link: gcc -static -o max max.o
-; Run: ./max <args>
+; nasm -f elf64 max.asm && gcc -static -o max max.o
 
 	global main
 
 	section .text
 
-; push rbp
-; mov rbp, rsp
 main:
 	mov rax, 0 ; xor rax, rax ; eax (rax) is the register that contains the return value by default
 	cmp edi, 0 ; test rdi, rdi ; "test" is a bitwise "AND" operation that will only result in 0 if <register> = 0

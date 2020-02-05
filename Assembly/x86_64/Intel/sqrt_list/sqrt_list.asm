@@ -1,8 +1,4 @@
-; Filename: sqrt_list.asm
-; Author: Jonathan A. Gibson
-; Compile: nasm -f elf64 sqrt_list.asm
-; Link: gcc -static -o sqrt_list sqrt_list.o -lm
-; Run: ./sqrt_list <value(s)>
+; nasm -f elf64 max.asm && gcc -static -o max max.o -lm
 
 	global main ; allow this code to be used externally
 	extern printf ; "printf" manipulates the value in ecx
