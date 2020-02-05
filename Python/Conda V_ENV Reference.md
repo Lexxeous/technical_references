@@ -7,6 +7,7 @@ Create `Anaconda` virtual environment (with `pip` backend) to install `requireme
 ```python
 conda create -n <virtual_env_name> python=<X.Y.Z> pip # create V_ENV with pip backend
 conda install pip # set pip as package manager for <virtual_env_name>
+conda activate <virtual_env_name> # must be activated to add packages to virtual environment with pip backend
 pip install -r requirements.txt # install all specified packages within "requirements.txt" for <virtual_env_name>
 ```
 
