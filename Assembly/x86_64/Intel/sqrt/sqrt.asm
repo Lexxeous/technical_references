@@ -59,7 +59,7 @@ okay1:
 	; Let's set up to call strtod.  We want rdi to hold the pointer to
 	; the argument string. We know rsi has not been modified yet, but
 	; it is a good defensive strategy to pull the value from memory.
-	mov rdi, QWORD [rbp-12]
+	mov rdi, QWORD [rbp-12] ; First argument
 	mov rdi, QWORD [rdi+8] ; The second argument is here.
 	mov rsi, 0 ; Second argument to strtod should be NULL.
 	call strtod

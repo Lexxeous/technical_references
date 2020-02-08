@@ -329,6 +329,29 @@ Trigraph   Replaces
 goto <label>; // unconditional jump statement
 
 
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// INLINE ASSEMBLY:
+
+
+#include <stdio.h>
+
+int main(void) {
+	int value = 17;
+	int incr = 12;
+	printf("value=%d and incr=%d\n", value, incr);
+
+	__asm__(
+		"mov eax, %[value]\n"
+		"add eax, %[incr]\n"
+		"mov %[value], eax\n" // instructions
+		: [value] "=r"(value) // outputs <value> in eax
+		: "0"(value), [incr] "r"(incr) // inputs <value> into eax, and incr into any general purpose register
+		: "eax", "cc" // clobbers eax and condition FLAGS
+	);
+
+	printf("value=%d and incr=%d\n", value, incr);
+	return 0;
+}
 
 
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
