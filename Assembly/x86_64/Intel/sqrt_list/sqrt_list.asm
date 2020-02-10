@@ -31,7 +31,6 @@ okay1:
 again:
 	mov rdi, QWORD [rbp-12] ; rdi = address for argv[0]
 	mov rdi, QWORD [rdi+r15*8] ; rdi = address for argv[r15] ; 8 bytes is the size of a double
-	./sqrtlist 49 4
 	mov rsi, 0 ; second argument to "strtod" should be NULL (\0 = 0).
 	call strtod ; first argument is rdi, second argument is rsi, stores result in xmm0 ; xmm0 = original
 	movsd QWORD [rbp-20], xmm0 ; store the original value on the stack

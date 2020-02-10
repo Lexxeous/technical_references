@@ -1,4 +1,4 @@
-<!-- Markdown Coding Reference -->
+<!-- Markdown Coding Reference.md -->
 
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's MD Coding Reference: <img src="../.pics/Markdown/md_logo.png" width="130px"/>
 

@@ -99,7 +99,7 @@ The following *formatting options* are available for displaying/printing/watchin
   * `unload` (catch unloads of shared libraries)
   * `vfork` (catch calls to vfork)
 
-and where `<signal_name>` is one of the follwing:
+When `<sub_command>` = `signal`, `<signal_name>` is one of the follwing:
 
   * `SIGSEGV` (a segmentation fault)
   * `SIGTERM` (a termination request, sent to the program)

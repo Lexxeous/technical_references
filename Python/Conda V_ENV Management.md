@@ -1,3 +1,5 @@
+<!-- Conda V_ENV Reference.md  -->
+
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90"/> Lexxeous's Conda V_ENV Management <img src="../.pics/Python/conda_logo.png" width="90"/>
 
 ### Create/Delete Environment(s)
@@ -6,8 +8,8 @@ Create `Anaconda` virtual environment (with `pip` backend) to install `requireme
 
 ```python
 conda create -n <virtual_env_name> python=<X.Y.Z> pip # create V_ENV with pip backend
-conda install pip # set pip as package manager for <virtual_env_name>
 conda activate <virtual_env_name> # must be activated to add packages to virtual environment with pip backend
+conda install pip # set pip as package manager for <virtual_env_name>
 pip install -r requirements.txt # install all specified packages within "requirements.txt" for <virtual_env_name>
 ```
 
@@ -60,4 +62,10 @@ conda info -e # view all available `Anaconda` virtual environments
 View list of packages installed for an individual `Anaconda` virtual environment:
 ```python
 conda list -n <virtual_env_name>
+```
+
+Add the `Anaconda` bins to your `PATH`:
+```bash
+export PATH=~/anaconda3/bin:$PATH
+export PATH=~/opt/anaconda3/bin:$PATH
 ```
