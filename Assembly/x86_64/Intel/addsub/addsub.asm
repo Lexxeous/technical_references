@@ -6,7 +6,7 @@
 
 	global main
 	extern puts
-	extern strtod
+	extern atoi
 
 	section .text
 
@@ -26,15 +26,15 @@ okay:
 	sub rsp, 16 ; reserve 16 bytes of space for rsi and command line arguments
 	mov QWORD [rbp-8], rsi	; store rsi in the reserved space ; points to the beginning of argument array
 
-	; ADDING ------------------------------------------------------------------------------------------------------------
+	; -------------------------------------------------------------------------------------------------------------------
 
 	call write_adding
 	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0]
 	mov rdi, QWORD [rdi+8] ; rdi = address for argv[1]
 
-	mov rsi, 0
-	call strtod ; xmm0 = strtod(rdi = arg[1], rsi = 0) = argv[1]
-	movsd QWORD [rbp-16], xmm0 ; move the double in xmm0 (argv[1]) to the stack
+	call atoi ; rax = atoi(rdi = arg[1]) = argv[1]
+	mov QWORD [rbp-16], rax ; move the integer in rax (argv[1]) to the stack
+	mov r14, rax
 
 	mov rdi, QWORD [rbp-16] ; rdi = argv[1]
 	call write_binary_qword ; print argv[1] in binary format
@@ -42,12 +42,12 @@ okay:
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; rsi is still stored in [rbp-8]
+	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; still [rbp-8] = rsi
 	mov rdi, QWORD [rdi+16] ; rdi = address for argv[2]
 
-	mov rsi, 0
-	call strtod ; xmm0 = strtod(rdi = arg[2], rsi = 0) = argv[2]
-	movsd QWORD [rbp-16], xmm0 ; move the double in xmm0 (argv[2]) to the stack
+	call atoi ; rax = atoi(rdi = arg[2]) = argv[2]
+	mov QWORD [rbp-16], rax ; move the integer in rax (argv[2]) to the stack
+	mov r15, rax
 
 	mov rdi, QWORD [rbp-16]
 	call write_binary_qword ; print argv[2] in binary format
@@ -55,55 +55,33 @@ okay:
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; still [rbp-8] = rsi
-	mov rdi, QWORD [rdi+8] ; rdi = address for argv[1]
-	mov r15, QWORD [rbp-16] ; rdi = argv[2]
-
-	add rdi, r15 ; rdi = argv[1] + argv[2]
-
+	mov r12, r14 ; r12 will be the result of the addition
+	add r12, r15
+	mov rdi, r12
 	call write_binary_qword ; print result in binary format
 	call write_endl
 
-	; SUBTRACTING -------------------------------------------------------------------------------------------------------
+	; -------------------------------------------------------------------------------------------------------------------
 
 	call write_subtracting
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0]
-	mov rdi, QWORD [rdi+8] ; rdi = address for argv[1]
-
-	mov rsi, 0
-	call strtod ; xmm0 = strtod(rdi = arg[1], rsi = 0) = argv[1]
-	movsd QWORD [rbp-16], xmm0 ; move the double in xmm0 (argv[1]) to the stack
-
-	mov rdi, QWORD [rbp-16] ; rdi = argv[1]
-	call write_binary_qword ; print argv[1] in binary format
+	mov rdi, r14
+	call write_binary_qword ; print result in binary format
 	call write_endl
 
-	; -------------------------------------------------------------------------------------------------------------------
-
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; rsi is still stored in [rbp-8]
-	mov rdi, QWORD [rdi+16] ; rdi = address for argv[2]
-
-	mov rsi, 0
-	call strtod ; xmm0 = strtod(rdi = arg[2], rsi = 0) = argv[2]
-	movsd QWORD [rbp-16], xmm0 ; move the double in xmm0 (argv[2]) to the stack
-
-	mov rdi, QWORD [rbp-16]
-	call write_binary_qword ; print argv[2] in binary format
+	mov rdi, r15
+	call write_binary_qword ; print result in binary format
 	call write_endl
 
-	; -------------------------------------------------------------------------------------------------------------------
-
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; still [rbp-8] = rsi
-	mov rdi, QWORD [rdi+8] ; rdi = address for argv[1]
-	mov r15, QWORD [rbp-16] ; rdi = argv[2]
-
-	add rdi, r15 ; rdi = argv[1] + argv[2]
-
+	mov r13, r14 ; r13 will be the result of the subtraction
+	sub r13, r15
+	mov rdi, r13
 	call write_binary_qword ; print result in binary format
 	call write_endl
 
 	mov rax, 0
 	jmp done
+
+	; -------------------------------------------------------------------------------------------------------------------
 
 write_binary_qword:
 	; Store rdi on the stack. At this point rdi is occupying
@@ -157,6 +135,8 @@ write_binary_qword:
 	leave ; mov rsp, rbp && pop rbp
 	ret
 
+	; -------------------------------------------------------------------------------------------------------------------
+
 write_space:
 	mov rdi, 1
 	mov rsi, space
@@ -164,6 +144,8 @@ write_space:
 	mov rax, 1
 	syscall ; sys_write (rax=1 ID) an rdx=1 byte string rdi=1 time from char* rsi
 	ret
+
+	; -------------------------------------------------------------------------------------------------------------------
 
 write_endl:
 	mov rdi, 1
@@ -173,6 +155,8 @@ write_endl:
 	syscall ; sys_write (rax=1 ID) an rdx=1 byte string rdi=1 time from char* rsi
 	ret
 
+	; -------------------------------------------------------------------------------------------------------------------
+
 write_adding:
 	mov rdi, 1
 	mov rsi, adding
@@ -180,6 +164,8 @@ write_adding:
 	mov rax, 1
 	syscall ; sys_write (rax=1 ID) an rdx=8 byte string rdi=1 time from char* rsi
 	ret
+
+	; -------------------------------------------------------------------------------------------------------------------
 
 write_subtracting:
 	mov rdi, 1
@@ -189,9 +175,13 @@ write_subtracting:
 	syscall ; sys_write (rax=1 ID) an rdx=13 byte string rdi=1 time from char* rsi
 	ret
 
+	; -------------------------------------------------------------------------------------------------------------------
+
 done:
 	leave
 	ret
+
+	; -------------------------------------------------------------------------------------------------------------------
 
 	section .data
 nyb:

@@ -49,7 +49,7 @@ export PATH=$PATH:$HOME/.composer/vendor/bin # example for adding composer's "bi
 # -------------------------------------------------------------------------------------------------
 # FUNCTIONS
 
-function <func_name>() { eval $( head -1 $1 | cut -c3- ) ; } # will compile file into an executable if the very first contains the compilation instructions as a comment
+function <func_name>() { eval $( head -1 $1 | cut -c3- ) ; } # compile file into executable if the very first line contains compilation instructions as a comment
 
 # -------------------------------------------------------------------------------------------------
 # SFTP
