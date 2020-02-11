@@ -59,10 +59,10 @@
 extern long int atoh(ap)
 char *ap;
 {
-	register char *p asm("rdi"); // input
-	register long int n asm("rax"); // output
-	register long int digit asm("rsi"); // clobbers
-	register long int lcase asm("rcx"); // clobbers
+	register char *p __asm__("rdi"); // input
+	register long int n __asm__("rax"); // output
+	register long int digit __asm__("rsi"); // clobbers
+	register long int lcase __asm__("rcx"); // clobbers
 
 	p = ap;
 	n = 0;
@@ -72,13 +72,11 @@ char *ap;
 	if(*p == '0' && ((*(p+1) == 'x') || (*(p+1) == 'X')))
 		p+=2;
 
-	while ((digit = (*p >= '0' && *p <= '9')) ||
-		(lcase = (*p >= 'a' && *p <= 'f')) ||
-		(*p >= 'A' && *p <= 'F')) {
+	while ((digit = (*p >= '0' && *p <= '9')) || (lcase = (*p >= 'a' && *p <= 'f')) || (*p >= 'A' && *p <= 'F')) {
 		n *= 16;
 		if (digit)	n += *p++ - '0';
 		else if (lcase)	n += 10 + (*p++ - 'a');
-		else		n += 10 + (*p++ - 'A');
+		else n += 10 + (*p++ - 'A');
 	}
 	return(n);
 }
