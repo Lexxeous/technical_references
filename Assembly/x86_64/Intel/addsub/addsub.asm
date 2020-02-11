@@ -5,8 +5,8 @@
 ; https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/#syscallsysret
 
 	global main
-	extern puts
-	extern atoi
+	extern puts ; does not require stack to be aligned
+	extern atoi ; does not require stack to be aligned
 
 	section .text
 
@@ -14,71 +14,85 @@ main:
 	push rbp ; 8 + 8 bytes of return address (16) on the stack ; aligned
 	mov rbp, rsp
 
+	; Error checking
 	cmp edi, 3 ; must have exactly 3 arguments ; ./<exec_name> <argv[1]> <argv[2]>
-	je okay
+	je okay ; if exactly 2 arguments
 
+	; ERROR
 	mov rdi, eargs ; otherwise, load error message into rdi
 	call puts ; print the error message ; "puts" will print the contents of rdi by default
-	mov eax, 1 ; set eax to 1 as default return code ; non-zero to indicate error
+	mov eax, 1 ; set eax to 1 as return code ; non-zero to indicate error
 	jmp done
 
 okay:
-	sub rsp, 16 ; reserve 16 bytes of space for rsi and command line arguments
-	mov QWORD [rbp-8], rsi	; store rsi in the reserved space ; points to the beginning of argument array
+	push r12 ; will store the addition result
+	push r13 ; will store the subtraction result
+	push r14 ; will store the first argument (argv[1])
+	push r15 ; will store the second argument (argv[2])
 
 	; -------------------------------------------------------------------------------------------------------------------
 
+	push rsi
 	call write_adding
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0]
-	mov rdi, QWORD [rdi+8] ; rdi = address for argv[1]
+	pop rsi
+	mov rdi, QWORD [rsi+8] ; rdi = address for argv[1]
 
+	push rsi
 	call atoi ; rax = atoi(rdi = arg[1]) = argv[1]
-	mov QWORD [rbp-16], rax ; move the integer in rax (argv[1]) to the stack
 	mov r14, rax
 
-	mov rdi, QWORD [rbp-16] ; rdi = argv[1]
+	mov rdi, r14 ; rdi = argv[1]
 	call write_binary_qword ; print argv[1] in binary format
 	call write_endl
+	pop rsi
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-	mov rdi, QWORD [rbp-8] ; rdi = address for argv[0] ; still [rbp-8] = rsi
-	mov rdi, QWORD [rdi+16] ; rdi = address for argv[2]
+	mov rdi, QWORD [rsi+16] ; rdi = address for argv[2]
 
+	push rsi
 	call atoi ; rax = atoi(rdi = arg[2]) = argv[2]
-	mov QWORD [rbp-16], rax ; move the integer in rax (argv[2]) to the stack
 	mov r15, rax
 
-	mov rdi, QWORD [rbp-16]
+	mov rdi, r15
 	call write_binary_qword ; print argv[2] in binary format
 	call write_endl
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-	mov r12, r14 ; r12 will be the result of the addition
+	; Use r12 to do addition
+	mov r12, r14
 	add r12, r15
 	mov rdi, r12
-	call write_binary_qword ; print result in binary format
+	call write_binary_qword ; print the addition result in binary format
 	call write_endl
 
 	; -------------------------------------------------------------------------------------------------------------------
 
 	call write_subtracting
+
 	mov rdi, r14
-	call write_binary_qword ; print result in binary format
+	call write_binary_qword ; print argv[1] in binary format
 	call write_endl
 
 	mov rdi, r15
-	call write_binary_qword ; print result in binary format
+	call write_binary_qword ; print argv[2] in binary format
 	call write_endl
 
-	mov r13, r14 ; r13 will be the result of the subtraction
+	; Use r13 to do subtraction
+	mov r13, r14
 	sub r13, r15
 	mov rdi, r13
-	call write_binary_qword ; print result in binary format
+	call write_binary_qword ; print the subtraction result in binary format
 	call write_endl
 
+	; Return 0 for success and restore the pushed register values
 	mov rax, 0
+	pop rsi
+	pop r15
+	pop r14
+	pop r13
+	pop r12
 	jmp done
 
 	; -------------------------------------------------------------------------------------------------------------------
@@ -86,10 +100,10 @@ okay:
 write_binary_qword:
 	; Store rdi on the stack. At this point rdi is occupying
 	; the following addresses: rbp-1 through rbp-8.
-	push rbp ; 8 + 8 byte return address (16) on the stack ; aligned
+	push rbp
 	mov rbp, rsp
 	
-	push rdi ; 8 + 8 + 8 (24) bytes on the stack ; not aligned
+	push rdi
 	mov rcx, 8 ; counter variable for 8 bytes to convert
 
 .top:
@@ -99,9 +113,9 @@ write_binary_qword:
 
 	; Get the next byte to print. We have arranged to get them
 	; in order from highest order to lowest (big endian).
-	mov al, BYTE [rbp+rcx-9] ; stores the next byte in rax ;
+	mov al, BYTE [rbp+rcx-9] ; stores the next byte in rax
 	
-	; Save important data. 8 + 8 + 8 + 8 + 8 (40) bytes on the stack ; aligned
+	; Save important data.
 	push rcx
 	push rax
 
@@ -115,8 +129,7 @@ write_binary_qword:
 	syscall ; sys_write (rax=1 ID) an rdx=4 byte string rdi=1 time from char* rsi
 	call write_space
 
-	; Restore the byte value.
-	pop rax ; 8 + 8 + 8 + 8 (32) bytes on the stack ; aligned
+	pop rax ; restore the byte value
 
 	; Get low nybble and multiply by four.
 	and rax, 0xf
@@ -128,9 +141,8 @@ write_binary_qword:
 	syscall ; sys_write (rax=1 ID) an rdx=4 byte string rdi=1 time from char* rsi
 	call write_space
 
-	; Restore the index.
-	pop rcx ; 8 + 8 + 8 (24) bytes on the stack ; not aligned
-	loop .top ; loop decrements the value in rcx automatically
+	pop rcx ; restore the index
+	loop .top ; loop decrements the value of rcx automatically
 	pop rdi
 	leave ; mov rsp, rbp && pop rbp
 	ret
