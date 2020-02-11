@@ -1,12 +1,15 @@
-; nasm -f elf64 addsub.asm && gcc -static -o addsub addsub.o -lm
+; nasm -f elf64 hex_addsub_hex.asm && gcc -static -o hex_addsub_hex hex_addsub_hex.o atoh.c -lm
 
 ; This program uses the Linux sys_write system call. See the table located here:
 ; https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 ; https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/#syscallsysret
 
+; This program will take two hexidecimal inputs, and print the hexidecimal results of thier addition and subtraction.
+; The command line arguments will accept the inclusion or omission of the "0x" characters at the beginning of each string.
+
 	global main
 	extern puts ; does not require stack to be aligned
-	extern atoi ; does not require stack to be aligned
+	extern atoh ; does not require stack to be aligned
 
 	section .text
 
@@ -38,11 +41,11 @@ okay:
 	mov rdi, QWORD [rsi+8] ; rdi = address for argv[1]
 
 	push rsi
-	call atoi ; rax = atoi(rdi = arg[1]) = argv[1]
+	call atoh ; rax = atoh(rdi = arg[1]) = argv[1]
 	mov r14, rax
 
 	mov rdi, r14 ; rdi = argv[1]
-	call write_binary_qword ; print argv[1] in binary format
+	call write_hex_qword ; print argv[1] in hexidecimal format
 	call write_endl
 	pop rsi
 
@@ -51,11 +54,11 @@ okay:
 	mov rdi, QWORD [rsi+16] ; rdi = address for argv[2]
 
 	push rsi
-	call atoi ; rax = atoi(rdi = arg[2]) = argv[2]
+	call atoh ; rax = atoh(rdi = arg[2]) = argv[2]
 	mov r15, rax
 
 	mov rdi, r15
-	call write_binary_qword ; print argv[2] in binary format
+	call write_hex_qword ; print argv[2] in hexidecimal format
 	call write_endl
 
 	; -------------------------------------------------------------------------------------------------------------------
@@ -64,7 +67,7 @@ okay:
 	mov r12, r14
 	add r12, r15
 	mov rdi, r12
-	call write_binary_qword ; print the addition result in binary format
+	call write_hex_qword ; print the addition result in hexidecimal format
 	call write_endl
 
 	; -------------------------------------------------------------------------------------------------------------------
@@ -72,18 +75,18 @@ okay:
 	call write_subtracting
 
 	mov rdi, r14
-	call write_binary_qword ; print argv[1] in binary format
+	call write_hex_qword ; print argv[1] in hexidecimal format
 	call write_endl
 
 	mov rdi, r15
-	call write_binary_qword ; print argv[2] in binary format
+	call write_hex_qword ; print argv[2] in hexidecimal format
 	call write_endl
 
 	; Use r13 to do subtraction
 	mov r13, r14
 	sub r13, r15
 	mov rdi, r13
-	call write_binary_qword ; print the subtraction result in binary format
+	call write_hex_qword ; print the subtraction result in hexidecimal format
 	call write_endl
 
 	; Return 0 for success and restore the pushed register values
@@ -97,7 +100,7 @@ okay:
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-write_binary_qword:
+write_hex_qword:
 	; Store rdi on the stack. At this point rdi is occupying
 	; the following addresses: rbp-1 through rbp-8.
 	push rbp
@@ -119,27 +122,24 @@ write_binary_qword:
 	push rcx
 	push rax
 
-	; Get high nybble and divide by four.
+	; Get high nybble and divide by eight.
 	and rax, 0xf0
-	shr rax, 2
+	shr rax, 4
 	mov rdi, 1
-	lea rsi, [nyb + rax] ; move the address of the rax-th nybble string from <nyb> data to rsi
-	mov rdx, 4
+	lea rsi, [hex_nyb + rax] ; move the address of the rax-th nybble char from <hex_nyb> data to rsi
+	mov rdx, 1
 	mov rax, 1
-	syscall ; sys_write (rax=1 ID) an rdx=4 byte string rdi=1 time from char* rsi
-	call write_space
+	syscall ; sys_write (rax=1 ID) an rdx=1 byte char rdi=1 time from char* rsi
 
 	pop rax ; restore the byte value
 
-	; Get low nybble and multiply by four.
+	; Get low nybble.
 	and rax, 0xf
-	shl rax, 2
 	mov rdi, 1
-	lea rsi, [nyb + rax] ; move the address of the rax-th nybble string from <nyb> data to rsi
-	mov rdx, 4
+	lea rsi, [hex_nyb + rax] ; move the address of the rax-th nybble char from <hex_nyb> data to rsi
+	mov rdx, 1
 	mov rax, 1
-	syscall ; sys_write (rax=1 ID) an rdx=4 byte string rdi=1 time from char* rsi
-	call write_space
+	syscall ; sys_write (rax=1 ID) an rdx=1 byte char rdi=1 time from char* rsi
 
 	pop rcx ; restore the index
 	loop .top ; loop decrements the value of rcx automatically
@@ -196,23 +196,23 @@ done:
 	; -------------------------------------------------------------------------------------------------------------------
 
 	section .data
-nyb:
-	db "0000"
-	db "0001"
-	db "0010"
-	db "0011"
-	db "0100"
-	db "0101"
-	db "0110"
-	db "0111"
-	db "1000"
-	db "1001"
-	db "1010"
-	db "1011"
-	db "1100"
-	db "1101"
-	db "1110"
-	db "1111"
+hex_nyb:
+	db '0'
+	db '1'
+	db '2'
+	db '3'
+	db '4'
+	db '5'
+	db '6'
+	db '7'
+	db '8'
+	db '9'
+	db 'a'
+	db 'b'
+	db 'c'
+	db 'd'
+	db 'e'
+	db 'f'
 
 adding: db "Adding:",10
 subtracting: db "Subtracting:",10
