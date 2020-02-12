@@ -38,7 +38,7 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 
 `xchg <reg_name> <reg_name>` is a `nop`
 
-`ret` simply sets the instruction pointer and returns. It transfers control to the return address located on the stack. DO NOT USE `ret` in the middle of a program, especially if you have not cleaned up the stack!!!
+`ret` pops a value off the top of the stack (a call's return address) and sets the instruction pointer (`rip`) to this value. It transfers control to the return address located on the stack. **DO NOT USE** `ret` in the middle of a program, especially if you have not cleaned up the stack!
 
 `leave` puts the base pointer (`esp`/`rsp`) back on the stack (`esp`/`rsp`).
 
@@ -48,9 +48,11 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 
 `movsd` stands for "Move Static Double" and is used for moving values that are larger than 64 bits (80 bits, 128 bits (`xmm<n>`), etc.) into 64-bit registers.
 
-`lea` stands for "Load Effective Address". This command is capable of doing quick addressing calculations and assigning the value to a register like: `lea <reg_name>, [<base> + <idx>*<scale> + displacement]`.
+`lea` stands for "Load Effective Address". This command is capable of doing quick addressing calculations and assigning the value to a register like: `lea <reg_name>, [<base> + <idx>*<scale> + displacement]`. Although assembly's bracket notation `[]` typically implies the dereference of a pointer (grabbing the data at a location, rather than the address), `lea` is an exception. 
 
 `syscall` takes the value in `rax` to determine what system call to use. It reaches down into the kernel of the operating system (ring 0) to use a system function. It also clobbers `rcx` by saving the current value of the instruction pointer (`rip`) into it.
+
+`hlt` is used to terminate an assembly program when it is not linked with the `C` runtime.
 
 ### External Functions:
 
@@ -71,6 +73,8 @@ Using `section .data` denotes a section that is meant as non-executable code, bu
 Using `section .bcc` denotes a section that is meant for modifiable data. The **Block Started by Symbol (BSS)** area is of fixed size capable of storing modifiable variables. This section is adjacent to the data segment (DS).
 
 ### Registers:
+
+> The parameter passing sequence for user-level applications when using assembly is: (`rdi`, `rsi`, `rdx`, `rcx`, `r8`, & `r9`). This means that for functions that follow the calling conventions, the first `p` parameters will be passed to these registers, in order, where `p ≤ 6`.
 
 #### x86 16-Bit Registers:
 
@@ -135,13 +139,15 @@ Using `section .bcc` denotes a section that is meant for modifiable data. The **
 | General Segment |   FS   |   80386+   |
 | General Segment |   GS   |   80386+   |
 
+> There is only a subset of registers that are preserved through external function calls (`rbp`, `rbx`, `r12`, `r13`, `r14`, & `r15`). **All other registers value are not guarunteed to stay the same through calls to external functions. All other register values can potentially be clobbered.** To avoid data corruption, you must learn what registers are clobbered for certain external function calls.
+
 `eax` (`rax`) is the default register that will be the return value for a function call.
 
-`edi` (`rdi`), by default, contains the number of arguments passed into the function.
+`edi` (`rdi`), by default, contains the number of arguments passed into the function (`argc`).
 
-`esi` (`rsi`), by default, contains a memory address pointer that points to the beginning of the argument array.
+`esi` (`rsi`), by default, contains a memory address pointer that points to the beginning of the argument array (`argv[]`). Effectively, is an array of `char*` datatypes, meaning that it is of type `char**`.
 
-> There is only a subset of registers that are preserved through external function calls (`rbp`, `rbx`, `r12`, `r13`, `r14`, & `r15`). **All other registers value are not guarunteed to stay the same through calls to external functions. All other register values can potentially be clobbered.** To avoid data corruption, you must learn what registers are clobbered for certain external function calls.
+> **DO NOT** use `esp` as the stack pointer when doing 64-bit address computations! The register `esp` is a lingering by-product of working with 32-bit computers. If you use `esp`, it will point to an incorrect address because the upper 32 bits are not being taken into consideration.
 
 ### Addressing:
 
@@ -203,9 +209,14 @@ Using `section .bcc` denotes a section that is meant for modifiable data. The **
 `pushfq` pushes the 64 bits of RFLAGS to the top of the stack. </br>
 `popfq` loads 64 bits from the top of the stack into RFLAGS. </br>
 
-### Stack Management:
 
-To allocate space on the stack use `sub rsp, <val>`, if this value does not align the stack onto a 16-byte boundary (for which the system expects) it can cause problems. Use another line `and rsp, -16` to clear the lower 4 bytes of the stack pointer to align it.
+### Command Line Arguments: argv[ ] & argc
+
+<img src="../../../.pics/Assembly/x86_64/Intel/argv_argc.png" width="650"/>
+
+> **The last column is slightly wrong, it should be `[[rsi+8*1]+n]` to access the first string argument, which in this case is "Hello world"**
+
+### Stack Management:
 
 In general, the boiler plate instructions for conserving the state of the stack, before and after the actions of a program are:
 
@@ -215,10 +226,31 @@ mov rbp, rsp
 ;
 ; body
 ;
-mov rsp, rbp
-pop rbp
+mov rsp, rbp ; this line and
+pop rbp ; this line can be replaced with "leave"
 ret
 ```
+
+#### Reserving Specific Amounts of Space on the Stack
+
+For the majority of assembly programs, a call to a function will push the return address (8 bytes) onto the stack and push `rbp` (8 bytes) onto the stack. If this is the case, then the stack will be aligned on a 16-byte boundary automatically. However, there will be problems if the stack is not aligned on a 16-byte boundary when a call to another function occurs that uses an `xmm<n>` register (it will cause a segmentation fault).
+
+Fortunately, if a function call does not use an `xmm<n>` register, then you needn't worry about aligning the stack.
+
+There are two main ways to properly allocate space on the stack (after knowing the minimum amount of space needed): <br>
+
+1. Say you only need 24 bytes of space on the stack for a program (for storing three 8-byte register values). The value 24 is not a multiple of 16 and will not align the stack, in most cases. The easiest solution is to round up to the nearest multiple of 16 (32, in this case), and subtract that value from the stack pointer (`rsp`), like: `sub rsp, 32`.
+2. A nearly identical solution that will reveal the intentional amount of space that is desired on the stack is to first move the stack pointer with: `sub rsp, 24`, then to zero-out the last nybble of the stack memory. Aligning the stack on a 16-byte boundary means that all the addresses that are aligned will end with the hexidecimal digit `0x0`. The way to achieve this, regardless of the stack pointer's location, is to `AND` the current value of the stack pointer with -16, like: `and rsp, -16`. Because 16 in binary is `0000_..._0001_0000`, the 2's complement representation (-16) is `1111_..._1111_0000`. Effectively, this instruction will leave the stack unchanged except for the last nybble (`AND`-ed with zeros), which will be cleared; this forces the stack pointer address to end with `0x0`.
+
+> For these two options, the flags are also set a bit differently. The `AND` instruction leaves the `AF` flag undefined, clears the `CF` and `OF` flags, sets `PF` if the low byte of the result has odd parity, sets `SF` if the result is negative (viewed in two's complement), and sets `ZF` if the result is zero.
+
+> The `sub` instruction evaluates the result for both signed and unsigned integer operands and sets the `OF` and `CF` flags to indicate any overflow in the signed or unsigned result, respectively. The `AF` flag is set based on whether the first nybble overflows. The `SF` flag indicates the sign of a signed result.
+
+The image below provides an example of stack management with a program that seeks to store two 8-byte arguments and the register `rsi` on the stack. Implicitly, the return address for this call has been placed on top of the stack first. The base pointer register `rbp` is pushed, aligning the stack. When 16 is subtracted from the stack pointer (`rsp`), the stack remains aligned with space for the two arguments. When `rsi` is pushed to the stack, it becomes unaligned. Fortunatly, `atol` does not use any `xmm<n>` registers, so calling the function is inconsequential to the state of the stack (with regards to alignement). Once the program is almost finished, and has no more need for the stack, the stack pointer (`rsp`) is returned to the location of the base pointer (`rbp`) with: `mov rbp, rsp`. From this point, all there is left to do is pop the base pointer and return (`ret`); returning will pop the return address and place it in the instruction pointer register (`rip`).
+
+<img src="../../../.pics/Assembly/x86_64/Intel/stack_vis.png" width="750"/>
+
+> There is a security issue related to moving the stack pointer to the base pointer location, once the stack is no longer of use. If the stack values are not cleared, the stack becomes "dirty". These raw data values are left unattended and can cause data leakage. For most programs this won't be an issue, but for any important values that are stored on the stack, malicious users can look through the stack after a process, and steal valuable information. One common way to clear the stack is to implement a subroutine that will increment the address of the stack pointer (`rsp`) until it is equal to the address of the base pointer (`rbp`), clearing each byte along the way.
 
 ### Inline Assembly:
 

@@ -6,7 +6,13 @@ The following table represents all of the available system level (kernel, ring 0
 2. The "System Call" column represents the name/description of the respective system call.
 3. All other columns (`rdi`, `rsi`, `rdx`, `r10`, `r8`, & `r9`) contain information about the formatted datatypes necessary for each specified register that will be used.
 
+> The parameter passing sequence for kernel-level applications when using assembly is: (`rdi`, `rsi`, `rdx`, `r10`, `r8`, & `r9`). This means that the `syscall` calling conventions, the first `p` parameters will be passed to these registers, in order, where `p ≤ 6`.
+
 > If a cell is blank for a particular system call, the corresponding register will not be used; otherwise, proper storage of data in required registers is necessary for the system call to perform as expected.
+
+> Using `syscall` will clobber registers `rcx`, `r11`, and `rax`, where any return values will be in `rax`. If there is a return value in `rax` that is `-4095 ≤ errorno ≤ -1`, this implies that an error occurred.
+
+The source for this table can be found at: https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/.
 
 
 | rax  | System Call                | rdi                               | rsi                                   | rdx                                   | r10                                   | r8                                   | r9                  | 
