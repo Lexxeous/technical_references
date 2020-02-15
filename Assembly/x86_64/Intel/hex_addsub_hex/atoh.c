@@ -37,6 +37,10 @@
  *
  * HISTORY
  * $Log:	atoh.c,v $
+ * Revision 1.41 2020/02/14 17:53:32 jag
+ *  Change return value to "long int" and added __asm__() directives.
+ *  [2020/02/14 17:53:32 jag]
+ *
  * Revision 1.4  92/06/15  14:40:08  chs
  * 	Made CMUCS conditional unconditional.
  * 	[92/06/15  14:39:02  chs]
@@ -54,7 +58,7 @@
  * Modified for personal use by Jonathan A. Gibson
  * Tennessee Technological University
  * https://github.com/Lexxeous
- */
+*/
 
 extern long int atoh(ap)
 char *ap;

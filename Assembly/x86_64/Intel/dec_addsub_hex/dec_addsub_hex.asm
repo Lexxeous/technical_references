@@ -1,4 +1,4 @@
-; nasm -f elf64 dec_addsub_hex.asm && gcc -static -o dec_addsub_hex dec_addsub_hex.o -lm
+; nasm -f elf64 dec_addsub_hex.asm && gcc -static -o dec_addsub_hex dec_addsub_hex.o
 
 ; This program uses the Linux sys_write system call. See the table located here:
 ; https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
@@ -18,7 +18,7 @@ main:
 
 	; Error checking
 	cmp edi, 3 ; must have exactly 3 arguments ; ./<exec_name> <argv[1]> <argv[2]>
-	je okay ; if exactly 2 arguments
+	je okay ; if exactly 3 arguments
 
 	; ERROR
 	mov rdi, eargs ; otherwise, load error message into rdi
@@ -34,7 +34,7 @@ okay:
 
 	; -------------------------------------------------------------------------------------------------------------------
 
-	push rsi
+	push rsi ; preserve the value of the argument pointer
 	call write_adding
 	pop rsi
 	mov rdi, QWORD [rsi+8] ; rdi = address for argv[1]
@@ -195,23 +195,24 @@ done:
 	; -------------------------------------------------------------------------------------------------------------------
 
 	section .data
+
 hex_nyb:
-	db '0'
-	db '1'
-	db '2'
-	db '3'
-	db '4'
-	db '5'
-	db '6'
-	db '7'
-	db '8'
-	db '9'
-	db 'a'
-	db 'b'
-	db 'c'
-	db 'd'
-	db 'e'
-	db 'f'
+	db '0' ; +0 bytes
+	db '1' ; +1 byte
+	db '2' ; +2 bytes
+	db '3' ; +3 bytes
+	db '4' ; +4 bytes
+	db '5' ; +5 bytes
+	db '6' ; +6 bytes
+	db '7' ; +7 bytes
+	db '8' ; +8 bytes
+	db '9' ; +9 bytes
+	db 'a' ; +10 bytes
+	db 'b' ; +11 bytes
+	db 'c' ; +12 bytes
+	db 'd' ; +13 bytes
+	db 'e' ; +14 bytes
+	db 'f' ; +15 bytes
 
 adding: db "Adding:",10
 subtracting: db "Subtracting:",10

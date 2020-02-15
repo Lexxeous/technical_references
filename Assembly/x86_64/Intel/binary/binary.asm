@@ -4,16 +4,36 @@
 ; https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
 ; https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/#syscallsysret
 
+; This program will take one decimal input and print the value in binary.
+
 	global main
+	extern puts
+	extern atol
 
 	section .text
 
 main:
-	mov rdi, 0xff00f043210099aa ; static immediate value input
+	push rbp ; 8 + 8 bytes of return address (16) on the stack ; aligned
+	mov rbp, rsp
+
+	; Error checking
+	cmp edi, 2 ; must have exactly 2 arguments ; ./<exec_name> <argv[1]>
+	je okay ; if exactly 2 arguments
+
+	; ERROR
+	mov rdi, eargs ; otherwise, load error message into rdi
+	call puts ; print the error message ; "puts" will print the contents of rdi by default
+	mov eax, 1 ; set eax to 1 as return code ; non-zero to indicate error
+	jmp done
+
+okay:
+	mov rdi, [rsi+8] ; user input value
+	call atol ; rax = atol(rdi = arg[1]) = argv[1]
+	mov rdi, rax
 	call write_binary_qword
 	call write_endl
 	mov rax, 0
-	ret
+	jmp done
 
 write_binary_qword:
 	; Store rdi on the stack. At this point rdi is occupying
@@ -41,7 +61,7 @@ write_binary_qword:
 	and rax, 0xf0
 	shr rax, 2
 	mov rdi, 1
-	lea rsi, [nyb + rax]
+	lea rsi, [bin_nyb + rax]
 	mov rdx, 4
 	mov rax, 1
 	syscall
@@ -54,7 +74,7 @@ write_binary_qword:
 	and rax, 0xf
 	shl rax, 2
 	mov rdi, 1
-	lea rsi, [nyb + rax]
+	lea rsi, [bin_nyb + rax]
 	mov rdx, 4
 	mov rax, 1
 	syscall
@@ -63,6 +83,7 @@ write_binary_qword:
 	; Restore the index.
 	pop rcx ; 8 + 8 + 8 (24) bytes on the stack ; not aligned
 	loop .top ; loop decrements the value in rcx automatically
+	pop rdi
 	leave
 	ret
 
@@ -82,26 +103,30 @@ write_endl:
 	syscall
 	ret
 
+done:
+	leave
+	ret
+
 	section .data
 
-nyb:
-	db "0000"
-	db "0001"
-	db "0010"
-	db "0011"
-	db "0100"
-	db "0101"
-	db "0110"
-	db "0111"
-	db "1000"
-	db "1001"
-	db "1010"
-	db "1011"
-	db "1100"
-	db "1101"
-	db "1110"
-	db "1111"
+bin_nyb:
+	db "0000" ; +0 bytes
+	db "0001" ; +4 bytes
+	db "0010" ; +8 bytes
+	db "0011" ; +12 bytes
+	db "0100" ; +16 bytes
+	db "0101" ; +20 bytes
+	db "0110" ; +24 bytes
+	db "0111" ; +28 bytes
+	db "1000" ; +32 bytes
+	db "1001" ; +36 bytes
+	db "1010" ; +40 bytes
+	db "1011" ; +44 bytes
+	db "1100" ; +48 bytes
+	db "1101" ; +52 bytes
+	db "1110" ; +56 bytes
+	db "1111" ; +60 bytes
 	
 space: db " "
 endl:	db 10
-
+eargs: db "ERROR: Expected exactly one argument.",10,0	

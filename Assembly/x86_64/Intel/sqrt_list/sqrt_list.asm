@@ -1,7 +1,9 @@
-; nasm -f elf64 max.asm && gcc -static -o max max.o -lm
+; nasm -f elf64 sqrt_list.asm && gcc -static -o sqrt_list sqrt_list.o -lm
+
+; This program takes any amount of decimal values and prints thier square roots.
 
 	global main ; allow this code to be used externally
-	extern printf ; "printf" manipulates the value in ecx
+	extern printf ; "printf" clobbers rax
 	extern strtod ; string to double
 	extern sqrt ; caluculates sqare root of xmm0 and stores in xmm0
 	extern puts ; put string
@@ -12,7 +14,10 @@ main:
 	push rbp ; push the base pointer onto the stack
 	mov rbp, rsp ; boilerplate to preserve the state of the stack
 
-	sub rsp, 32 ; "sub rsp, 20" & "and rsp, -16" ; reserve space for edi and rsi and align the stack
+	push r15
+	push r15 ; dont clobber r15 and align the stack
+
+	sub rsp, 32 ; "sub rsp, 20" & "and rsp, -16" ; reserve space for 1 argument, rsi, and esi then align the stack
 	
 	mov DWORD [rbp-4], edi	; store edi in the reserved space ; the quantity of arguments
 	mov QWORD [rbp-12], rsi	; store rsi in the reserved space ; points to the beginning of argument array
@@ -38,19 +43,21 @@ again:
 	movsd xmm1, xmm0 ; move the result to xmm1 ; xmm1 = result
 	movsd xmm0, QWORD [rbp-20] ; move the original to xmm0 ; xmm0 = original
 
-	mov rdi, fmt ; move the formatted print string to rdi ; printf also prints rdi by default
-	mov eax, 2 ; move 2 into eax ; printf requires the quantity of xmm<n> registers to print for the "%f" symbols
+	mov rdi, fmt ; move the formatted print string to rdi ; "printf" also prints rdi by default
+	mov eax, 2 ; move 2 into eax ; "printf" requires the quantity of xmm<n> registers to print for the '%' symbols
 	call printf ; print the result
 
 	inc r15 ; increment the argument counter
-	cmp r15, QWORD [rbp-4] ; compare the argument array counter with edi on the stack
+	mov eax, DWORD [rbp-4]
+	cmp r15, rax ; compare the argument counter (r15) with edi from the stack
 	jl again
 
 done:
 	mov eax, 0 ; return code = 0 = success
-	; clear the top 20 bytes of the stack so there are no loose ends ???
 	add rsp, 32 ; move the stack pointer back to where the base pointer was pushed
-	pop rbp
+	pop r15
+	pop r15
+	leave
 	ret
 
 	section .data ; section of non-executable code
