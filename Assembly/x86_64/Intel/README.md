@@ -13,9 +13,9 @@
 > The flag `-lm` refers to the `C` math library because the math functions are not part of the `C` standard library.
 
 ```bash
-nasm -f elf64 <filename>.asm # compile assembly into 64-bit binary/object file
-gcc -static -o <filename> <filename>.o -lm # link the binary/object file into an executable
-./<filename> <args> # run the executable with a set of arguments
+$ nasm -f elf64 <filename>.asm # compile assembly into 64-bit binary/object file
+$ gcc -static -o <filename> <filename>.o -lm # link the binary/object file into an executable
+$ ./<filename> <args> # run the executable with a set of arguments
 ```
 
 > The default syntax for the `GCC` compiler is **AT&T**, but **Intel** syntax is also supported using:
@@ -29,6 +29,8 @@ $ gcc -masm=Intel -o <exec_name> <prog_name>.c
 You can define single line macros with: `%define <macro_name>(<arg>) <instruction>(<arg>)`.
 
 Using `global <func_name>` exports the contents of the file/function to be used in other compiled/linked programs.
+
+`ld` is the default assembly linker if you are not using the `C` runtime. You can then replace the global `main` with `_start` for **Linux** or `start` for **Windows**. So compiling and linking a pure assembly program without the `C` runtime would look somthing like this: `nasm -f elf64 <file_name>.asm && ld -o <file_name> <file_name>.o`.
 
 ### Instructions:
 
@@ -71,6 +73,20 @@ Using `section .text` denotes a section that is meant as executable code. It get
 Using `section .data` denotes a section that is meant as non-executable code, but rather data that is to be used for convenience within the program. It gets accumuleted into the **data segment (DS)** of the resulting executable.
 
 Using `section .bcc` denotes a section that is meant for modifiable data. The **Block Started by Symbol (BSS)** area is of fixed size capable of storing modifiable variables. This section is adjacent to the data segment (DS).
+
+You can also apply properties to sections to alter the way that they behave:
+  * `nowrite` appended to a `.data` section will not allow the section of memory to be written to (read-only)
+  * `align=<num>` appended to a `.data` section will force the section to be aligned on a `<num>`-byte boundary
+
+You can also use the `$` character to refer to the current memory address inline. This allows the use of small computations within a `.data` section to calculate, for example, the exact length of a string that has been statically defined. Here, the local target `.len` is being used on each of the message targets (`msg1` & `msg2`) and being set equal (`equ`) to the difference between the current memory address and the start of the immediate parent message (`$-msg<n>`).
+
+```asm
+	section .data nowrite align=16
+msg1: db "string one",10
+.len: equ $-msg1 ; will set msg1.len = 11
+msg2: db "string2",10
+.len: equ $-msg2 ; will set msg2.len = 8
+```
 
 ### Registers:
 
@@ -210,7 +226,7 @@ Using `section .bcc` denotes a section that is meant for modifiable data. The **
 `popfq` loads 64 bits from the top of the stack into RFLAGS. </br>
 
 
-### Command Line Arguments: argv[ ] & argc
+### Command Line Arguments: `argv[ ]` & `argc`
 
 <img src="../../../.pics/Assembly/x86_64/Intel/argv_argc.png" width="650"/>
 
@@ -300,4 +316,159 @@ int main(void) {
 	return 0;
 }
 ```
+
+### Using and Starting the `C` Runtime:
+
+In `C` the `libc_start_main` function is very important for starting the `C` runtime. Because of its specific order of parameters and its use in conjuction with assembly, there is a fairly strict order of assembly instructions that will successfully start this function with the correct values. Below is the function definition for `__libc_start_main`, the order of parameters (based on the assembly calling convention), and a mapping to the list of instructions (and memory addresses) associated with the assembly necesary to properly use this function.
+
+```c
+// Function definition:             // ASM Convention:   // ASM Instruction (Address) Map:
+int __libc_start_main (             // call              // 11 (0x67f8)
+  int* (main)(int, char**, char**), // rdi               // 10 (0x67f1)
+  int argc,                         // rsi               // 03 (0x67d9)
+  char** ubp_av,                    // rdx               // 04 (0x67da)
+  void (*init)(void),               // rcx               // 09 (0x67ea)
+  void (*fini)(void),               // r8                // 08 (0x67e3)
+  void (*rtld_fini)(void),          // r9                // 02 (0x67d6)
+  void (*stack_end)                 // stack             // 07 (0x67e2)
+);
+```
+
+> The instructions shown are from the disassembly of the `ls` instruction for **Unix**.
+
+```txt
+Initial Stack Contents:
+    <–––– rbp
+argc
+argv[]
+envp (for <ubp_av>)
+    <–––– rsp
+```
+
+```asm
+00 (0x67d0): endbr64                ; branch protection, nop
+01 (0x67d0): xor ebp, ebp           ; clear ebp
+02 (0x67d0): mov r9, rdx            ; addr of destructor function call for dynamic linker _dl_fini
+03 (0x67d0): pop rsi                ; pops argc of the top of the stack into rsi
+04 (0x67d0): mov rdx, rsp           ; moves rsp addr to rdx (for <ubp_av>)
+05 (0x67d0): and rsp, -16           ; aligns stack on 16-byte boundary
+06 (0x67d0): push rax               ; couldve pushed rsp twice
+07 (0x67d0): push rsp               ; aligns stack on 16-byte boundary (for <*stack_end>)
+08 (0x67d0): lea r8, [rip+0x10d66]  ; (for <*fini>)
+09 (0x67d0): lea rcx, [rip+0x10cef]            ; (for <*rtld_fini>)
+10 (0x67d0): lea rdi, [rip+0xffffffffffffe5f8] ; (for int* (main))
+11 (0x67d0): call QWORD PTR [rip+0x1c7d2]      ; (for call to __libc_start_main)
+12 (0x67d0): hlt                               ; (_start needs sys_exit)
+```
+> In general, these 12 lines of code can be copied almost exactly for any assembly program that wants to make a direct call to the `C` runtime. The main differences will only be in the immediate values given to the addressing computations on lines 8 through 11.
+
+### Jump Tables:
+
+A common structure that can implemented in `C` is a *switch* statement, and it uses the following structure:
+
+```c
+switch(n) {
+	case 0: f(); // execute function f() if n = 0
+	case 1: g(); // execute function g() if n = 1
+	case 2: h(); // execute function h() if n = 2
+	...
+	case N: N(); // execute function N() if n = N 
+	default: j(); // execute function j() if n != [0..N]
+}
+```
+
+In assembly, this structure can be implemented fairly easily by building a *jump table* with a list of targets like:
+
+```asm
+section .data
+jumptab: dq target_f, target_g, target_h, ... , target_N
+
+section .text
+	; ...
+	cmp rax, N ; rax should contain the input 'n'
+	ja .def ; jump if above to the default target
+	jmp [jumptab+rax*8] ; else jump to the jump table (list of targets, indexed by rax)
+.def
+	jmp target_j
+
+target_f:
+	; ...
+	jmp switch_done
+
+target_g:
+	; ...
+	jmp switch_done
+
+target_h:
+	; ...
+	jmp switch_done
+
+  ...
+
+target_N:
+	; ...
+	jmp switch_done
+
+target_j:
+	; ...
+	jmp switch_done
+
+switch_done:
+	; ...
+```
+
+### Using `objdump` and `readelf` (`gobjdump` for macOS):
+
+Both `objdump` and `readelf` use the same general format in the terminal:
+
+```bash
+$ objdump [flags] <file_name>
+$ readelf [flags] <file_name>
+```
+
+Useful `objdump` flags (use `man objdump` for more information):
+
+  * `-d` or `--disassemble` (disassembles only sections that are expected to contain instructions)
+  * `-F` or `--file-offsets` (shows the file offset values when disassembling sections)
+  * `-f` or `--file-headers` (shows summary info from each parent header)
+  * `-j` (shows only a user specified list of sections during disassebmly)
+  * `-M` or `--disassembler-options` (allows disassembler configuration for syntax, architecture, etc.)
+  * `-s` or `--full-contents` (shows full contents of any section(s) requested)
+  * `-t` or `--syms` (shows the symbol table)
+
+Useful `readelf` flags (use `man readelf` for more information):
+
+  * `-f` or `--file-headers` (shows summary info from each parent header)
+  * `-s` or `--full-contents` (shows full contents of any section(s) requested)
+  * `-S` or `--source` (intermix source code with disassembly)
+  * `-t` or `--syms` (shows the symbol table)
+
+> If you want to use a tool that is similar to `readelf` for **macOS**, use `brew install binutils` and follow the resulting instructions about adding the tools directory to your PATH and setting environment variables. Then you can use `gobjdump` like:
+
+```bash
+$ temp_path=`which <exec_name>`
+$ gobjdump [flags] $temp_path
+```
+
+For `<exec_name>` = `make` and `[flags]` = `-s`:
+
+```bash
+$ temp_path=`which make`
+$ gobjdump -s $temp_path
+```
+```txt
+/usr/bin/make:     file format mach-o-x86-64
+
+Contents of section .text:
+ 100000f77 554889e5 8d47ff48 8d560848 8d3d2900  UH...G.H.V.H.=).
+ 100000f87 000031c9 89c6e800 000000             ..1........
+Contents of section __TEXT.__stubs:
+ 100000f92 ff257800 0000                        .%x...
+Contents of section __TEXT.__stub_helper:
+ 100000f98 4c8d1d69 00000041 53ff2559 00000090  L..i...AS.%Y....
+ 100000fa8 68000000 00e9e6ff ffff               h.........
+Contents of section .cstring:
+ 100000fb2 6d616b65 00                          make.
+```
+
 
