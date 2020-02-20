@@ -351,7 +351,7 @@ envp (for <ubp_av>)
 02 (0x67d0): mov r9, rdx            ; addr of destructor function call for dynamic linker _dl_fini
 03 (0x67d0): pop rsi                ; pops argc of the top of the stack into rsi
 04 (0x67d0): mov rdx, rsp           ; moves rsp addr to rdx (for <ubp_av>)
-05 (0x67d0): and rsp, -16           ; aligns stack on 16-byte boundary
+05 (0x67d0): and rsp, -16           ; aligns stack on 16-byte boundary (-16 = 0xfffffffffffffff0)
 06 (0x67d0): push rax               ; couldve pushed rsp twice
 07 (0x67d0): push rsp               ; aligns stack on 16-byte boundary (for <*stack_end>)
 08 (0x67d0): lea r8, [rip+0x10d66]  ; (for <*fini>)
