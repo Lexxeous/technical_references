@@ -26,8 +26,6 @@ $ gcc -masm=Intel -o <exec_name> <prog_name>.c
 
 **Intel** chips are little-endian.
 
-You can define single line macros with: `%define <macro_name>(<arg>) <instruction>(<arg>)`.
-
 Using `global <func_name>` exports the contents of the file/function to be used in other compiled/linked programs.
 
 `ld` is the default assembly linker if you are not using the `C` runtime. You can then replace the global `main` with `_start` for **Linux** or `start` for **Windows**. So compiling and linking a pure assembly program without the `C` runtime would look somthing like this: `nasm -f elf64 <file_name>.asm && ld -o <file_name> <file_name>.o`.
@@ -225,6 +223,25 @@ msg2: db "string2",10
 `pushfq` pushes the 64 bits of RFLAGS to the top of the stack. </br>
 `popfq` loads 64 bits from the top of the stack into RFLAGS. </br>
 
+### Mathmatical Instructions:
+
+#### Addition:
+
+#### Subtraction:
+
+#### Multiplication:
+
+#### Division:
+
+  * `div` (unsigned division)
+  * `idiv` (signed division)
+
+<img src="../../../.pics/Assembly/x86_64/Intel/div_regs.png" width="700"/>
+
+The dividend is the concatenation of two 64-bit registers `rdx` and `rax` (making a 128-bit value equal to `2^64•rdx + rax`), while the divisor is `rbx`.
+
+> If the quotient is too large for the designated register (`rax`), then there is a divide error (`#DE`), which Linux will sometimes interpret as a *floating point exception (core dumped)*, even though there is no floating point arithmatic occuring.
+
 
 ### Command Line Arguments: `argv[ ]` & `argc`
 
@@ -361,6 +378,66 @@ envp (for <ubp_av>)
 12 (0x67d0): hlt                               ; (_start needs sys_exit)
 ```
 > In general, these 12 lines of code can be copied almost exactly for any assembly program that wants to make a direct call to the `C` runtime. The main differences will only be in the immediate values given to the addressing computations on lines 8 through 11.
+
+### Macros and Constant Definitions:
+
+Constants can be defined in an assembly file by using the keyword `equ`. Constants will typically just at the top of the assembly file. Some example are as follows:
+```asm
+SYS_WRITE equ 1
+RET_ERR equ 1
+RET_SUCCESS equ 0
+```
+
+You can define single line macros with: `%define <macro_name>([arg]) <instruction>([arg])`. Optionally, variables can be passed in as arguments to the macro by surrounding the parameter(s) with parenthesis `([arg])`. Some examples are as follows:
+```asm
+%define stack0 QWORD [rbp - 8] ; will return the top 64-bit value on the stack
+%define stack1 QWORD [rbp - 16] ; will return the second to top 64-bit value on the stack
+%define argv(idx) QWORD [rsi+8*(idx)] ; will return the idx-th command line argument
+```
+
+You can also define multi-line macros by follwing a similar convention:
+```asm
+%macro <macro_name> <num_args>
+	; macro body
+%endmacro
+```
+
+Example (where `%00` refers to the immediately previous label, if there is one):
+```asm
+%macro err 2
+	; Declare an error message and return an errno.
+	%00: db %1
+	.len equ $-%00
+	.errno equ %2
+%endmacro
+```
+
+Example Usage:
+```asm
+BADARG: err {'ERROR: Expect exactly two arguments.',10}, 1
+```
+Here, `%00` is `BADARG:`, `%1` is a newline terminated string, & `%2` is the `errno` equal to 1.
+
+> The curly brackets `{}` protect any internal commas from separating argument values. Without them, the above example would read 3 input arguments instead of one, and throw an error for improper use of the `err` macro.
+
+### Instruction Groups:
+
+Instruction groups collect like instructions together based on the actions that they perform. An instruction can be part of more than one group at time. The most common groups are 1 ~ 7.
+
+| Group Name              | Group ID | Description                                                |
+|-------------------------|----------|----------------------------------------------------------- |
+| X86_GRP_JUMP            | 1        | Jump target is a leader. End block.                        |
+| X86_GRP_CALL            | 2        | Call target and next instruction are leaders. End block.   |
+| X86_GRP_RET             | 3        | End block.                                                 |
+| X86_GRP_INT             | 4        | Instruction after interrupt is a leader.                   |
+| X86_GRP_IRET            | 5        | End block.                                                 |
+| X86_GRP_PRIVILEGE       | 6        | Ignore.                                                    |
+| X86_GRP_BRANCH_RELATIVE | 7        | Branch target and next instruction are leaders. End block. |
+| X86_GRP_VM              | 128      | All virtualization instructions (VT-x + AMD-V).            |
+| . . .                   | . . .    | . . .                                                      |
+| X86_GRP_ENDING          | 170      |                                                            |
+
+> For more information and/or to see the group definitions, visit the [Capstone GitHub Repository](https://github.com/aquynh/capstone/blob/master/include/capstone/x86.h#L1901).
 
 ### Jump Tables:
 

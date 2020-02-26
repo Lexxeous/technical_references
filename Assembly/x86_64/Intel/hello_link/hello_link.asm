@@ -1,4 +1,4 @@
-; nasm -f elf64 asm_hello_link.asm && ld -o asm_hello_link asm_hello_link.o -T asm_hello_link.link
+; nasm -f elf64 hello_link.asm && ld -o hello_link hello_link.o -T hello_link.link
 
 	section .text 
 	global xyzzy

@@ -1,4 +1,4 @@
-; nasm -f elf64 asm_hello.asm && ld -o asm_hello asm_hello.o
+; nasm -f elf64 hello.asm && ld -o hello hello.o
 
 	section .text 
 	global _start
