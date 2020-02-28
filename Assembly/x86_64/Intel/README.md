@@ -42,8 +42,6 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 
 `leave` puts the base pointer (`esp`/`rsp`) back on the stack (`esp`/`rsp`).
 
-`loop` automatically decrements the value in register `ecx`.
-
 `mov` is effectively a copy operation like: `mov LHS, RHS`. The RHS gets copied into the LHS, while the RHS retains its original value.
 
 `movsd` stands for "Move Static Double" and is used for moving values that are larger than 64 bits (80 bits, 128 bits (`xmm<n>`), etc.) into 64-bit registers.
@@ -53,6 +51,57 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 `syscall` takes the value in `rax` to determine what system call to use. It reaches down into the kernel of the operating system (ring 0) to use a system function. It also clobbers `rcx` by saving the current value of the instruction pointer (`rip`) into it.
 
 `hlt` is used to terminate an assembly program when it is not linked with the `C` runtime.
+
+#### String Instructions:
+
+The string instructions will move, compare, scan, load, store, output, or input a byte (`b`), word (`word`), double-word (`d`), or a quad-word (`q`) from a source (SRC) to a destination (DEST), while automatically incrementing/decrementing `rsi` and/or `rdi`.
+
+| Instruction(s)          | SRC –> DEST             | INC/DEC        | Changes `ZF`   | Name (Action)     |
+|-------------------------|:-----------------------:|----------------|:--------------:|-------------------|
+| movsb/movsw/movsd/movsq | [ds:rsi] –> [es:rdi]    | ± (rsi && rdi) | N              | Move (Copy)       |
+| cmpsb/cmpsw/cmpsd/cmpsq | [ds:rsi] –> [es:rdi]    | ± (rsi && rdi) | Y              | Compare (Compare) |
+| scasb/scasw/scasd/scasq | [es:rdi] –> rax         | ± rdi          | Y              | Scan (Compare)    |
+| lodsb/lodsw/lodsd/lodsq | [ds:rsi] –> rax         | ± rsi          | N              | Load (Move)       |
+| stosb/stosw/stosd/stosq | rax –> [es:rdi]         | ± rdi          | N              | Store (Move)      |
+| outsb/outsw/outsd/outsq |                         |                | N              |                   |
+| insb/insw/insd/insq     |                         |                | N              |                   |
+
+> **IMPORTANT**: THE STRING INSTRUCTIONS ALWAYS INCREMENT/DECREMENT THE VALUE IN `rcx`.
+
+The increment and decrement value (1, 2, 4, 8) of `rsi` and/or `rdi` is based on the instruction width (`b`, `w`, `d`, & `q` respectively). The direction of the increment and decrement is based on the direction flag (`DI`).
+
+If `DI` is clear (0), then the string instructions will increment (clear `DI` with the `cld` instruction).
+If `DI` is set (1), then the string instructions will decrement (set `DI` with the `std` instruction).
+
+> In most cases, you can assume that the direction flag will be cleared, but you should always check, just in case, before using it, to avoid bugs. These string instructions are used fairly often in real executables.
+
+##### String Instruction Prefixes:
+
+These repeat instructions work similarly to the loop instructions but are primarily used to repeat the action of a string instruction.
+
+  * `rep` (terminates when `rcx` is 0)
+  * `repe` (terminates when `rcx` is 0 or when `ZF` is 0)
+  * `repne` (terminates when `rcx` is 0 or when `ZF` is 1)
+  * `repz` (terminates when `rcx` is 0 or when `ZF` is 0)
+  * `repnz` (terminates when `rcx` is 0 or when `ZF` is 1)
+
+#### Loop Instructions:
+
+> **WARNING**: Some jump instructions that decrement register values will decrement on the last iteration before falling through. This may result in a value being different than you expect (off by one).
+
+  * `loop <label>` (automatically decrements the value in register `rcx`; does not set any flags)
+  * `loope <label>` (loop terminates when the zero flag (`ZF`) is 0)
+  * `loopne <label>` (loop terminates when the zero flag (`ZF`) is not 0)
+  * `loopz <label>` (loop terminates when `rcx` is 0 ; automatically decrements the value in register `rcx`)
+  * `loopnz <label>` (loop terminates when `rcx` is not 0 ; automatically decrements the value in register `rcx`)
+
+#### Jump Instructions:
+
+> These 3 jump instructions do not check the zero flag (`ZF`), but instead check the contents of the counter register `rcx`, `ecx`, and `cx` respectively and compares it against 0. These instructions are found very rarely in real executables.
+
+  * `jrcxz <label>` (jumps if `rcx` is 0)
+  * `jecxz <label>` (jumps if `ecx` is 0)
+  * `jcxz <label>` (jumps if `cx` is 0)
 
 ### External Functions:
 
@@ -548,4 +597,69 @@ Contents of section .cstring:
  100000fb2 6d616b65 00                          make.
 ```
 
+### `PIC`, `PIE`, `ASLR`, `PLT`, `GOT`, and RIP-Relative Addressing:
+
+#### Acronyms:
+
+  * `PIC` (Position Independent Code)
+  * `PIE` (Position Independent Executable)
+  * `PLT` (Program Linkage Table)
+  * `GOT` (Global Offset Table)
+  * `ASLR` (Address Space Layout Randomization)
+  * `WRT` (With Respect To)
+
+#### Background:
+
+The motivations for `PIC`, `PIE`, `ASLR`, `PLT`, `GOT`, and RIP-Relative Addressing are based on the resposibilties of the linker and loader. After code compilation, the program's object code is linked into a binary file (executable) and loaded into memory. It is the linker's job to figure out where to place the program's data (and external references to other libraries).
+
+#### The `-no-pie` Flag:
+
+Ideally, we want executable code to run the same no matter where it is placed in memory. Using the `-no-pie` flag during linking tells the linker that the executable code should not be position independent and that the location of all the program data will not be randomized. By default, the linker uses a defence mechanism called `ASLR` that will randomize the location of a program's data in memory every time it is ran. This tactic is a good, constant defence against malware; it is much more difficult for malware to attack certain applications if the data is being randomly placed in memory at the start of every process run.
+
+#### The `-static` Flag:
+
+The use of the static flag makes the difference between loading and running external library calls dynamically, during runtime, and including the entirety of an external library statically, during compilation and linking, for any particular executable. Ideally, we want shared libraries loaded in memory once so that all executables can access them, rather than unecessarily including entire libraries of binary data with the executable binary. The latter includes functions that will never be used and takes up exessive amounts of space in memory.
+
+As an example, imagine an assembly program that has already been compiiled with `NASM` into an object file. While using `gcc` to compile and link the object file into an executable, with the `C` runtime and default libraries, we have an option to include the `-static` flag:
+
+```bash
+gcc -o copy copy.o ; ls -l copy # 16,640 bytes
+gcc -o copy copy.o -static ; ls -l copy # 863,064 bytes
+```
+
+This example uses `copy.asm` found in the `copy/` directory. It is clear that using the `-static` flag drastically increases the size of executables. In this case, the executable is almost 52 times as large.
+
+#### The `__GLOBAL_OFFSET_TABLE__` Section:
+
+The `GOT` is the primary 32-bit solution to referencing external resources from a program. The `.got` section is included as part of the executable information that stores addresses for data and routines that were going to be used for any particular program, rather than having to know thier locations and reference them directly.
+
+During assembly, the `.got` section is "fixed up" with all of the absolute addresses to external resrouces needed for the program at hand. It is possible to locate the `GOT` using `objdump -s -j .got <path_to_exe>`. Although it is possible to locate the `.got` section for a particular executable and use it, this is not the primary solution for the 64-bit realm.
+
+#### RIP-Relative Addressing:
+
+For the 64-bit world, at load time, addresses that exist in assembly code are "converted" by the linker and replaced relative to the instruction pointer (`rip`). As a result, this creates position/location independent code (`PIC`).
+
+> Unfortunately, this solution cannot handle function calls unless the files are linked with the static flag. The `PLT` solves this problem but its more complex to use.
+
+You can see the conversion in practice if you dump the files during compilation and linking. Take an instruction that uses `lea` and a data resource called `str` that points to an address containing the bytes of a string:
+
+```asm
+lea rsi, [rel str]     ; | Original
+lea rsi, [rip+0x0]     ; | After Assembler
+lea rsi, [rip+0xbc465] ; V After Linking
+```
+
+With this 64-bit solution, there are also 3 useful keywords that are available:
+
+  * `rel` (will assign relative addressing to a particular assembly pointer)
+  * `abs` (will assign absolute addressing to a particular assembly pointer)
+  * `default <rel/abs>` (will set the default addressing scheme for all assembly pointers in a file)
+
+> The default keyword is similar to the concept of writing `using namespace std;` in a `C/C++` program. For assembly, using the `default` keyword will implicitly include `rel` or `abs` for all address pointers in an assembly file.
+
+> If you are jumping to an address in the same section of an executable, you do not need to use either of the addressing keywords. The linker will already know the locations of addresses/resources in the currently loaded section. You will only need relative or absolute addressing for accessing things outside of the currently loaded section and/or outside the currently loaded program.
+
+#### The `PLT` Section:
+
+> PLACEHOLDER_TEXT
 
