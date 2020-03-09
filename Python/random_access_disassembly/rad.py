@@ -42,7 +42,7 @@ class AddressException(Exception):
 
 class RAD:
 	"""Provide a random access disassembler (RAD)."""
-	def __init__(self, code, arch, bits, offset):
+	def __init__(self, code, arch, bits, offset, entry_point):
 		"""Start disassembly of the provided code blob.
 
 		Arguments:
@@ -50,6 +50,7 @@ class RAD:
 			arch -- The architecture, as defined by Capstone.
 			bits -- The bit width, as defined by Capstone.
 			offset -- The code offset to use.
+			entry_point -- The program's official entry point address.
 		"""
 		# Set up options for disassembly of the text segment.
 		self.md = Cs(arch, bits)
@@ -57,28 +58,29 @@ class RAD:
 		self.md.detail = True
 		self.code = code
 		self.offset = offset
+		self.entry_point = entry_point
 		self.size = len(code)
 
 	def at(self, address):
 		"""Try to disassemble and return the instruction starting at
-		the given address.  Note that the address is relative to the
+		the given address. Note that the address is relative to the
 		offset provided at creation, and that an AddressException is
 		thrown when the address is out of bounds (below the offset or
 		above the offset plus the length of the binary blob).
 		"""
 		index = address - self.offset
-		if index < 0 or index >= self.size:
+		if(index < 0 or index >= self.size):
 			raise AddressException(address, self.offset, self.size)
 		# The maximun length of an x86-64 instruction is 15 bytes.  You can
 		# exceed this with prefix bytes and the like, but you will get an
-		# "general protection" (GP) exception on the processor.  So don't do
+		# "general protection" (GP) exception on the processor. So don't do
 		# that.
 		return next(self.md.disasm(self.code[index:index+15], address, count=1))
 
 	def in_range(self, address):
-		"""Determine if an address is in range."""
+		"""Determine if an address is in range (not outside the specified section)."""
 		index = address - self.offset
-		return index >= 0 and index < self.size
+		return(index >= 0 and index < self.size)
 
 
 def main():

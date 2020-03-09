@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#
 
 # For the entry point disassembly script, go to: https://github.com/Lexxeous/py_entry_point
 
