@@ -6,7 +6,6 @@ import sys
 from capstone import *
 from elftools.elf.elffile import ELFFile
 
-# $ DEBUG=address python3 basic_blocks.py
 
 OUTFILE = "basic_blocks.txt"
 SECTION = "text"
@@ -15,10 +14,12 @@ JUMP_LIST = ["jo", "jno", "js", "jns", "je", "jz", "jne", "jnz", "jb", "jnae", "
 
 
 def error(msg):
+	''' Print an error message. '''
 	print(f"ERROR: {msg}", file=sys.stderr, flush=True)
 
 
 def print_leaders_list(leaders, updated=False):
+	''' Print the original and/or updated version of the leaders list. '''
 	nothing = False
 	if(not updated): print("Specified leaders: ", end="[")
 	if(updated): print("Updated specified leaders: ", end="[")
@@ -93,22 +94,23 @@ def find_and_print(filename, explore=[]):
 			print("Entry point is not in", section_name, "section.")
 			exit(1)
 
-		# Set up options for disassembly of the text segment. If you wanted to
-		# provide access to all the executable sections, you might create one
-		# instance for each section. Alternately you could just make a new
-		# instance every time you need to switch sections.
+		# Set up options for disassembly of the text segment. If you wanted to provide access to all the executable sections, you might create one
+		# instance for each section. Alternately you could just make a new instance every time you need to switch sections.
 		rad = RAD(code, arch, bits, top_addr, entry_point)
 
 		# Remove invalid addresses given at the command line
+		remove_list = []
 		invalid_cmd_input = False
 		for a in range(0, len(explore)):
 			if(not rad.in_range(explore[a])):
 				invalid_cmd_input = True
-				del explore[a]
+				remove_list.append(explore[a])
+		explore = [i for i in explore if i not in remove_list]
 
 		# Inform the user of thier mistake at the command line, fix, and continue basic block analysis
 		if(invalid_cmd_input):
 			print("One or more of the leaders specified on the command line are out of range for the", section_name, "section.")
+			print("The", section_name, "section begins at address", hex(top_addr), "and ends at address", hex(top_addr + rad.size - 1))
 			print_leaders_list(explore, True)
 
 		# If no leaders were given, then add the <entry_point> as a leader. Otherwise we have nothing to do!
@@ -118,16 +120,18 @@ def find_and_print(filename, explore=[]):
 		# Do both passes.
 		bblaa = do_pass_one(explore, rad) # <bblaa> is the Basic Block Leaders Address Array of sorted integers
 		do_pass_two(bblaa, rad)
-		print()
+
 
 def do_pass_one(explore, rad):
 	'''
 	The variable <explore> will be the start of <bblaa> to return as leaders will be appended and disassembled
 	in the second pass.
 
-	rad.at(<addr>).address is the specified instruction address
-	rad.at(<addr>).mnemonic is the LHS of the instruction
-	rad.at(<addr>).op_str is the RHS of the instruction
+	.address is the specified instruction address
+	.mnemonic is the LHS of the instruction
+	.op_str is the RHS of the instruction
+	.operands is a list of comma separated items on the RHS of the instruction
+	.size if the length of the curent instruction in bytes
 	'''
 
 	print("\nStarting pass 1...")
@@ -138,12 +142,15 @@ def do_pass_one(explore, rad):
 
 	with open(SECTION + "_section.txt", 'w') as of:
 		for i in rad.md.disasm(rad.code, rad.offset):
-			if(len(i.operands) == 1 and i.op_str.startswith("0x")):
-				loc = int(i.op_str, 0)
-			else:
-				loc = "none"
 			nxt = i.address + i.size
-
+			if(len(i.operands) == 1):
+				if(is_imm(i.operands[0])): loc = i.operands[0].value.imm
+				elif(is_reg(i.operands[0])): loc = i.operands[0].value.reg
+				elif(is_mem(i.operands[0])):
+					displacement = is_rip_relative(i.operands[0])
+					if(displacement != None): loc = nxt + displacement
+				else: loc = "none"
+			
 			print("0x%x:\t%s\t%s\n\tNEXT: 0x%x\tJUMPTO: %s" %(i.address, i.mnemonic, i.op_str, nxt, loc), file=of)
 
 			if(1 in i.groups and 7 in i.groups): # conditional jump ; target and next instruction are leaders ; end block
@@ -177,45 +184,62 @@ def do_pass_one(explore, rad):
 				if(nxt not in explore and rad.in_range(nxt)): explore.append(nxt)
 				if(loc not in explore and loc != "none" and rad.in_range(loc)): explore.append(loc)
 
-			if(i.mnemonic in ["hlt", "ret"]):
-				if(nxt not in explore and rad.in_range(nxt)): explore.append(nxt)
-
-			if(i.mnemonic in JUMP_LIST):
-				if(nxt not in explore and rad.in_range(nxt)): explore.append(nxt)
-				if(loc not in explore and loc != "none" and rad.in_range(loc)): explore.append(loc)
-
 		explore.sort() # put all the addresses in acending order
 		print(explore, file=of)
 		print("Done with pass 1.")
-		print("There were", len(explore), "basic block leaders found in", sys.argv[1])
+		print("There were", (len(explore)-1), "basic block leaders found in", sys.argv[1])
 		of.close()
 
 		return explore
 
 
+def pass_two_done(file_handler, idx, end):
+	''' Finish the second pass. '''
+	file_handler.close()
+	print("Done with pass 2.")
+	print("Some", (idx - 1), "out of", (end - 1), "basic blocks were discovered and printed.")
+	print("See \"" + OUTFILE + "\" for all basic blocks constructed from", sys.argv[1])
+	exit()
+
+
 def do_pass_two(bblaa, rad):
+	''' Start printing the basic blocks that were gathered from the first pass. '''
 	print("\nStarting pass 2...")
 	print("Constructing basic blocks...")
 
 	with open(OUTFILE, 'w') as bbf:
-		for addr_idx in range(0, len(bblaa)):
-			curr_leader = bblaa[addr_idx]
-			nxt_leader = -1
-			if(addr_idx >= len(bblaa)):
-				nxt_leader = rad.size
-			else:
-				nxt_leader = bblaa[addr_idx+1]
+		idx = 1 # index for bblaa
+		end = len(bblaa)
+		print("block at: " + str(hex(bblaa[0])), file=bbf)
+		for i in rad.md.disasm(rad.code, bblaa[idx - 1]):
+			between_leaders = i.address >= bblaa[idx - 1] and i.address < bblaa[idx] # look backwards to avoid segfault
 
-			print("Basic block at:", hex(bblaa[addr_idx]), file=bbf)
-			for i in rad.md.disasm(rad.code[curr_leader:nxt_leader], curr_leader):
-				print("  %s\t%s" % (i.mnemonic, i.op_str), file=bbf)
-				# if(1 in i.groups or 2 in i.groups or 3 in i.groups or 5 in i.groups or 7 in i.groups): break
-		bbf.close()
+			# To catch all jump/branch type instructions
+			if((1 in i.groups or 7 in i.groups or 2 in i.groups or i.mnemonic in JUMP_LIST) and between_leaders):
+				print("  %s\t%s" %(i.mnemonic, i.op_str), file=bbf)
+				idx = idx + 1
+				if(idx >= end):
+					print("next: unknown", file=bbf)
+					pass_two_done(bbf, idx, end)
+				print("true: " + str(i.op_str), file=bbf)
+				print("false: " + str(hex(bblaa[idx - 1])), file=bbf)
+				print("\nblock at: " + str(hex(bblaa[idx - 1])), file=bbf)
 
+			# If "hlt" or "ret" or out of bounds
+			if(((i.mnemonic == "hlt" or 3 in i.groups) and between_leaders) or (i.address >= bblaa[idx])):
+				print("  %s\t%s" %(i.mnemonic, i.op_str), file=bbf)
+				idx = idx + 1
+				if(idx >= end):
+					print("next: unknown", file=bbf)
+					pass_two_done(bbf, idx, end)
+				print("next: " + str(hex(bblaa[idx - 1])), file=bbf)
+				print("\nblock at: " + str(hex(bblaa[idx - 1])), file=bbf)
 
-	print("Done with pass 2.")
-	print("See \"" + OUTFILE + "\" for all basic blocks constructed from", sys.argv[1])
-
+			try:
+				if(between_leaders):
+					print("  %s\t%s" %(i.mnemonic, i.op_str), file=bbf)
+			except:
+				break
 
 if __name__ == "__main__":
 	main()
