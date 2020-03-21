@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+PRODID:-//ON24 Corporation//ON24 Corporation//EN
+VERSION:2.0
+METHOD:PUBLISH
+BEGIN:VEVENT
+DTSTART:20200325T180000Z
+DTEND:20200325T190000Z
+LOCATION: Webcast
+TRANSP:OPAQUE
+UID:2491104520200317T205800Z
+DTSTAMP:20200317T205834Z
+DESCRIPTION:Thank you for registering for The Decision-Making Side of Machine Learning: Computational, Inferential, and Economic Perspectives. \n\nLIVE WEBCAST DATE:  March 25, 2020 \nLIVE WEBCAST TIME:  02:00 PM EDT \n\nUse the link below to enter the webcast up to 15 minutes before the start. \n\nWEBCAST LINK:  https://event.on24.com/wcc/r/2215025/C0F7C94548696C937543E86F0E08EFE6?mode=login&email=agibson@gibsonusa.net \nEMAIL:  agibson@gibsonusa.net \n\nThank you and enjoy the webcast!
+SUMMARY:The Decision-Making Side of Machine Learning: Computational, Inferential, and Economic Perspectives (ACM Tech Talk Webinar)
+PRIORITY:5
+CLASS:PUBLIC
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+title:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+
