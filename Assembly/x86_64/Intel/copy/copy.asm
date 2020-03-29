@@ -1,10 +1,10 @@
 ; nasm -f elf64 copy.asm && gcc -o copy copy.o
 
 	default rel
-
-	section .text
 	global main
 	extern puts
+
+	section .text
 
 main:
 	push rbp

@@ -30,6 +30,8 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 
 `ld` is the default assembly linker if you are not using the `C` runtime. You can then replace the global `main` with `_start` for **Linux** or `start` for **Windows**. So compiling and linking a pure assembly program without the `C` runtime would look somthing like this: `nasm -f elf64 <file_name>.asm && ld -o <file_name> <file_name>.o`.
 
+Add instructions manipulate the carry flag, but increment instructions do NOT manipulate the carry flag!!
+
 ### Instructions:
 
 > The source for an instruction is right hand side, while the destination is the left hand side: `<instruction> <lhs>, <rhs>` --> `<instruction> <destination>, <source>`
@@ -40,17 +42,25 @@ Using `global <func_name>` exports the contents of the file/function to be used 
 
 `ret` pops a value off the top of the stack (a call's return address) and sets the instruction pointer (`rip`) to this value. It transfers control to the return address located on the stack. **DO NOT USE** `ret` in the middle of a program, especially if you have not cleaned up the stack!
 
-`leave` puts the base pointer (`esp`/`rsp`) back on the stack (`esp`/`rsp`).
-
-`mov` is effectively a copy operation like: `mov LHS, RHS`. The RHS gets copied into the LHS, while the RHS retains its original value.
-
-`movsd` stands for "Move Static Double" and is used for moving values that are larger than 64 bits (80 bits, 128 bits (`xmm<n>`), etc.) into 64-bit registers.
+`leave` puts the base pointer (`ebp`/`rbp`) back on the stack (`esp`/`rsp`).
 
 `lea` stands for "Load Effective Address". This command is capable of doing quick addressing calculations and assigning the value to a register like: `lea <reg_name>, [<base> + <idx>*<scale> + displacement]`. Although assembly's bracket notation `[]` typically implies the dereference of a pointer (grabbing the data at a location, rather than the address), `lea` is an exception. 
 
 `syscall` takes the value in `rax` to determine what system call to use. It reaches down into the kernel of the operating system (ring 0) to use a system function. It also clobbers `rcx` by saving the current value of the instruction pointer (`rip`) into it.
 
 `hlt` is used to terminate an assembly program when it is not linked with the `C` runtime.
+
+#### Move Instructions:
+
+`mov` is effectively a copy operation like: `mov LHS, RHS`. The RHS gets copied into the LHS, while the RHS retains its original value.
+
+`movsd` stands for "Move Static Double" and is used for moving values that are larger than 64 bits (80 bits, 128 bits (`xmm<n>`), etc.) into 64-bit registers.
+
+`movzx` is a zero extended move. The destination is always a register and the source can be a register or memory. This instruction always zeros out the upper N bits when using the standard `mov` instruction will not (for 16-bit and 8-bit moves).
+
+`movsx` is a sign extended move. The destination is always a register and the source can be a register or memory. Example: moving the byte `0xef` (-17) to a double word register will be extended to `0xffffffef`, which is still -17, in decimal.
+
+`movsxd` is a special instruction that will move a double word to a quadword with sign extension.
 
 #### String Instructions:
 
@@ -169,25 +179,29 @@ msg2: db "string2",10
 
 #### x86_64 64-Bit Registers:
 
-| Name                           | Abbrv.      |  Aliasing           |
-|:-------------------------------|:-----------:|:--------------------|
-| Accumulator                    |  RAX (R0)   | RAX = (32 bits).EAX |
-| Base                           |  RBX (R1)   | RBX = (32 bits).EBX |
-| Counter                        |  RCX (R2)   | RCX = (32 bits).ECX |
-| Data                           |  RDX (R3)   | RDX = (32 bits).EDX |
-| Base Pointer                   |  RBP (R4)   |                     |
-| Source Index                   |  RSI (R5)   |                     |
-| Destination Index              |  RDI (R6)   |                     |
-| Stack Pointer                  |  RSP (R7)   |                     |
-| General Purpose Register (GPR) |  R8         |                     |
-| General Purpose Register (GPR) |  R9         |                     |
-| General Purpose Register (GPR) |  R10        |                     |
-| General Purpose Register (GPR) |  R11        |                     |
-| General Purpose Register (GPR) |  R12        |                     |
-| General Purpose Register (GPR) |  R13        |                     |
-| General Purpose Register (GPR) |  R14        |                     |
-| General Purpose Register (GPR) |  R15        |                     |
-| Instruction Pointer            |  RIP        |                     |
+> **GPR** stands for "General Purpose Register".
+
+| Name                           | Abbrv. (64 bits) | Aliasing (Low 32 bits) | Aliasing (Low 16 bits) | Aliasing (Low 8 bits)  |
+|:-------------------------------|:----------------:|:-----------------------|:-----------------------|:-----------------------|
+| Accumulator                    |  RAX (R0)        | RAX = (32 bits).EAX    | RAX = (48 bits).AX     | RAX = (56 bits).AL     |
+| Base                           |  RBX (R1)        | RBX = (32 bits).EBX    | RBX = (48 bits).BX     | RBX = (56 bits).BL     |
+| Counter                        |  RCX (R2)        | RCX = (32 bits).ECX    | RCX = (48 bits).CX     | RCX = (56 bits).CL     |
+| Data                           |  RDX (R3)        | RDX = (32 bits).EDX    | RDX = (48 bits).DX     | RDX = (56 bits).DL     |
+| Base Pointer                   |  RBP (R4)        | RBP = (32 bits).EBP    | RBP = (48 bits).BP     | RBP = (56 bits).BPL    |
+| Source Index                   |  RSI (R5)        | RSI = (32 bits).ESI    | RSI = (48 bits).SI     | RSI = (56 bits).SIL    |
+| Destination Index              |  RDI (R6)        | RDI = (32 bits).EDI    | RDI = (48 bits).DI     | RDI = (56 bits).DIL    |
+| Stack Pointer                  |  RSP (R7)        | RSP = (32 bits).ESP    | RSP = (48 bits).SP     | RSP = (56 bits).SPL    |
+| GPR                            |  R8              | R8 = (32 bits).R8D     | R8 = (48 bits).R8W     | R8 = (56 bits).R8B     |
+| GPR                            |  R9              | R9 = (32 bits).R9D     | R9 = (48 bits).R9W     | R9 = (56 bits).R9B     |
+| GPR                            |  R10             | R10 = (32 bits).R10D   | R10 = (48 bits).R10W   | R10 = (56 bits).R10B   |
+| GPR                            |  R11             | R11 = (32 bits).R11D   | R11 = (48 bits).R11W   | R11 = (56 bits).R11B   |
+| GPR                            |  R12             | R12 = (32 bits).R12D   | R12 = (48 bits).R12W   | R12 = (56 bits).R12B   |
+| GPR                            |  R13             | R13 = (32 bits).R13D   | R13 = (48 bits).R13W   | R13 = (56 bits).R13B   |
+| GPR                            |  R14             | R14 = (32 bits).R14D   | R14 = (48 bits).R14W   | R14 = (56 bits).R14B   |
+| GPR                            |  R15             | R15 = (32 bits).R15D   | R15 = (48 bits).R15W   | R15 = (56 bits).R15B   |
+| Instruction Pointer            |  RIP             |                        |                        |                        |
+
+> **Setting the lower 32 bits will clear the upper 32 bits. Setting the low 16 or 8 bits will NOT clear the remaining 48 or 56 upper bits. There are also no aliases that are functionally similar to the `AH`, `BH`, `CH`, & `DH` registers to manipulate the high 8 bits of a 16-bit alias for any other registers.**
 
 <img src="../../../.pics/Assembly/x86_64/Intel/registers.png" width="600px"/>
 
@@ -247,6 +261,14 @@ msg2: db "string2",10
 
 `lahf` moves bits 0 through 7 of FLAGS into AH. </br>
 `sahf` moves AH into bits 0 through 7 of FLAGS. </br>
+
+##### The Trap Flag (TF):
+
+The trap flag is important for debuggers and malware creators alike. When the trap flag is set, there is a `SIGTRAP` interrupt signal that fires after every executed instruction. This functionality is used by debuggers like `GDB` to step through code, one line at a time. Therefore, `if(TF == 1)`, then the program is most likely being debugged.
+
+Malware creators attempt to take advantage of this fact by confuscating thier own code, reading the status of the trap flag in many unique ways. If the malware successfully detects the use of the trap flag, it can jump to the part of the code that does good and useful things. Otherwise, if the malware is being run outside of a debugger, it can detect that the trap flag is clear and may run some harmful code, like mass file encryption for ransomware. The goal of the malware creator is to trick the user/developer into thinking that there is nothing wrong with the code when they debug it, leaving them vulnerable to the true intentions of the malware creator when the program is run outside of a debugger. The following is an example of how a malware creator may inject a block of code that reads the status of the trap flag in a confusing way:
+
+<img src="../../../.pics/Assembly/x86_64/Intel/trap_flag_example.png" width="900px"/>
 
 #### x86 32-Bit EFLAGS:
 
@@ -610,7 +632,7 @@ Contents of section .cstring:
 
 #### Background:
 
-The motivations for `PIC`, `PIE`, `ASLR`, `PLT`, `GOT`, and RIP-Relative Addressing are based on the resposibilties of the linker and loader. After code compilation, the program's object code is linked into a binary file (executable) and loaded into memory. It is the linker's job to figure out where to place the program's data (and external references to other libraries).
+The motivations for `PIC`, `PIE`, `ASLR`, `PLT`, `GOT`, and RIP-Relative Addressing are based on the responsibilties of the linker and loader. After code compilation, the program's object code is linked into a binary file (executable) and loaded into memory. It is the linker's job to figure out where to place the program's data (and external references to other libraries).
 
 #### The `-no-pie` Flag:
 
@@ -661,5 +683,108 @@ With this 64-bit solution, there are also 3 useful keywords that are available:
 
 #### The `PLT` Section:
 
-> PLACEHOLDER_TEXT
+> The following description of the `PLT` is also documented as an answer to the *Stack Overflow* question: ["*What does @plt mean here?*"](https://stackoverflow.com/questions/5469274/what-does-plt-mean-here?answertab=votes#tab-top)
+
+If you see something like `<func_name>@plt` during disassembly, it represents a way to get code fixups (adjusting addresses based on where code sits in virtual memory, which may be different across different processes) without having to maintain a separate copy of the code for each process. The `PLT` is the **program linkage table**, one of the structures which makes dynamic loading and linking easier to use.
+
+The `<func_name>@plt` is actually a small stub which (eventually) calls the real `<func_name>` function, modifying things on the way to make subsequent calls faster.
+
+The real `<func_name>` function may be mapped into any location in a given process (virtual address space) as may the code that is trying to call it.
+
+So, in order to allow proper code sharing of calling code (left side below) and called code (right side below), you don't want to apply any fixups to the calling code directly since that will restrict where it can be located in other processes.
+
+So the `PLT` is a smaller process-specific area at a reliably-calculated-at-runtime address that isn't shared between processes, so any given process is free to change it however it wants to, without adverse effects.
+
+See the following diagram which shows both your code and the library code mapped to different virtual addresses in two different processes, proc_A and proc_B:
+
+```txt
+Address: 0x1234          0x9000      0x8888
+        +-------------+ +---------+ +---------+
+        |             | | Private | |         |
+proc_A  |             | | PLT/GOT | |         |
+        | Shared      | +---------+ | Shared  |
+========| application |=============| library |====>
+        | code        | +---------+ | code    |
+        |             | | Private | |         |
+proc_B  |             | | PLT/GOT | |         |
+        +-------------+ +---------+ +---------+
+Address: 0x2020          0x9000      0x6666
+```
+
+The original way in which code was shared meant it they had to be loaded at the same memory location in each virtual address space of every process that used it. Either that or it couldn't be shared, since the act of fixing up the single shared copy for one process would totally stuff up other processes where it was mapped to a different location.
+
+By using position independent code, along with the `PLT` and a global offset table (`GOT`), the first call to a function `<func_name>@plt` (in the `PLT`) is a multi-stage operation, in which the following actions take place:
+
+1. You call `<func_name>@plt` in the `PLT`.
+2. It calls the `GOT` version (via a pointer) which initially points back to some set-up code in the `PLT`.
+3. This set-up code loads the relevant shared library if not yet done, then modifies the `GOT` pointer so that subsequent calls directly to the real `<func_name>` rather than the `PLT` set-up code.
+4. It then calls the loaded `<func_name>` code at the correct address for this process.
+
+On subsequent calls, because the `GOT` pointer has been modified, the multi-stage approach is simplified:
+
+1. You call `<func_name>@plt` in the `PLT`.
+2. It calls the `GOT` version (via pointer), which now points to the real `<func_name>`.
+
+
+### Liveness and Trace Tables:
+
+A variable is *live* at a particular point in a program if its value at that point will be used in the future. Otherwise the variable is *dead*.
+
+  * This means you have to know the future uses of the variable. Structuring pays off here.
+  * This analysis is used for register allocation when compiling programs. Lots of variables, but only a few registers... multiple variables can use the same register if at most one variable is live at any given time.
+
+Also, another thing to notice is that variables `a` & `b` are not used on the RHS of any one line of code at the same time (lines 5 & 7). Given this fact, we can use one register to hold the changing values of `a` & `b` through out the entire program.
+
+<img src="../../../.pics/Assembly/x86_64/Intel/liveness_and_trace_tables.png" width="800"/>
+
+Another way to think about allocation of registers is to create sets of live edge pairs for each of the variables based on where they are used in the code. So for this example, the live sets for `a`, `b`, & `c` would be the following:
+
+> The variable `c` is not necessarily used in every line of code, but some register must hold onto its value for the entire program because its value must be returned at the very end. This implies that `c` will always be live.
+
+```txt
+a: {3->5, 7->8, 8->5} OR {3->5, 7->5}
+b: {5->6, 6->7} OR {5->7}
+c: Live for the whole program because of the return statement.
+```
+
+The sets of live edge pairs for variables `a` & `b` are *disjoint*, which means that they are never used at the same time and can take advantage of using the same register (and even one same variable), instead of two. This further solidifies the above point about `a` & `b` not being used on the RHS of any line of code at the same time.
+
+> It can be useful to create a trace table that lines up directly with each row of code that potentially changes the value of a particular variable. Looking at the LHS and RHS of the associated lines of code will determine whether a particular variable is currently being modified or not.
+
+### Program Slicing:
+
+Program slicing is a method of simplifying a program to make analysis simpler by focusing on a particular aspect of program semantics called the slicing criterion.
+
+Given a location `l` and a variable `v`, a slice is constructed with respect to (`l`, `v`) by deleting all statements irrelevant to the value of `v` at `l`. 
+
+There are two directions for slicing:
+
+  * **Backward** slicing consists of statements that have an *effect on* the slicing criterion.
+  * **Forward** slicing consists of statements that are *affected by* the slicing criterion.
+
+Within these two directions of slicing, there are 3 types of slicing:
+
+  * **Static** slicing generalizes the problem across all possible inputs. This type of slicing simply removes any line(s) of code that are not relevant to the variable in question.
+  * **Dynamic** slicing assumes that you know what the value(s) of the input(s) are going to be at runtime. In this way, you can slice/remove lines of code that will not run for the given input. In many cases, this type of slicing results in a smaller remaining set of code to analyze.
+  * **Constrained** slicing instantiates rules/constraints on the possible inputs and attempts to remove sections of code that are not useful or needed, effectively optimizing the program and isolating the variable in question.
+
+#### Slicing Assembly:
+
+Given a set of assembly code, we can reduce the program down to its necessary parts after we have decided which variable we want to analyze (`v`) and to what line of code (`l`).
+
+Assume that we want to know what the value of `v = rax` is at line `l = 7` for the following assembly code. We create a table of reads, writes, and dependencies for each line, start from the bottom, and replace any dependency that what written, with what was simultaneously read, per line of code, as follows:
+
+| Line # | Code               | Read     | Written  | Depends       | Relevant |
+|:------:|:-------------------|:---------|:---------|:--------------|:--------:|
+| 0      | inc rax            | rax      | rax      | rsp, rax      | Y        |
+| 1      | lea rcx, [rax * 8] | rax      | rcx      | rsp, rax      | N        |
+| 2      | push rcx           | rsp, rcx | rsp, M   | rsp, rcx, rax | Y        |
+| 3      | push rax           | rsp, rax | rsp, M   | rsp, rax      | Y        |
+| 4      | mov rdi, 21        | –––      | rdi      | rsp, M        | N        |
+| 5      | call _optc         | rax, rdi | rax, rcx | rsp, M        | N        |
+| 6      | pop rcx            | rsp, M   | rsp, rcx | rsp, M        | Y        |
+| 7      | pop rax            | rsp, M   | rsp, rax | rsp, M        | Y        |
+|        |                    |          |          | rax           |          |
+
+After the dependencies column is populated from the reads and writes columns, look for disjoint pairs between the dependencies and writes to determine the relevancy of each line of code (if the writes and dependencies for any row are disjoint, then the row is not needed and can be removed).
 
