@@ -25,6 +25,23 @@ emacs <file_name> # view and edit contents of <file_name> ; "CRTL+x+c" to save a
 vim <file_name> # view and edit contents of <file_name> ; ":wq" to save and exit
 
 # -------------------------------------------------------------------------------------------------
+# DIRECTORY STATISTICS
+
+du -sch # print the disk usage (size) of the current directory
+
+ls -l | grep "^d" | wc -l # print quantity of parent folders in the current directory
+ls -lR | grep "^d" | wc -l # print quantity of parent and all child folders in current directory (recursive)
+
+ls -ap | grep -v / | egrep "^\."  # print all hidden files in current directory
+ls -ap | egrep "^\..*/$" # print all hidden directories in current directory
+
+find . -type f | wc -l # print quantity of all files in current directory (including all child directories)
+
+find . -name '*.<desired_extension>' | xargs wc -l # print lines of code for all files in current directory (including all child directories) with <desired_extension> (no spaces allowed in path names)
+cloc . # third party application for printing lines of code ; install with "brew install cloc"
+
+
+# -------------------------------------------------------------------------------------------------
 # COMPILATION
 
 g++ -c <program_name>.cpp # compiles the cpp program into a binary object file (.o)
