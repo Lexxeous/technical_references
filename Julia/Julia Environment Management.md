@@ -13,16 +13,58 @@ Follow this guide to link **Julia**, **Jupyter** notebooks, and **Python** with 
 1. https://www.datacamp.com/community/tutorials/installing-anaconda-mac-os-x
 2. https://towardsdatascience.com/how-to-successfully-install-anaconda-on-a-mac-and-actually-get-it-to-work-53ce18025f97
 
+### Install `PyCall` and `Conda` Packages:
+
+With the `Julia` REPL run:
+
+```julia
+using Pkg
+Pkg.add("<pkg_name>")
+```
+
+### Set Python Environment:
+
+> Use the `Julia` REPL to run `which python` and `which python3` to determine the path to each (Use `where python` and `where python3` for Windows systems).
+
+```bash
+# For Julia to use the default/private Miniconda installation that it gets with the Conda package
+ENV["PYTHON"]=""
+ENV["PYTHON3"]=""
+
+ENV["PYTHON"]=/path/to/python/
+ENV["PYTHON3"]=/path/to/python3/
+```
+
+### Build the `Julia` Package Environment:
+
+Use the `Julia` REPL to run:
+
+```julia
+using Pkg
+Pkg.build()
+```
+
+### Link `Python` with the `Julia` Installation:
+
+Open your desired `Python` REPL and run:
+
+```python
+import julia
+julia.install()
+```
+
+Use `import julia.Main as jl` in a `Python` script to access the `jl.eval("<string_cmd>")` command, among others.
+
 ### CLI Support:
 
-Access **Julia** environment from the terminal:
+If you are using a Unix machine first, link the `Julia` application binary to a user-lvel location and add it to your PATH with:
 
 ```bash
 sudo ln -s /Applications/Julia-<version>.app/Contents/Resources/julia/bin/julia /usr/local/bin/julia # link Julia excutable
 export PATH="$PATH:/usr/local/bin/julia" # add Julia executable to your PATH environment variable(s)
 ```
 
-> After creating the **Julia** executable and adding it to your `PATH`, running `julia` should activate the environment.
+> Running `julia` from the terminal should now activate the environment.
 
 ### REPL (Read-Eval-Print-Loop) Modes:
 
@@ -82,15 +124,6 @@ Pkg.build()
 
 ```bash
 python-jl <python_file>.py
-```
-
-### Set Python Environment:
-
-> First run `which python` and `which python3` to determine the path to each.
-
-```bash
-ENV["PYTHON"]=/path/to/python/
-ENV["PYTHON3"]=/path/to/python3/
 ```
 
 ### Misc:

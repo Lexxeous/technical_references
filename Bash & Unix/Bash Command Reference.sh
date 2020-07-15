@@ -27,16 +27,22 @@ vim <file_name> # view and edit contents of <file_name> ; ":wq" to save and exit
 # -------------------------------------------------------------------------------------------------
 # DIRECTORY STATISTICS
 
+# Directory Size
 du -sch # print the disk usage (size) of the current directory
 
-ls -l | grep "^d" | wc -l # print quantity of parent folders in the current directory
-ls -lR | grep "^d" | wc -l # print quantity of parent and all child folders in current directory (recursive)
+# Directory Count
+ls -l | grep "^d" | wc -l # print quantity of parent directories in the current directory
+ls -lR | grep "^d" | wc -l # print quantity of parent and all child directories in current directory (recursive)
 
+# Hidden Files
 ls -ap | grep -v / | egrep "^\."  # print all hidden files in current directory
 ls -ap | egrep "^\..*/$" # print all hidden directories in current directory
 
-find . -type f | wc -l # print quantity of all files in current directory (including all child directories)
+# File Count
+find . -type f | wc -l # print quantity of all files in current directory (and all child directories)
+find . -type f -name "*.<desired_extension>" | wc -l # print quantity of all files with <desired_extension> in current directory (and all child directories)
 
+# Lines of Code
 find . -name '*.<desired_extension>' | xargs wc -l # print lines of code for all files in current directory (including all child directories) with <desired_extension> (no spaces allowed in path names)
 cloc . # third party application for printing lines of code ; install with "brew install cloc"
 
