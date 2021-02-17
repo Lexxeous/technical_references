@@ -1,6 +1,6 @@
 # MongoDB Shell CheatSheet
 
-Credit goes to Brad Traversy for making this [cheet sheet](https://gist.github.com/bradtraversy/f407d642bdc3b31681bc7e56d95485b6) as part of his [MongoDB Crash Course](https://www.youtube.com/watch?v=-56x56UppqQ).
+Credit goes to Brad Traversy for making this [cheat sheet](https://gist.github.com/bradtraversy/f407d642bdc3b31681bc7e56d95485b6) as part of his [MongoDB Crash Course](https://www.youtube.com/watch?v=-56x56UppqQ).
 
 ## Show All Databases
 
