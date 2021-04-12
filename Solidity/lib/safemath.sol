@@ -1,5 +1,11 @@
 pragma solidity >=0.5.0 <0.6.0;
 
+// The assert function is similar to require, but it will throw an error if false.
+// The difference between assert and require is that require will refund the user
+// the rest of their gas when a function fails, whereas assert will not. So most of
+// the time you want to use require in your code; assert is typically used when something
+// has gone horribly wrong with the code (like a uint overflow).
+
 /**
  * @title SafeMath
  * @dev Math operations with safety checks that throw on error
