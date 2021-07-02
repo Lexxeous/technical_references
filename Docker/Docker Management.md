@@ -10,7 +10,7 @@
 
 **Docker** is a containerization platform that allows the creation and isolation of software applications. Rather than having to worry about a plethora of dependencies and compatible operating systems for an application, **Docker** allows you to separate the components of your application into managable pieces. Take a website, for example. For a simple website you may need to use things such as `NodeJS` with hosting as your web server, `MongoDB` or `SQL` for your database, `Redis` for your messaging system, and `Ansible` for application orchestration. All of these different components may require different lihraries, dependencies, operating systems, development/test/production environments, and hardware infastructure to run together properly. This can easily cause a complicated mess when trying to run all of these services as one large application.
 
-**Docker** however allows interoperability of these components as microservices. Each of these components will become its own container, complete with its own set of internal dependencies, not dependent on one another or the underlying OS, but rather sharing an OS kernel. This means that any Linux container can run with any Linux Docker installation, Windows with Windows, & MacOS with MacOS. Furthermore, it is possible to run a Linux container on a Windows OS, for example, but under the hood, Docker creates a Linux kernel VM that runs in coordination with the Windows OS and hardware.
+**Docker** however allows interoperability of these components as microservices. Each of these components will become its own container, complete with its own set of internal dependencies, not dependent on one another or the underlying OS, but rather sharing an OS kernel. This means that any Linux container can run with any Linux Docker installation, Windows with Windows, & MacOS with MacOS. Furthermore, it is possible to run a Linux container on a Windows OS, for example, but under the hood, Docker creates a Linux kernel VM that runs in coordination with the Windows OS and hardware. A container is not meant to host an internal OS, the container only lives as long as the process inside of it is alive.
 
 ## Containerization vs. Virtualization:
 
@@ -44,6 +44,7 @@ $ docker run [OPTIONS] IMAGE[:TAG] [COMMAND] [ARG...] # run container from a Doc
 	# Use the `-t` (terminal) option to allocate a pseudo-TTY from the container to the host.
 	# Use the `-v` (volume) option to map volume data with `<host_path>:<container_path>`.
 	# Use the `-e` (env) option to input a list of environment variables with `<VAR_NAME>=<val>`.
+	# Use the `--network=<network>` option to connect a container to a specific network.
 	# Use the optional `[:TAG]` to specify an image version (default is "latest")
 ```
 
@@ -172,19 +173,86 @@ $ docker exec [OPTIONS] CONTAINER COMMAND [ARG...] # execute a command in a runn
 ```dockerfile
 FROM #comment
 
+ARG
+
 RUN
 
 COPY
 
 EXPOSE
 
+VOLUME
+
+ADD
+
+ENV
+
 WORKDIR
 
-ENTRYPOINT
+# Entrypoint instructions are dynamic, command line arguments passed from the `$ docker run`
+# command will be appended here. You can also use the `--entrypoint <string>` option with
+# `$ docker run` to overwrite the default `ENTRYPOINT` for the image
+ENTRYPOINT # command
+ENTRYPOINT # ["command"]
+
+# Command instructions are semi-dynamic, CMD arguments are replaced entirely, no matter what
+# is hard-coded into the Dockerfile. 
+CMD # command param1 ... paramN
+CMD # ["command", "param1", ... "paramN"]
+CMD # param1 ... paramN ; just param(s) for default value in tandem with `ENTRYPOINT`
+
+# NOTE: If you want to set a "default" argument, when one is not present on the command line,
+# you can use both `ENTRYPOINT` & `CMD` together. Put the command to be run as an argument for
+# `ENTRYPOINT` and the default argument to potentially be replaced as the argument for `CMD`.
+
+HEALTHCHECK
 
 ```
 
-### Misc:
+## Docker Networking:
+
+  * An internal IP address is assigned to all containers when they are running. In most cases, this internal IP address is typically within the range of `172.17.0.Z`, starting from `Z = 2`. The IP address of `172.17.0.1` is used for the virtual bridge interface `docker0` created between the operating system and the **Docker** application.
+  * For more detailed network information about a specific container, you can use `$ docker inspect <alias_name>`. You can find all of the network configuration information about the container under the `["NetworkSettings"]` index of the `JSON` output.
+  * There are 4 kinds of networks available for **Docker** containers:
+
+#### Bridge:
+
+> This network is used by default. You do not need to use the `--network` option with `$ docker run` in this case.
+
+With this network option, manual port mapping is used by default. The ports used on the host and the ports used for the running container(s) are not the same. Internal container ports must be exposed and host ports must be mapped to these exposed container ports. With this type of configuration, it is possible to run more than one container with the same internally exposed port from different external host ports.
+
+#### Null/None:
+
+> This network is not used by default. To use this network you need to specify `--network=none` with the `$ docker run` command.
+
+With this network option, running containers are not attached to any network. This means that they have no access/connection/communication with the external network or with any other containers. They run in a completely isolated fashion.
+
+#### Host:
+
+> This network is not used by default. To use this network you need to specify `--network=host` with the `$ docker run` command.
+
+With this network option, there is no manual port mapping necessary. All internal container port numbers are automatically mapped to the same host port number. With this type of configuration, it is NOT possible to run more than one container with the same internally exposed port, as this would attempt to map two or more containers to the same external host port.
+
+#### User-defined:
+
+> This network is not used by default. With user-defined networks, we can separate the network groups of any running containers. To setup a user-defined network, you must use the `$ docker network create` command.
+
+```bash
+# Create new custom container network
+$ docker network create --driver <driver_type> --subnet <W.X.Y.Z>/<mask> <cust_network_name>
+	# The supported values for <driver_type> are bridge, none, and host.
+	# Devs commonly create subnets following an incremented pattern with the default 172.17.0.Z scheme.
+		# For example, user-defined network group IPs would be 182.18.0.Z, 192.19.0.Z, and so on.
+
+# List available container networks
+$ docker network ls
+```
+
+### Embedded DNS:
+
+**Docker** already has a built in `DNS` service that is used in the background and maps running container names to thier cooresponding IP addresses. The default IP address for this embedded **Docker** `DNS` service is `127.0.0.11`. The proper way to internally reference containers from other containers or from commands is to use its "name" rather than its internal IP address. It is not guaranteed that any container will obtain the same internal IP address any time that a container is rebooted.
+
+## Misc:
 
   * By default, **Docker** containers run in an uninteractive mode and do not listen to `stdin`.
     - Use `-i` with `$ docker run` to run a **Docker** container in interactive mode.
