@@ -10,12 +10,18 @@ Sun Microsystems’ slogan for Java was “write once, run everywhere”.
 Java is very similar to C and C++ syntactically.
 */
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// LIBRARIES AND UTILS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+import java.util.Arrays; // default Arrays package
+  // Arrays.toString(<arr>)
+
+// KEYWORDS AND DATATYPES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 String
   // the '+' operator works for variable types that are not explicit strings
 	.equals(<string_name>) // returns a boolean that tells whether the two strings are equal or not
 Array
+Reference // generic reference to a class object ;  default value is "null"
 
 boolean
 
@@ -34,14 +40,15 @@ void // there is no specific output from a method with this datatype
 public // other classes can access method with this modifier
 private // other classes can not access method with this modifier ; only methods from within the same class
 static // allows a method to be called without explicitly referencing a class instance
+final // prepend to a datatype for a value that should never change ; very similar to "const"
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// BOOLEANS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 true
 false
 null
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// MATHEMATIC OPERATORS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 +
 -
@@ -57,7 +64,7 @@ null
 
 =
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// RELATIONAL OPERATORS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 >
 <
@@ -66,12 +73,14 @@ null
 ==
 !=
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// LOGICAL OPERATORS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 &&
 ||;
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// CLASS EXAMPLES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 public class Printing
 {
@@ -87,7 +96,7 @@ public class Printing
   }
 }
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 public class Store
 {
@@ -134,7 +143,7 @@ public class Store
   }
 } // Store class
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 public class SavingsAccount
 {
@@ -177,7 +186,7 @@ public class SavingsAccount
   }       
 } // Savings class
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 public class Dog {
   String breed;
@@ -204,5 +213,87 @@ public class Dog {
   }
 } // Dog class
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+public class Newsfeed {
+  
+  String[] trendingArticles;
+  int[] views;
+  double[] ratings;
+  
+  public Newsfeed(String[] initialArticles, int[] initialViews, double[] initialRatings){
+    trendingArticles = initialArticles;
+    views = initialViews;
+    ratings = initialRatings;
+  }
+  
+  public String getTopArticle(){
+    return trendingArticles[0];
+  }
+  
+  public void viewArticle(int articleNumber){
+    views[articleNumber] = views[articleNumber] + 1;
+    System.out.println("The article '" + trendingArticles[articleNumber] + "' has now been viewed " + views[articleNumber] + " times!");
+  }
+  
+  public void changeRating(int articleNumber, double newRating){
+    if (newRating > 5 || newRating < 0) {
+      System.out.println("The rating must be between 0 and 5 stars!");
+    } else {
+      ratings[articleNumber] = newRating;
+      System.out.println("The article '" + trendingArticles[articleNumber] + "' is now rated " + ratings[articleNumber] + " stars!");
+    }
+  }
+  
+  public static void main(String[] args){
+    String[] robotArticles = {"Oil News", "Innovative Motors", "Humans: Exterminate Or Not?", "Organic Eye Implants", "Path Finding in an Unknown World"};
+    int[] robotViewers = {87, 32, 13, 11, 7};
+    double[] robotRatings = {2.5, 3.2, 5.0, 1.7, 4.3};
+    Newsfeed robotTimes = new Newsfeed(robotArticles, robotViewers, robotRatings);
+    
+    robotTimes.viewArticle(2);
+    robotTimes.viewArticle(2);
+    System.out.println("The top article is " + robotTimes.getTopArticle());
+    robotTimes.changeRating(3, 5);
+  }
+} // Newsfeed class
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+import java.util.Arrays;
+
+public class Newsfeed {
+  
+  String[] topics;
+  
+  public Newsfeed(String[] initialTopics) {
+    topics = initialTopics;
+  }
+  
+  public static void main(String[] args) {
+    Newsfeed feed;
+    if (args[0].equals("Human")) {
+      
+      //topics for a Human feed:
+      String[] humanTopics = {"Politics", "Science", "Sports", "Love"};
+      feed = new Newsfeed(humanTopics);
+      
+    } else if(args[0].equals("Robot")) {
+      
+      //topics for a Robot feed:
+      String[] robotTopics = {"Oil", "Parts", "Algorithms", "Love"};
+      feed = new Newsfeed(robotTopics);
+      
+    } else {
+      String[] genericTopics = {"Opinion", "Tech", "Science", "Health"};
+      feed = new Newsfeed(genericTopics);
+    }
+        
+    System.out.println("The topics in this feed are:");
+    System.out.println(Arrays.toString(feed.topics));
+  }
+} // Newsfeed class with command line argument(s)
+
+
+// EOF ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
