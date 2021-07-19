@@ -12,14 +12,40 @@ Java is very similar to C and C++ syntactically.
 
 // LIBRARIES AND UTILS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-import java.util.Arrays; // default Arrays package
+import java.util.Arrays; // default Arrays package ; static size and mutable ; DataType[] arr_name
   // Arrays.toString(<arr>)
+
+import java.util.ArrayList; // default ArrayList package ; dynamic size and mutable ; ArrayList<DataType> arr_lst_name
+  .get(<index>) // returns the ArrayList value at <index>
+  .set(<index>, <data>) // sets ArrayList value at <index> to <data>
+  .add([index], <data>) // adds data to ArrayList
+  .remove([index | data]) // remove value at [index] or remove the first occurence of [data] ; indexes get shifted to the left (-1)
+    // using a "for" loop, decrement the index value immediately after removing the element
+    // using a "while" loop, control the increment of the loop index manually, dont increment upon removal
+  .indexOf(<data>) // returns index of first occurence of <data>
+  .size() // returns size/length of ArrayList
 
 // KEYWORDS AND DATATYPES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
+// Strings are immutable objects and cannot be "changed" unless a new variable or object is created.
 String
   // the '+' operator works for variable types that are not explicit strings
-	.equals(<string_name>) // returns a boolean that tells whether the two strings are equal or not
+	.equals(<str>) // returns a boolean of whether two strings are equal or not ; case sensitive
+  .equalsIgnoreCase(<str>) // returns a boolean whether two strings are equal or not ; not case sensitive
+  .compareTo() // lexicographically (alphabetic order) compares String(s) converted to unicode
+    // returns 0 if the String objects are the same
+    // returns < 0 if the String object is lexicographically less than the String object passed as a parameter
+    // returns > 0 if the String object is lexicographically more than the String object passed as a parameter
+      // Watch for case: M -> P -> -3 ; m -> P -> +29
+  .length() // returns the length of the String object
+  .concat(<str2>) // concatenates 2 String objects together, usage: <str1>.concat(<str2>)
+  .indexOf(<sub_str>) // returns the first occuring index of <sub_str> ; if not found, returns -1
+  .charAt()
+  .substring(<idx>) // returns the String object starting at index=<idx>
+  .toUpperCase() // returns a String object where all alpha characters are uppercase
+  .toLowerCase() // returns a String object where all alpha characters are lowercase
+
+
 Array
 Reference // generic reference to a class object ;  default value is "null"
 
@@ -78,6 +104,14 @@ null
 &&
 ||;
 
+// FOR-EACH LOOPS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// This is basically the equivalent of Python "for <var> in <collection>" style loops
+// Rather than having to index the value of each item in the collection (like in C)
+// These are also known as "enhanced loops"
+for (String item : items) {  
+  System.out.println(item); // print element value
+}
 
 // CLASS EXAMPLES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
