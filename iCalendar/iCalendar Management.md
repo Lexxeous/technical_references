@@ -4,7 +4,7 @@
 
 ### Summary:
 
-The `iCalendar` programming language allows easy distribution of calandar data for senders and automatic import of events for receivers. All of the properties that are available to set in the Apple Calendar application GUI are also available when using the `iCalendar` programming format. Valid file extensions include, but are not limited to: `.ics`, `.ical`, `.ifb`, & `.icalendar`.
+The `iCalendar` domain specific language allows easy distribution of calandar data for senders and automatic import of events for receivers. All of the properties that are available to set in the Apple Calendar application GUI are also available when using the `iCalendar` programming format. Valid file extensions include, but are not limited to: `.ics`, `.ical`, `.ifb`, & `.icalendar`.
 
 Below are some useful links to learn more about `iCalendar`:
 

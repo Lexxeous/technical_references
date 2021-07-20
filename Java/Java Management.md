@@ -1,7 +1,10 @@
 <!-- Java Management.md -->
 
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Java Management: <img src="../.pics/Java/java_logo.png" width="100"/>
-### Manage Java Projects.
+
+> Tutorial content credit goes to the [Codecademy Java Tutorial](https://www.codecademy.com/courses/learn-java).
+
+### Manage Java Projects:
 
 A Java program is essentially a collection of 1 or more Java files that have classes, `main` functions, and supplementary functions.
 Upon executing a particular file, the `main` function will be called. The functionality depends on the other functions that are called within the `main` and the other files that are included for the primary class to reference.
@@ -11,7 +14,7 @@ javac <filename>.java // creates a <filename>.class file to be executed
 java <filename> // executes the <filename>.class "main" function
 ```
 
-### Unchecked or Unsafe Operations
+### Unchecked or Unsafe Operations:
 
 The following warning is displayed when you execute code which the Java compiler considers to be lacking in error-checking, or is potentially unsafe in some way.
 
@@ -32,3 +35,6 @@ javac -Xlint:unchecked <filename>.java
 javac <filename>.java -Xlint
 ```
 
+### Inheritance Access Modifiers:
+
+<img src="../.pics/Java/inheritance_access_modifiers.png" width="700px"/>

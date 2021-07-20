@@ -8,12 +8,15 @@ One reason people love Java is the Java Virtual Machine, which ensures the same 
 Sun Microsystems’ slogan for Java was “write once, run everywhere”.
 
 Java is very similar to C and C++ syntactically.
+
+Tutorial content credit goes to Codecademy: https://www.codecademy.com/courses/learn-java
 */
 
 // LIBRARIES AND UTILS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 import java.util.Arrays; // default Arrays package ; static size and mutable ; DataType[] arr_name
-  // Arrays.toString(<arr>)
+  .toString(<arr>)
+  .deepToString(<multi_dim_arr>)
 
 import java.util.ArrayList; // default ArrayList package ; dynamic size and mutable ; ArrayList<DataType> arr_lst_name
   .get(<index>) // returns the ArrayList value at <index>
@@ -25,7 +28,24 @@ import java.util.ArrayList; // default ArrayList package ; dynamic size and muta
   .indexOf(<data>) // returns index of first occurence of <data>
   .size() // returns size/length of ArrayList
 
+import java.lang.Math;
+  int    .abs(int x)
+  double .abs(double x)
+  double .pow(double base, double exponent)
+  double .sqrt(double x)
+  double .random() // returns a random value between 0.0 and 1.0
+    (Math.random() * (maxValue - minValue)) + minValue // generate a random value in a range
+  int    .negateExact(int a)
+  double .hypot(double x, double y) // returns sqrt(x^2 + y^2) without intermediate over/under-flow
+  double .tanh(x) // returns hyperbolic tangent of x
+
+
 // KEYWORDS AND DATATYPES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+System
+  .out // standard out
+  .err // standard error
+  .in // standard in
 
 // Strings are immutable objects and cannot be "changed" unless a new variable or object is created.
 String
@@ -40,19 +60,28 @@ String
   .length() // returns the length of the String object
   .concat(<str2>) // concatenates 2 String objects together, usage: <str1>.concat(<str2>)
   .indexOf(<sub_str>) // returns the first occuring index of <sub_str> ; if not found, returns -1
-  .charAt()
-  .substring(<idx>) // returns the String object starting at index=<idx>
+  .charAt(<idx>) // returns the character at index=<idx> from the String object
+  .substring(<start_idx> [, <end_idx>]) // returns a portion of String object ; starting index in inclusive, end is not
   .toUpperCase() // returns a String object where all alpha characters are uppercase
   .toLowerCase() // returns a String object where all alpha characters are lowercase
+  .valueOf(String <str>) // converts string into a number
 
 
 Array
+
 Reference // generic reference to a class object ;  default value is "null"
+
+Integer // https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html
+  .MIN_VALUE // constant holding the minimum value an int can have, -2^31
+  .MAX_VALUE // constant holding the maximum value an int can have, 2^31-1
+  .SIZE // number of bits used to represent an int value in two's complement binary form
+  .BYTES // number of bytes used to represent a int value in two's complement binary form
 
 boolean
 
 char
 byte
+
 int
 short
 long
@@ -60,49 +89,168 @@ long
 float
 double
 
-void // there is no specific output from a method with this datatype
+void // there is no return value from a method with this datatype
 
 // Access and Reference Method Modifiers
-public // other classes can access method with this modifier
-private // other classes can not access method with this modifier ; only methods from within the same class
+public // all other classes can access class methods/variables with this modifier
+protected // only inherited classes can access both public and private methods/variables with this modifier
+private // other classes can NOT access methods/variables with this modifier ; only methods from within the same class
 static // allows a method to be called without explicitly referencing a class instance
 final // prepend to a datatype for a value that should never change ; very similar to "const"
 
+// EXCEPTIONS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Exception
+  RuntimeException
+  SecurityException
+  ArithmeticException
+  ClassCastException
+
+// try-catch blocks allow us to catch general or specific exceptions and handle them how we see fit
+try {
+  //  Block of code to try
+} catch (Exception e) {
+  System.err.println("Print error message");
+} catch (ArithmeticException e) {
+  //  Code to handle an ArithmeticException
+}
+
 // BOOLEANS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-true
-false
-null
+true // yes
+
+false // no
+
+null // nothing
 
 // MATHEMATIC OPERATORS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-+
--
-*
-/
-%
++ // add (and string concatenation)
+- // subtract
+* // multiply
+/ // divide
+% // modulus
 
-+=
--=
-*=
-/=
-%=
+<v> += <a> // <v> = <v> + <a> ; increment <v> by <a>
+<w> -= <b> // <w> = <w> - <b> ; decrement <w> by <b>
+<x> *= <c> // <x> = <x> * <c>
+<y> /= <d> // <y> = <y> / <d>
+<z> %= <e> // <z> = <z> % <e>
 
-=
+++ // increment by 1
+-- // decrement by 1
+
+= // variable assignment
 
 // RELATIONAL OPERATORS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
->
-<
->=
-<=
-==
-!=
+> // is greater than
+< // is less than
+>= // is greater than or equal to
+<= // is less than or equal to
+
+== // is equal to
+!= // is not equal to
 
 // LOGICAL OPERATORS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-&&
-||;
+== // is equal to
+!= // is not equal to
+
+& // AND
+| // OR
+^ // XOR
+! // NOT
+
+&& // short-circuit AND
+|| // short-circuit OR
+
+// CONDITIONAL OPERATORS ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+<bool_expr> ? <true_expr> : <false_expr>; // ternary ; single line "if" statement
+
+// THE "THIS" KEYWORD –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// If there are 2 variables inside of a class that are named the same, the this.<var> will always refer to the instance variable of that class
+// When not using the "this" keyword when there are duplicate <var>s, methods will use the local or param value, by default
+this.<var>;
+
+// We can also use the "this" keyword on methods when we want to reference the current object without creating a "new" one
+// We can also use the "this" keyword as parameters to pass/act on the current object instance inside of another method
+public class Computer {
+  private int brightness;
+  private int volume;
+ 
+  public void setBrightness(int inputBrightness) {
+    this.brightness = inputBrightness;
+  }
+ 
+  public void setVolume(int inputVolume) {
+    this.volume = inputvolume;
+  }
+ 
+  public void resetSettings() {
+    this.setBrightness(0);
+    this.setVolume(0);
+  }
+
+  public void pairWithOtherComputer(Computer comp) {
+  // Code for method that uses a Computer object
+  }
+ 
+  public void setUpConnection() {
+    // We use "this" to call the method and also pass "this" to the method so it can be used in "that" method
+    this.pairWithOtherComputer(this);
+  }
+}
+
+// STATIC VS. NON-STATIC ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// Static methods do not require you to create a new instance of an object before you call them
+// Static methods are methods that belong to an entire class, not a specific object of the class
+// Static methods can’t interact with non-static instance variables
+  // The this keyword can’t be used by a static method since static methods are associated with an entire class, not a specific object of that class
+import java.lang.Math; // simple import of the Math library where the methods are static
+  Math.<math_method>(<params>); // prefix the library name to call methods
+import static java.lang.Math.*; // import all the Math library methods statically
+  <math_method>(<params>); // can call the Math library methods directly without having to use the "Math." prefix
+
+// Non-static methods DO require you to make a new instance of a class object before calling them
+
+// Static variables belong to the class itself rather than belonging to an object instance of a class
+public class Dog {
+ 
+  // Static variables
+  public static String genus = "Canis"; // all dogs have the same genus, no need to change ; not the same as final / const
+ 
+  //Instance variables
+  public int age;
+  public String name;
+ 
+  public Dog(int inputAge, String inputName) {
+    this.age = inputAge;
+    this.name = inputName;
+  }
+}
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// We can keep track of and change the value of static class variables with constructors and "destructors"
+
+public class ATM {
+  // Static variables
+  public static int totalMoney = 0;
+  public static int numATMs = 0;
+
+  // Instance variables
+  public int money;
+
+  // use constructor to keep track of how much total money and how many ATMs are available
+  public ATM(int inputMoney) {
+    this.money = inputMoney;
+    numATMs += 1;
+    totalMoney += inputMoney;
+  }
+}
 
 // FOR-EACH LOOPS –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -113,11 +261,81 @@ for (String item : items) {
   System.out.println(item); // print element value
 }
 
+// INHERITANCE ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// Parent class, superclass, and base class refer to the class that another class inherits
+// Child class, subclass, and derived class refer to a class that inherits from another class
+
+public class Noodle {
+  
+  protected double lengthInCentimeters;
+  protected double widthInCentimeters;
+  protected String shape;
+  protected String ingredients;
+  protected String texture = "brittle"; // "all noodles start out hard/brittle"
+  
+  Noodle(double lenInCent, double wthInCent, String shp, String ingr) {
+    this.lengthInCentimeters = lenInCent;
+    this.widthInCentimeters = wthInCent;
+    this.shape = shp;
+    this.ingredients = ingr;
+  }
+
+  public void cook() {
+    this.texture = "soft"; // "all noodles are soft after cooking"
+  }
+  
+  final public boolean isTasty() { // cannot change this method because "all noodles are tasty"
+    return true;
+  }
+  
+  public static void main(String[] args) {
+    Ramen ramen = new Ramen();
+    Pho pho = new Pho();
+
+    System.out.println(ramen.isTasty()); // true
+    System.out.println(pho.isTasty()); // true
+    
+    System.out.println(ramen.texture); // "brittle"
+    ramen.cook();
+    System.out.println(ramen.texture); // "squishy"
+
+    Noodle noodleList = {ramen, pho}; // list of different Noodle objects
+    for(noodle : noodleList) {
+      System.out.println(noodle.lengthInCentimeters); // 30.0, 20.0
+    }
+  }
+}
+
+public class Ramen extends Noodle {
+  
+  Ramen() {
+    super(30.0, 0.3, "flat", "wheat flour"); // super method uses the parents constructor
+  }
+
+  @Override public void cook() { // override the parents method functionality
+    this.texture = "squishy";
+    // can use super.cook() to invoke the parents version of the method
+  }
+}
+
+public class Pho extends Noodle {
+  Pho() {
+    super(20.0, 0.5, "flat", "rice flour");
+  }
+}
+
+/*
+Java incorporates the object-oriented programming principle of polymorphism.
+Polymorphism, which derives from Greek meaning “many forms”, allows a child class to
+share the information and behavior of its parent class while also incorporating its own functionality.
+*/
+
 // CLASS EXAMPLES –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-public class Printing
-{
+public class Printing {
   public static void main(String[] args)
   {
     System.out.println("Hello World!");
@@ -328,6 +546,25 @@ public class Newsfeed {
   }
 } // Newsfeed class with command line argument(s)
 
+// MATRIX TRAVERSAL –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// ROW-MAJOR ORDER –––––––––––––––––––––––––––––––––––––––––––––
+
+for(int r = 0; r < matrix.length; r++) {
+  for(int c = 0; c < matrix[0].length; c++) {
+    System.out.print("Element: " + matrix[r][c]);
+    System.out.println();
+  }
+}
+
+// COLUMN-MAJOR ORDER ––––––––––––––––––––––––––––––––––––––––––
+
+for(int c = 0; c < matrix[0].length; c++) {
+  for(int r = 0; r < matrix.length; r++) {
+    System.out.print("Element: " + matrix[r][c]);
+    System.out.println();
+  }
+}
 
 // EOF ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
