@@ -1,6 +1,7 @@
 <!-- Git Management -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's Git Management: <img src="../.pics/Git/github_logo.png" width="100"/>
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's Git Management: <img src="../.pics/Git/github_logo.png" width="90px"/>
+
 ### Manage Git Repositories, Remotes, & Branches.
 
 Local user info is pulled from `~/.gitconfig`.
@@ -150,6 +151,3 @@ git rebase -i <sha> # edit commits strictly after <sha>
 git blame # shows what revision and author last modified each line of a committed file
 git diff # "git blame" does not show lines deleted or replaced, but "git diff" does
 ```
-
-
-
