@@ -1,4 +1,4 @@
-<!-- JS Management -->
+<!-- JS Management.md -->
 
 # <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's JS Management: <img src="../.pics/JS/js_logo.png" width="90px"/>
 
