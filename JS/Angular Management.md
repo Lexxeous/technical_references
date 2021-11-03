@@ -29,7 +29,7 @@ Like other front-end frameworks, **Angular** is typically used to create single-
   * API/HTTP requests
   * [NPM (Node Package Manager)](https://www.npmjs.com/)
 
-### Angular Components:
+### Components:
 
 The **Angular** framework is component driven. This means that code can be resused and placed anywhere. Components are pieces of UI template code that include things like HTML, logic, and styling. Since components are reusable, they can be embedded into a template in an XML-like fashion, using custom HTML tags.
 
@@ -80,9 +80,15 @@ You can generate new custom components and structure the files and folders howev
 ng generate component [path]/<component_name> 
 ```
 
-### Angular Services:
+### Services:
 
-**Angular** services are typically used to serve one function (each) for your application, such as data fetching, input validation, logging data, etc... Services are distinguishable from components as they increase modularity and reusability of your code. By separating a component's view-related functionality from other kinds of processing, you can make your component classes lean and efficient. Components can also delegate certain tasks to these services. 
+**Angular** services are typically used to serve one function (each) for your application, such as data fetching, input validation, logging data, etc... Services are distinguishable from components as they increase modularity and reusability of your code. By separating a component's view-related functionality from other kinds of processing, you can make your component classes lean and efficient. Components can also delegate certain tasks to these services.
+
+Services act similarly to "helpers" in Ruby on Rails.
+
+### Observables:
+
+Observables are simply a sequence of items that arrive asyncronously over time.
 
 ### Angular CLI (Command Line Interface):
 
