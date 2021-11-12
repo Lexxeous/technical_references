@@ -159,6 +159,6 @@ git clone https://<username>:<password_or_PAT>@github.com/username/repository.gi
 
 fatal: unable to access "<repo>".git: SSL certificate problem: unable to get local issuer certificate
 
-# Can temporarily fix fatal error by disabling ssl, but this is a security risk, reenable ASAP
+# Can temporarily fix fatal error by disabling ssl, but this is a security risk, re-enable ASAP
 git config --global http.sslVerify { true | false }
 ```

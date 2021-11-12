@@ -18,6 +18,9 @@ Set-ExecutionPolicy -ExecutionPolicy { Restricted | RemoteSigned } [-Scope { Cur
 # Login/connect/authenticate with Azure account
 Connect-AzAccount
 
+# Get list of available locations
+Get-AzLocation
+
 # Get list of available subscriptions for your Azure account
 Get-AzSubscription
 
@@ -29,6 +32,9 @@ Set-AzContext -Subscription '00000000-0000-0000-0000-000000000000'
 
 # Get list of available/created resource groups for the current subscription context for your Azure account
 Get-AzResourceGroup
+
+# Set default resource group
+Set-AzDefault -ResourceGroupName <resource_group_name>
 
 # Create a new resource group within the current subscription context for your Azure account
 New-AzResourceGroup -Name <name> -Location <location>
@@ -52,6 +58,17 @@ Get-AzVm [-Name <vm_name>] [-ResourceGroupName <resource_group_name>] [-Status] 
     $vm.<property> # print single VM property
     $vm_ip =($vm | Get-AzPublicIpAddress) # print VM public IP address
     ssh <username>@$vm_ip # login to VM via SSH
+
+
+
+# Iterative template deployment ; as you make changes to the JSON template file ; similar to Terraform default versioning
+$templateFile = "{provide-the-path-to-the-template-file}"
+$today=Get-Date -Format "MM-dd-yyyy"
+$deploymentName="<deployment-reason>"+"$today"
+New-AzResourceGroupDeployment `
+  -Name $deploymentName `
+  -ResourceGroupName <resource_group_name> `
+  -TemplateFile $templateFile
 
 # ------------------------------------------------------------------------------------------------------------------------------------------ #
 
