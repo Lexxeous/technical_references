@@ -161,4 +161,9 @@ fatal: unable to access "<repo>".git: SSL certificate problem: unable to get loc
 
 # Can temporarily fix fatal error by disabling ssl, but this is a security risk, re-enable ASAP
 git config --global http.sslVerify { true | false }
+
+# Alternatively, add your enterprise organization's root CA cert to the bottom of Git's certificate file at:
+cd "C:\Users\<username>\AppData\Local\Programs\Git\mingw64\ssl\certs\ca-bundle.crt"
+# OR
+cd "C:\Program Files\Git\mingw64\ssl\certs\ca-bundle.crt"
 ```
