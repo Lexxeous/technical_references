@@ -1,22 +1,37 @@
+########################################################
+# Author: Jonathan Alexander Gibson
+# Date: November 22, 2021
+# Execution Command: python -m robot -d Results/ Tests/Amazon.robot
+# Credit: Udemy Course - https://www.udemy.com/course/robot-framework-level-1/
+########################################################
+
 *** Settings ***
-Documentation   Test checkout for guest user on Amazon
-Library Selenium2Library
+Documentation  info
+Library  SeleniumLibrary
 
 *** Variables ***
-${Browser} = chrome
 
 *** Test Cases ***
-Guest must be logged in to check out
-  [Documentation]   Attempt to checkout on Amazon without logging in
-  Open Browser https://www.amazon.com ${Browser}
+User must sign in to checkout (chrome)
+    [Documentation]  Attempt to checkout on Amazon without logging in (chrome)
+    [Tags]  Chrome
 
-  # <span id="nav-link-accountList-nav-line-1" class="nav-line-1 nav-progressive-content">Hello, Sign in</span>
-  Wait Until Page Contains Hello, Sign in
+    # Pre-conditions
+    Open Browser  https://www.amazon.com  chrome
 
-  Input Text id=twotabsearchtextbox Ferrari 458
+    Wait Until Page Contains  Hello, Sign in
+    Input Text  id=twotabsearchtextbox  Ferrari 458
+    Click Button  id=nav-search-submit-button
+    Wait Until Page Contains  results for "Ferrari 458"
+    Click Link  xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a
+    Wait Until Page Contains  Back to results
+    Click Button  id=add-to-cart-button
+    Wait Until Page Contains  Added to Cart
 
-  Click Buttonxpath=//*[@id="nav-search"]/form/div[2]/div/input
+    # Test case steps
+    Click Link  id=hlb-ptc-btn-native
+    Page Should Contain Element  continue
 
-  Wait Until Page Contains results for "Ferrari 458"
-
-  Close Browser
+    # Post-conditions
+    BuiltIn.Sleep  3s
+    Close Browser
