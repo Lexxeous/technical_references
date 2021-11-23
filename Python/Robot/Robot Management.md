@@ -13,11 +13,12 @@
 1. Install Python and `pip`.
 2. Use `pip` to install the **Robot** framework.
 3. Use `pip` to install the **Selenium** library.
-4. Install desired browser appications (Internet Explore, Google Chrome, Firefox, Safari, etc).
+    - If you are using current versions of **Python** and the **Robot** framework, install the current development branch of `SeleniumLibrary` to avoid **Python** import errors by running `pip install git+https://github.com/robotframework/SeleniumLibrary.git`.
+4. Install desired browser applications (Internet Explore, Google Chrome, Firefox, Safari, etc).
 5. Install **Selenium** web-drivers for each browser.
 6. Install the Pycharm IDE and Intellibot plugin (optional).
 
-> It is not guarunteed that the 64-bit web-driver versions will work, so the 32-bit versions are recommended for now.
+> It is not guaranteed that the 64-bit web-driver versions will work, so the 32-bit versions are recommended for now.
 
 > Follow official [documented install instructions](https://www.selenium.dev/downloads/) for your OS and browser platform(s).
 
@@ -57,7 +58,7 @@ https://www.python.org/downloads/source/
 
   * **Programming Language** - How to write your tests.
   * **Scripts** - Can create files that do multiple tasks.
-  * **Reusable Entities/Objects** - Removes unecessary redundancy.
+  * **Reusable Entities/Objects** - Removes unnecessary redundancy.
   * **Includes Supporting Libraries** - Core, Standard, Import (test web, APIs, DBs, mobile, etc).
   * **Abstraction** - Increased readability and usability.
   * **Test Runner** - Selective run capabilities and tags.
@@ -130,6 +131,10 @@ https://www.python.org/downloads/source/
 
 > Sections always begin with 3 asterisks.
 
+> You must use 2 spaces between keywords and parameters.
+
+> You must indent blocks with 4 spaces.
+
 #### Settings:
 
 ```robot
@@ -172,10 +177,15 @@ Declare variables...
 
 ```robot
 *** Test Cases***
+<Test case title>
 
-[Documentation] Some information about the test.
-[Tags] Tag1 Tag2 ... TagN
-[Timeout] X
+    [Documentation]  Some information about the test.
+    [Tags]  Tag1  Tag2  ...  TagN
+    [Timeout]  X
+
+    # Pre-conditions (setup for test actions)
+    # Test case steps (test actions)
+    # Post-conditions (clean up after test actions)
 ```
 
 #### Keywords:
@@ -187,3 +197,20 @@ Declare variables...
 ```
 
 > Optional. Typically put keywords in associated `Resources` files.
+
+## Executing **Robot** Files:
+
+https://github.com/robotframework/robotframework/issues/1857#issuecomment-400495930
+https://stackoverflow.com/questions/69749942/getting-error-cannot-import-name-run-cli-from-robot-with-gitlab-ci-runner
+
+  * `pybot`
+  * `robot`
+  * `python -m robot`
+  * `python -m robot.run`
+  * `python -m robot.exe`
+  * `python -m robot.bat`
+
+### Flags:
+
+  * `-i --include <tags>` - Include only a subset of tests to run based on custom tags.
+  * `-d --outputdir <path/to/output/dir>` - Specify output directory for results.
