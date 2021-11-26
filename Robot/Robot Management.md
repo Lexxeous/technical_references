@@ -215,14 +215,25 @@ https://stackoverflow.com/questions/69749942/getting-error-cannot-import-name-ru
 
 ### Flags:
 
-  * `-i --include <tags>` - Include only a subset of tests to run based on custom tags.
   * `-d --outputdir <path/to/output/dir>` - Specify output directory for results.
+  * `-i --include <tags>` - Include only a subset of tests to run based on custom tags.
   * `-N --name <name>` - Set the name of the top level suite. By default the name is created based on the executed file or directory.
+  * `-t --test <name>` - Specify the name of a unique test case that you want to run.
 
 
 ### Run Multiple Suites:
 
 Using something like `python -m robot -d Results/ <path/to/desired/suite/folder>/` will run all of the suites/test cases in all folders and sub-folders with in the desired directory.
+
+
+### Run a Single Test Case:
+
+You can run a single **Robot** test case by using the `-t` option/flag by running something like `python -m robot -d Results -t <test_case_name> [path/to/test/file].robot`. If you do not specify a test file location for the `<test_case_name`, then **Robot** will run all test cases that have `<test_case_name>`, in all the current sub-folders.
+
+> You can also use the `-i` option/flag to achieve the same result.
+
+> Using the `-t` option requires more specificity, but the `-i` option creates much more cluttered logs with nested folder structures. Use your own preferences to balance these pros and cons.
+
 
 ### With a Batch File:
 

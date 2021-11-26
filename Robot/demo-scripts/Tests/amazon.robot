@@ -20,6 +20,7 @@ User must sign in to checkout (chrome)
 
     # Pre-conditions
     Open Browser  https://www.amazon.com  chrome
+    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
 
     Wait Until Page Contains  Hello, Sign in
     Input Text  id=twotabsearchtextbox  Ferrari 458
@@ -37,3 +38,7 @@ User must sign in to checkout (chrome)
     # Post-conditions
     BuiltIn.Sleep  3s
     Close Browser
+
+
+*** Keywords ***
+# can prototype user-defined keyword definitions like prototyping custom functions in general purpose programming languages
