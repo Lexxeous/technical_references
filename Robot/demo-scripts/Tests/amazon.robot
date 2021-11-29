@@ -6,8 +6,18 @@
 ########################################################
 
 *** Settings ***
-Documentation  info
-Library  SeleniumLibrary
+Documentation  Main suite file for testing the Amazon website.
+
+# Import resources
+Resource  ../Resources/amazon.web.gui.robot
+Resource  ../Resources/common.web.robot
+Resource  ../Resources/common.robot
+
+# Define setup and tear-down
+Suite Setup  Init Suite
+Test Setup  Begin Web Test
+Test Teardown  End Web Test
+Suite Teardown  Clean Suite
 
 *** Variables ***
 
@@ -18,27 +28,8 @@ User must sign in to checkout (chrome)
 
     Log  Starting "User must sign in to checkout (chrome)" test case
 
-    # Pre-conditions
-    Open Browser  https://www.amazon.com  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
-
-    Wait Until Page Contains  Hello, Sign in
-    Input Text  id=twotabsearchtextbox  Ferrari 458
-    Click Button  id=nav-search-submit-button
-    Wait Until Page Contains  results for "Ferrari 458"
-    Click Link  xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a
-    Wait Until Page Contains  Back to results
-    Click Button  id=add-to-cart-button
-    Wait Until Page Contains  Added to Cart
-
-    # Test case steps
-    Click Link  id=hlb-ptc-btn-native
-    Page Should Contain Element  continue
-
-    # Post-conditions
-    BuiltIn.Sleep  3s
-    Close Browser
-
-
-*** Keywords ***
-# can prototype user-defined keyword definitions like prototyping custom functions in general purpose programming languages
+    Amazon.Web.Gui.Search for Products
+    Amazon.Web.Gui.Select Product from Search Results
+    Amazon.Web.Gui.Add Product to Cart
+    Amazon.Web.Gui.Begin Checkout
+    Common.Pause

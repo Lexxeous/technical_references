@@ -1,97 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 4.1.2 (Python 3.10.0 on win32)" generated="20211126 16:31:27.054" rpa="false" schemaversion="2">
+<robot generator="Robot 4.1.2 (Python 3.10.0 on win32)" generated="20211129 15:55:29.727" rpa="false" schemaversion="2">
 <suite id="s1" name="Amazon" source="C:\Users\jagibson\Prog_Projects\technical_references\Robot\demo-scripts\Tests\amazon.robot">
-<test id="s1-t1" name="User must sign in to checkout (chrome)">
+<kw name="Init Suite" library="common" type="SETUP">
 <kw name="Log" library="BuiltIn">
-<arg>Starting "User must sign in to checkout (chrome)" test case</arg>
+<arg>I am initializing a web suite.</arg>
 <doc>Logs the given message with the given level.</doc>
-<msg timestamp="20211126 16:31:27.319" level="INFO">Starting "User must sign in to checkout (chrome)" test case</msg>
-<status status="PASS" starttime="20211126 16:31:27.318" endtime="20211126 16:31:27.319"/>
+<msg timestamp="20211129 15:55:29.932" level="INFO">I am initializing a web suite.</msg>
+<status status="PASS" starttime="20211129 15:55:29.932" endtime="20211129 15:55:29.932"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:29.932" endtime="20211129 15:55:29.932"/>
+</kw>
+<test id="s1-t1" name="User must sign in to checkout (chrome)">
+<kw name="Begin Web Test" library="common.web" type="SETUP">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.amazon.com</arg>
+<arg>about:blank</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20211126 16:31:27.319" level="INFO">Opening browser 'chrome' to base url 'https://www.amazon.com'.</msg>
-<status status="PASS" starttime="20211126 16:31:27.319" endtime="20211126 16:31:33.272"/>
+<msg timestamp="20211129 15:55:29.934" level="INFO">Opening browser 'chrome' to base url 'about:blank'.</msg>
+<status status="PASS" starttime="20211129 15:55:29.933" endtime="20211129 15:55:31.315"/>
+</kw>
+<kw name="Go To" library="SeleniumLibrary">
+<arg>https://www.amazon.com</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<msg timestamp="20211129 15:55:31.315" level="INFO">Opening url 'https://www.amazon.com'</msg>
+<status status="PASS" starttime="20211129 15:55:31.315" endtime="20211129 15:55:34.138"/>
 </kw>
 <kw name="Maximize Browser Window" library="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20211126 16:31:33.273" endtime="20211126 16:31:33.591"/>
+<status status="PASS" starttime="20211129 15:55:34.139" endtime="20211129 15:55:34.312"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:29.933" endtime="20211129 15:55:34.312"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>Starting "User must sign in to checkout (chrome)" test case</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20211129 15:55:34.313" level="INFO">Starting "User must sign in to checkout (chrome)" test case</msg>
+<status status="PASS" starttime="20211129 15:55:34.313" endtime="20211129 15:55:34.314"/>
+</kw>
+<kw name="Search for Products" library="amazon.web.gui">
 <kw name="Wait Until Page Contains" library="SeleniumLibrary">
 <arg>Hello, Sign in</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" starttime="20211126 16:31:33.592" endtime="20211126 16:31:34.054"/>
+<status status="PASS" starttime="20211129 15:55:34.314" endtime="20211129 15:55:34.613"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
 <arg>id=twotabsearchtextbox</arg>
 <arg>Ferrari 458</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20211126 16:31:34.055" level="INFO">Typing text 'Ferrari 458' into text field 'id=twotabsearchtextbox'.</msg>
-<status status="PASS" starttime="20211126 16:31:34.054" endtime="20211126 16:31:34.448"/>
+<msg timestamp="20211129 15:55:34.614" level="INFO">Typing text 'Ferrari 458' into text field 'id=twotabsearchtextbox'.</msg>
+<status status="PASS" starttime="20211129 15:55:34.614" endtime="20211129 15:55:34.992"/>
 </kw>
 <kw name="Click Button" library="SeleniumLibrary">
 <arg>id=nav-search-submit-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<msg timestamp="20211126 16:31:34.448" level="INFO">Clicking button 'id=nav-search-submit-button'.</msg>
-<status status="PASS" starttime="20211126 16:31:34.448" endtime="20211126 16:31:37.652"/>
+<msg timestamp="20211129 15:55:34.993" level="INFO">Clicking button 'id=nav-search-submit-button'.</msg>
+<status status="PASS" starttime="20211129 15:55:34.993" endtime="20211129 15:55:37.054"/>
 </kw>
 <kw name="Wait Until Page Contains" library="SeleniumLibrary">
 <arg>results for "Ferrari 458"</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" starttime="20211126 16:31:37.652" endtime="20211126 16:31:37.735"/>
+<status status="PASS" starttime="20211129 15:55:37.054" endtime="20211129 15:55:37.232"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:34.314" endtime="20211129 15:55:37.232"/>
+</kw>
+<kw name="Select Product from Search Results" library="amazon.web.gui">
 <kw name="Click Link" library="SeleniumLibrary">
 <arg>xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<msg timestamp="20211126 16:31:37.736" level="INFO">Clicking link 'xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a'.</msg>
-<status status="PASS" starttime="20211126 16:31:37.735" endtime="20211126 16:31:41.044"/>
+<msg timestamp="20211129 15:55:37.234" level="INFO">Clicking link 'xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a'.</msg>
+<status status="PASS" starttime="20211129 15:55:37.233" endtime="20211129 15:55:41.153"/>
 </kw>
 <kw name="Wait Until Page Contains" library="SeleniumLibrary">
 <arg>Back to results</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" starttime="20211126 16:31:41.045" endtime="20211126 16:31:41.127"/>
+<status status="PASS" starttime="20211129 15:55:41.153" endtime="20211129 15:55:41.216"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:37.233" endtime="20211129 15:55:41.216"/>
+</kw>
+<kw name="Add Product to Cart" library="amazon.web.gui">
 <kw name="Click Button" library="SeleniumLibrary">
 <arg>id=add-to-cart-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<msg timestamp="20211126 16:31:41.128" level="INFO">Clicking button 'id=add-to-cart-button'.</msg>
-<status status="PASS" starttime="20211126 16:31:41.127" endtime="20211126 16:31:43.115"/>
+<msg timestamp="20211129 15:55:41.217" level="INFO">Clicking button 'id=add-to-cart-button'.</msg>
+<status status="PASS" starttime="20211129 15:55:41.217" endtime="20211129 15:55:42.370"/>
 </kw>
 <kw name="Wait Until Page Contains" library="SeleniumLibrary">
 <arg>Added to Cart</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" starttime="20211126 16:31:43.115" endtime="20211126 16:31:43.193"/>
+<status status="PASS" starttime="20211129 15:55:42.370" endtime="20211129 15:55:42.490"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:41.217" endtime="20211129 15:55:42.490"/>
+</kw>
+<kw name="Begin Checkout" library="amazon.web.gui">
 <kw name="Click Link" library="SeleniumLibrary">
 <arg>id=hlb-ptc-btn-native</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<msg timestamp="20211126 16:31:43.194" level="INFO">Clicking link 'id=hlb-ptc-btn-native'.</msg>
-<status status="PASS" starttime="20211126 16:31:43.194" endtime="20211126 16:31:44.256"/>
+<msg timestamp="20211129 15:55:42.491" level="INFO">Clicking link 'id=hlb-ptc-btn-native'.</msg>
+<status status="PASS" starttime="20211129 15:55:42.491" endtime="20211129 15:55:43.262"/>
 </kw>
 <kw name="Page Should Contain Element" library="SeleniumLibrary">
 <arg>continue</arg>
 <doc>Verifies that element ``locator`` is found on the current page.</doc>
-<msg timestamp="20211126 16:31:44.309" level="INFO">Current page contains element 'continue'.</msg>
-<status status="PASS" starttime="20211126 16:31:44.257" endtime="20211126 16:31:44.309"/>
+<msg timestamp="20211129 15:55:43.289" level="INFO">Current page contains element 'continue'.</msg>
+<status status="PASS" starttime="20211129 15:55:43.262" endtime="20211129 15:55:43.289"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:42.490" endtime="20211129 15:55:43.289"/>
+</kw>
+<kw name="Pause" library="common">
 <kw name="Sleep" library="BuiltIn">
 <arg>3s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20211126 16:31:47.314" level="INFO">Slept 3 seconds</msg>
-<status status="PASS" starttime="20211126 16:31:44.309" endtime="20211126 16:31:47.314"/>
+<msg timestamp="20211129 15:55:46.296" level="INFO">Slept 3 seconds</msg>
+<status status="PASS" starttime="20211129 15:55:43.290" endtime="20211129 15:55:46.296"/>
 </kw>
+<status status="PASS" starttime="20211129 15:55:43.290" endtime="20211129 15:55:46.296"/>
+</kw>
+<kw name="End Web Test" library="common.web" type="TEARDOWN">
 <kw name="Close Browser" library="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="PASS" starttime="20211126 16:31:47.314" endtime="20211126 16:31:49.480"/>
+<status status="PASS" starttime="20211129 15:55:46.298" endtime="20211129 15:55:48.476"/>
+</kw>
+<status status="PASS" starttime="20211129 15:55:46.297" endtime="20211129 15:55:48.477"/>
 </kw>
 <doc>Attempt to checkout on Amazon without logging in (chrome)</doc>
 <tag>Chrome</tag>
-<status status="PASS" starttime="20211126 16:31:27.318" endtime="20211126 16:31:49.481"/>
+<status status="PASS" starttime="20211129 15:55:29.933" endtime="20211129 15:55:48.478"/>
 </test>
-<doc>info</doc>
-<status status="PASS" starttime="20211126 16:31:27.056" endtime="20211126 16:31:49.483"/>
+<kw name="Clean Suite" library="common" type="TEARDOWN">
+<kw name="Log" library="BuiltIn">
+<arg>I am cleaning up a web suite.</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20211129 15:55:48.482" level="INFO">I am cleaning up a web suite.</msg>
+<status status="PASS" starttime="20211129 15:55:48.482" endtime="20211129 15:55:48.483"/>
+</kw>
+<status status="PASS" starttime="20211129 15:55:48.482" endtime="20211129 15:55:48.483"/>
+</kw>
+<doc>Main suite file for testing the Amazon website.</doc>
+<status status="PASS" starttime="20211129 15:55:29.729" endtime="20211129 15:55:48.483"/>
 </suite>
 <statistics>
 <total>

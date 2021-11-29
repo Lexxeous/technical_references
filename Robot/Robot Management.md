@@ -182,7 +182,7 @@ Declare variables...
     [Documentation]  Some information about the test.
     [Tags]  Tag1  Tag2  ...  TagN
     [Timeout]  X
-
+    
     # Pre-conditions (setup for test actions)
     # Test case steps (test actions)
     # Post-conditions (clean up after test actions)
@@ -190,10 +190,13 @@ Declare variables...
 
 #### Keywords:
 
+You can "prototype" user-defined keyword definitions. This is similar to prototyping custom functions in general purpose programming languages. When the user-defined keyword(s) are in the same file, from which they are being called, they do not prefix a resource location in the results. If the user-defined keyword(s) are abstracted to an external file, and imported as a resource, they do prefix a resource location in the results.
+
 ```robot
 ***Keywords***
 
-# TODO
+Custom Keyword Phrase
+    Do Something  [parameter]
 ```
 
 > Optional. Typically put keywords in associated `Resources` files.
