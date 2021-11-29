@@ -6,13 +6,16 @@
 ########################################################
 
 *** Settings ***
-Documentation  Suite for general web testing.
+Documentation  Amazon top navigation
 Library  SeleniumLibrary
 
 *** Keywords ***
-Begin Web Test
-    Open Browser  about:blank  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
+Search for Products
+    Enter Search Term
+    Submit Search
 
-End Web Test
-    Close Browser
+Enter Search Term
+    Input Text  id=twotabsearchtextbox  Ferrari 458
+
+Submit Search
+    Click Button  id=nav-search-submit-button

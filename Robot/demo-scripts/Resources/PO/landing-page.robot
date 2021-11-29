@@ -6,13 +6,11 @@
 ########################################################
 
 *** Settings ***
-Documentation  Suite for general web testing.
 Library  SeleniumLibrary
 
 *** Keywords ***
-Begin Web Test
-    Open Browser  about:blank  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
+Load
+    Go To  https://amazon.com
 
-End Web Test
-    Close Browser
+Verify Page Loaded
+    Wait Until Page Contains  Hello, Sign in

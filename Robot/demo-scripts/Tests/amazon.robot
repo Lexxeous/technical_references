@@ -14,10 +14,10 @@ Resource  ../Resources/common.web.robot
 Resource  ../Resources/common.robot
 
 # Define setup and tear-down
-Suite Setup  Init Suite
-Test Setup  Begin Web Test
-Test Teardown  End Web Test
-Suite Teardown  Clean Suite
+Suite Setup  Common.Init Suite
+Test Setup  Common.Web.Begin Web Test
+Test Teardown  Common.Web.End Web Test
+Suite Teardown  Common.Clean Suite
 
 *** Variables ***
 

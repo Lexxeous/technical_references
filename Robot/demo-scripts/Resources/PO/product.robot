@@ -6,13 +6,11 @@
 ########################################################
 
 *** Settings ***
-Documentation  Suite for general web testing.
 Library  SeleniumLibrary
 
 *** Keywords ***
-Begin Web Test
-    Open Browser  about:blank  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
+Verify Page Loaded
+    Wait Until Page Contains  Back to results
 
-End Web Test
-    Close Browser
+Add to Cart
+    Click Button  id=add-to-cart-button

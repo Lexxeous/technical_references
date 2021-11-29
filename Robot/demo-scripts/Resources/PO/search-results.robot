@@ -6,13 +6,12 @@
 ########################################################
 
 *** Settings ***
-Documentation  Suite for general web testing.
 Library  SeleniumLibrary
 
 *** Keywords ***
-Begin Web Test
-    Open Browser  about:blank  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
+Verify Search Completed
+    Wait Until Page Contains  results for "Ferrari 458"
 
-End Web Test
-    Close Browser
+Click Product Link
+    [Documentation]  Clicks on the third product in the search results list
+    Click Link  xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a

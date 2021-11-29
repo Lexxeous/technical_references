@@ -7,24 +7,29 @@
 
 *** Settings ***
 Documentation  Suite specifically for testing the Amazon website GUI.
-Library  SeleniumLibrary
+
+Resource  ./PO/Cart.robot
+Resource  ./PO/Landing-Page.robot
+Resource  ./PO/Product.robot
+Resource  ./PO/Search-Results.robot
+Resource  ./PO/Sign-In.robot
+Resource  ./PO/Top-Nav.robot
 
 *** Keywords ***
 Search for Products
-    Wait Until Page Contains  Hello, Sign in
-    Input Text  id=twotabsearchtextbox  Ferrari 458
-    Click Button  id=nav-search-submit-button
-    Wait Until Page Contains  results for "Ferrari 458"
+    Landing-Page.Load
+    Landing-Page.Verify Page Loaded
+    Top-Nav.Search for Products
+    Search-Results.Verify Search Completed
 
 Select Product from Search Results
-    # click 3rd product
-    Click Link  xpath=//*[@id="search"]/div[1]/div[1]/div/span[3]/div[2]/div[5]/div/span/div/div/span/a
-    Wait Until Page Contains  Back to results
+    Search-Results.Click Product link
+    Product.Verify Page Loaded
 
 Add Product to Cart
-    Click Button  id=add-to-cart-button
-    Wait Until Page Contains  Added to Cart
+    Product.Add to Cart
+    Cart.Verify Product Added
 
 Begin Checkout
-    Click Link  id=hlb-ptc-btn-native
-    Page Should Contain Element  continue
+    Cart.Proceed to Checkout
+    Sign-In.Verify Page Loaded

@@ -6,13 +6,11 @@
 ########################################################
 
 *** Settings ***
-Documentation  Suite for general web testing.
 Library  SeleniumLibrary
 
 *** Keywords ***
-Begin Web Test
-    Open Browser  about:blank  chrome
-    Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
+Verify Product Added
+    Wait Until Page Contains  Added to Cart
 
-End Web Test
-    Close Browser
+Proceed to Checkout
+    Click Link  id=hlb-ptc-btn-native
