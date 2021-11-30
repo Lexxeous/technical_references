@@ -143,25 +143,25 @@ https://www.python.org/downloads/source/
 Documentation   Some information about the suite
 
 # Import library
-Library         <library_name>
+Library  <library_name>
 
 # Path to keywords file(s)
-Resource        <path/to/resource.robot>
+Resource  <path/to/resource.robot>
 
 # Run keyword prior to suite execution
-Suite Setup     <before_suite_keyword>
+Suite Setup  <before_suite_keyword>
 
 # Run keyword after suite execution
 Suite Teardown  <after_suite_keyword>
 
 # Run keyword prior to all test's execution
-Test Setup      <before_test_keyword>
+Test Setup  <before_test_keyword>
 
 # Run keyword after all test's execution
-Test Teardown   <after_test_keyword>
+Test Teardown  <after_test_keyword>
 
 # Wait before error thrown
-Test Timeout    <global_timeout>
+Test Timeout  <global_timeout>
 ```
 #### Variables:
 
@@ -179,7 +179,7 @@ Declare variables...
 *** Test Cases***
 <Test case title>
 
-    [Documentation]  Some information about the test.
+    [Documentation]  Some information about the test case.
     [Tags]  Tag1  Tag2  ...  TagN
     [Timeout]  X
     
@@ -200,6 +200,26 @@ Custom Keyword Phrase
 ```
 
 > Optional. Typically put keywords in associated `Resources` files.
+
+#### Gherkin Syntax:
+
+The use of Gherkin syntax for **Robot** framework is meant to improve the readability of test cases. It produces finer-grained results that may be easier to interpret in some cases. The keywords are based on phrase prefixes.
+
+Gherkin user-defined keywords should attempt to mimic acceptance test cases for Agile stories. However, the phrasing of Gherkin syntax can be massively subjective. They can be written in many different ways, as opposed to the procedural (step-by-step) syntax.
+
+##### Gherkin Prefixes:
+
+```robot
+*** Test Cases ***
+
+<Test case title>
+    [Documentation]  Some information about the test case.
+
+    Given <A> # precondition
+    And <B> # precondition (optional)
+    When <C> # the test
+    Then <D> # expected result
+```
 
 ## Executing **Robot** Files:
 

@@ -11,7 +11,7 @@ Library  SeleniumLibrary
 
 *** Keywords ***
 Pause
-    BuiltIn.Sleep  3s
+    BuiltIn.Sleep  2s
 
 Init Suite
     Log  I am initializing a web suite.
