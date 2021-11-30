@@ -11,7 +11,8 @@ Library  SeleniumLibrary
 
 *** Keywords ***
 Begin Web Test
-    Open Browser  about:blank  chrome
+    [Arguments]  ${browser}
+    Open Browser  about:blank  ${browser}
     Maximize Browser Window  # maximize browser for more consistent results w/ locators ; dynamic pages can mess things up
 
 End Web Test

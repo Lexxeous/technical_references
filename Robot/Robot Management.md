@@ -135,6 +135,8 @@ https://www.python.org/downloads/source/
 
 > You must indent blocks with 4 spaces.
 
+> Comments on the same line as keywords must have 2 spaces before the `#` character.
+
 #### Settings:
 
 ```robot
@@ -165,13 +167,100 @@ Test Timeout  <global_timeout>
 ```
 #### Variables:
 
+Variables expand the re-usability of scripts, not just for **Robot** framework. We can:
+
+  * Declare scalars.
+  * Declare lists.
+  * Declare dictionaries.
+  * Define global and local scope.
+  * Pass variables into user-defined keywords (like function parameters).
+  * Pass variables into scripts at runtime (from the command line).
+
+##### Scalars:
+
+Scalar variables are meant to hold a single value. We can declare the existence of and initialize a scalar variable by using dollar-sign & curly bracket syntax: `${<variable_name>} =  <variable_value>`. The variable can then be referenced with the same left-hand-side syntax: `${<variable_name>}`. Inside of a **Robot** framework script, it should look something like the following.
+
+> When declaring a new variable, you must have a single space on the LHS and two spaces on the RHS of the equals sign (`=`).
+
+**Keywords**:
+  * Set Variable
+
 ```robot
 ***Variables***
 
-# TODO
+${URL} =  https://facebook.com
+${BROWSER} =  edge
+${SEARCH_TERM} =  Mark Zuckerberg
+
+*** Test Cases ***
+Search for user
+    Open Browser  ${URL}  ${BROWSER}
+    Input Text  id=<search-box-id>  ${SEARCH_TERM}
 ```
 
-Declare variables...
+> **Robot** framework allows you to declare variables that include spaces, but this is not recommended as they can be easily confused with library keywords and user-defined keywords.
+
+##### Lists:
+
+// TODO
+
+Allows you to hold a series of values
+
+`@{var_name} =  <val0>  <val1>  <valN>`
+`@{var_name}[0]`
+`@{var_name}[1:]`
+`@{var_name}[:2]`
+
+**Keywords**:
+  * Evaluate
+  * Log Many
+  * Create List
+
+> Must have 2 spaces in between each value in the list. The two spaces acts as a delimiter instead of commas or some other non-alpha character.
+
+##### Dictionaries:
+
+// TODO
+
+##### Scope:
+
+// TODO
+
+Global - upper case
+Suite - upper case
+Test Case - lower case
+Keyword - lower case
+
+Precedence:
+Command Line > Script/suite > Keyword parameters
+
+use uppercase for variables section global scope
+user lowercase for internal test case scope
+
+##### Passing Variables to Keywords:
+
+// TODO
+
+```robot
+*** Test Cases ***
+<Test case title>
+    ${arg1} =  val1
+    ${arg2} =  val2
+    ${argN} =  valN
+    <Custom Keyword Name>  ${arg1}  ${arg2}  ${argN}
+
+*** Keywords ***
+<Custom Keyword Name>
+    [Arguments]  ${arg1}  ${arg2}  ${argN}
+    Do Something  ${arg1}  ${arg2}
+    Do Something Else  ${argN}
+```
+
+##### Passing Variables at Runtime:
+
+// TODO
+
+`python -m robot -v BROWSER:edge -v SEARCH_TERM:"Ferrari Enzo" -d Results/Main/ Tests/main.robot`
 
 #### Test Cases:
 
@@ -196,7 +285,8 @@ You can "prototype" user-defined keyword definitions. This is similar to prototy
 ***Keywords***
 
 Custom Keyword Phrase
-    Do Something  [parameter]
+    [Arguments]  ${arg1}  ${arg2}  ${argN}
+    Do Something
 ```
 
 > Optional. Typically put keywords in associated `Resources` files.
@@ -242,6 +332,7 @@ https://stackoverflow.com/questions/69749942/getting-error-cannot-import-name-ru
   * `-i --include <tags>` - Include only a subset of tests to run based on custom tags.
   * `-N --name <name>` - Set the name of the top level suite. By default the name is created based on the executed file or directory.
   * `-t --test <name>` - Specify the name of a unique test case that you want to run.
+  * `-v --variable <VAR_NAME>:<values>` - Pass variables into **Robot** script from the command line.
 
 
 ### Run Multiple Suites:

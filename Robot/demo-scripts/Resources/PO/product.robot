@@ -8,9 +8,13 @@
 *** Settings ***
 Library  SeleniumLibrary
 
+*** Variables ***
+${PRODUCT_ADD_TO_CART_BUTTON} =  id=add-to-cart-button
+${PRODUCT_BACK_MSG} =  Back to results
+
 *** Keywords ***
 Verify Page Loaded
-    Wait Until Page Contains  Back to results
+    Wait Until Page Contains  ${PRODUCT_BACK_MSG}
 
 Add to Cart
-    Click Button  id=add-to-cart-button
+    Click Button  ${PRODUCT_ADD_TO_CART_BUTTON}

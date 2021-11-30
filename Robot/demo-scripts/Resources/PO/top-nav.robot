@@ -9,13 +9,23 @@
 Documentation  Amazon top navigation
 Library  SeleniumLibrary
 
+*** Variables ***
+${TOP_NAV_SEARCH_BAR} =  id=twotabsearchtextbox
+${TOP_NAV_SEARCH_BUTTON} =  id=nav-search-submit-button
+${TOP_NAV_ACCOUNT_BUTTON} =  id=nav-link-accountList
+
 *** Keywords ***
 Search for Products
-    Enter Search Term
+    [Arguments]  ${search_term}
+    Enter Search Term  ${search_term}
     Submit Search
 
 Enter Search Term
-    Input Text  id=twotabsearchtextbox  Ferrari 458
+    [Arguments]  ${search_term}
+    Input Text  ${TOP_NAV_SEARCH_BAR}  ${search_term}
 
 Submit Search
-    Click Button  id=nav-search-submit-button
+    Click Button  ${TOP_NAV_SEARCH_BUTTON}
+
+View Account
+    Click Link  ${TOP_NAV_ACCOUNT_BUTTON}

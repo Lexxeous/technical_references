@@ -8,9 +8,13 @@
 *** Settings ***
 Library  SeleniumLibrary
 
+*** Variables ***
+${CART_ADD_CONFIRMATION} =  Added to Cart
+${CART_PROCEED_TO_CHECKOUT_BUTTON} =  id=hlb-ptc-btn-native
+
 *** Keywords ***
 Verify Product Added
-    Wait Until Page Contains  Added to Cart
+    Wait Until Page Contains  ${CART_ADD_CONFIRMATION}
 
 Proceed to Checkout
-    Click Link  id=hlb-ptc-btn-native
+    Click Link  ${CART_PROCEED_TO_CHECKOUT_BUTTON}

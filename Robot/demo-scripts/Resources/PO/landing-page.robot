@@ -8,9 +8,13 @@
 *** Settings ***
 Library  SeleniumLibrary
 
+*** Variables ***
+${LANDING_PAGE_WELCOME_MSG} =  Hello, Sign in
+
 *** Keywords ***
 Load
-    Go To  https://amazon.com
+    [Arguments]  ${url}
+    Go To  ${url}
 
 Verify Page Loaded
-    Wait Until Page Contains  Hello, Sign in
+    Wait Until Page Contains  ${LANDING_PAGE_WELCOME_MSG}

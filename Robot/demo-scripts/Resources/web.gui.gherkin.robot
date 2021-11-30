@@ -20,11 +20,13 @@ user is not logged in
     Log  Check to see whether user is logged in
 
 user searches for products
-    Landing-Page.Load
-    Top-Nav.Search for Products
+    [Arguments]  ${url}  ${search_term}
+    Landing-Page.Load  ${url}
+    Top-Nav.Search for Products  ${search_term}
 
 search results contains relevant products
-    Search-Results.Verify Search Completed
+    [Arguments]  ${search_term}
+    Search-Results.Verify Search Completed  ${search_term}
 
 user selects a product from search results
     Search-Results.Click Product link
