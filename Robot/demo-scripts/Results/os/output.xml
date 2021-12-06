@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.1.2 (Python 3.10.0 on win32)" generated="20211201 11:21:39.402" rpa="false" schemaversion="2">
+<suite id="s1" name="Operating System" source="C:\Users\jagibson\Prog_Projects\explore-libraries\tests\operating_system.robot">
+<test id="s1-t1" name="Create Some Directories">
+<kw name="Create the Base Directory" library="OS">
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${output_directory}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20211201 11:21:39.436" level="INFO" html="true">Created directory '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.435" endtime="20211201 11:21:39.436"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${output_directory}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.436" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.436" endtime="20211201 11:21:39.436"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.434" endtime="20211201 11:21:39.436"/>
+</kw>
+<kw name="Create Directory 1" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${directory_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_1}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.437" level="INFO">${directory_path} = Outputs\first directory</msg>
+<status status="PASS" starttime="20211201 11:21:39.436" endtime="20211201 11:21:39.437"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${directory_path}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20211201 11:21:39.437" level="INFO" html="true">Created directory '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.437" endtime="20211201 11:21:39.437"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${directory_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.438" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.438" endtime="20211201 11:21:39.438"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.436" endtime="20211201 11:21:39.438"/>
+</kw>
+<kw name="Create Directory 2" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${directory_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_2}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.439" level="INFO">${directory_path} = Outputs\second directory</msg>
+<status status="PASS" starttime="20211201 11:21:39.438" endtime="20211201 11:21:39.439"/>
+</kw>
+<kw name="Create Directory" library="OperatingSystem">
+<arg>${directory_path}</arg>
+<doc>Creates the specified directory.</doc>
+<msg timestamp="20211201 11:21:39.439" level="INFO" html="true">Created directory '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.439" endtime="20211201 11:21:39.439"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${directory_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.440" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.440" endtime="20211201 11:21:39.440"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.438" endtime="20211201 11:21:39.440"/>
+</kw>
+<tag>OperatingSystem</tag>
+<status status="PASS" starttime="20211201 11:21:39.434" endtime="20211201 11:21:39.440"/>
+</test>
+<test id="s1-t2" name="Create Some Files">
+<kw name="Create the First File" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${file_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_1}</arg>
+<arg>${file_1}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.442" level="INFO">${file_path} = Outputs\first directory\first file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.442" endtime="20211201 11:21:39.442"/>
+</kw>
+<kw name="Create File" library="OperatingSystem">
+<arg>${file_path}</arg>
+<arg>This is some text in file one!</arg>
+<doc>Creates a file with the given content and encoding.</doc>
+<msg timestamp="20211201 11:21:39.443" level="INFO" html="true">Created file '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.442" endtime="20211201 11:21:39.443"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${file_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.444" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.443" endtime="20211201 11:21:39.444"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.442" endtime="20211201 11:21:39.444"/>
+</kw>
+<kw name="Create the Second File" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${file_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_2}</arg>
+<arg>${file_2}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.445" level="INFO">${file_path} = Outputs\second directory\second file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.445" endtime="20211201 11:21:39.445"/>
+</kw>
+<kw name="Create File" library="OperatingSystem">
+<arg>${file_path}</arg>
+<arg>This is some text in file two!</arg>
+<doc>Creates a file with the given content and encoding.</doc>
+<msg timestamp="20211201 11:21:39.446" level="INFO" html="true">Created file '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\second file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\second file.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.445" endtime="20211201 11:21:39.446"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${file_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.446" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\second file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\second file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.446" endtime="20211201 11:21:39.446"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.444" endtime="20211201 11:21:39.446"/>
+</kw>
+<kw name="Create the Third File" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${file_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_2}</arg>
+<arg>${file_3}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.447" level="INFO">${file_path} = Outputs\second directory\third file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.447" endtime="20211201 11:21:39.447"/>
+</kw>
+<kw name="Create File" library="OperatingSystem">
+<arg>${file_path}</arg>
+<arg>This is some text in file three!</arg>
+<doc>Creates a file with the given content and encoding.</doc>
+<msg timestamp="20211201 11:21:39.448" level="INFO" html="true">Created file '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.447" endtime="20211201 11:21:39.448"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${file_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.448" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.448" endtime="20211201 11:21:39.448"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.447" endtime="20211201 11:21:39.449"/>
+</kw>
+<tag>OperatingSystem</tag>
+<status status="PASS" starttime="20211201 11:21:39.441" endtime="20211201 11:21:39.449"/>
+</test>
+<test id="s1-t3" name="Move a File">
+<kw name="Move File 3 from Directory 2 to Directory 1" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${source_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_2}</arg>
+<arg>${file_3}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.450" level="INFO">${source_path} = Outputs\second directory\third file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.450" endtime="20211201 11:21:39.450"/>
+</kw>
+<kw name="Join Path" library="OperatingSystem">
+<var>${target_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_1}</arg>
+<arg>${file_3}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.450" level="INFO">${target_path} = Outputs\first directory\third file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.450" endtime="20211201 11:21:39.450"/>
+</kw>
+<kw name="Move File" library="OperatingSystem">
+<arg>${source_path}</arg>
+<arg>${target_path}</arg>
+<doc>Moves the source file into the destination.</doc>
+<msg timestamp="20211201 11:21:39.453" level="INFO" html="true">Moved file from '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt&lt;/a&gt;' to '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\third file.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.450" endtime="20211201 11:21:39.453"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${target_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.454" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\third file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.454" endtime="20211201 11:21:39.454"/>
+</kw>
+<kw name="Should Not Exist" library="OperatingSystem">
+<arg>${source_path}</arg>
+<doc>Fails if the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.454" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\third file.txt&lt;/a&gt;' does not exist.</msg>
+<status status="PASS" starttime="20211201 11:21:39.454" endtime="20211201 11:21:39.454"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.449" endtime="20211201 11:21:39.454"/>
+</kw>
+<tag>OperatingSystem</tag>
+<status status="PASS" starttime="20211201 11:21:39.449" endtime="20211201 11:21:39.455"/>
+</test>
+<test id="s1-t4" name="Copy a File">
+<kw name="Copy File 1 from Directory 1 to Directory 2" library="OS">
+<kw name="Join Path" library="OperatingSystem">
+<var>${source_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_1}</arg>
+<arg>${file_1}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.456" level="INFO">${source_path} = Outputs\first directory\first file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.456" endtime="20211201 11:21:39.456"/>
+</kw>
+<kw name="Join Path" library="OperatingSystem">
+<var>${target_path}</var>
+<arg>${output_directory}</arg>
+<arg>${directory_2}</arg>
+<arg>${file_1}</arg>
+<doc>Joins the given path part(s) to the given base path.</doc>
+<msg timestamp="20211201 11:21:39.456" level="INFO">${target_path} = Outputs\second directory\first file.txt</msg>
+<status status="PASS" starttime="20211201 11:21:39.456" endtime="20211201 11:21:39.456"/>
+</kw>
+<kw name="Copy File" library="OperatingSystem">
+<arg>${source_path}</arg>
+<arg>${target_path}</arg>
+<doc>Copies the source file into the destination.</doc>
+<msg timestamp="20211201 11:21:39.461" level="INFO" html="true">Copied file from '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt&lt;/a&gt;' to '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\first file.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20211201 11:21:39.456" endtime="20211201 11:21:39.462"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${source_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.462" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\first directory\first file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.462" endtime="20211201 11:21:39.462"/>
+</kw>
+<kw name="Should Exist" library="OperatingSystem">
+<arg>${target_path}</arg>
+<doc>Fails unless the given path (file or directory) exists.</doc>
+<msg timestamp="20211201 11:21:39.463" level="INFO" html="true">Path '&lt;a href="file://C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\first file.txt"&gt;C:\Users\jagibson\Prog_Projects\explore-libraries\Outputs\second directory\first file.txt&lt;/a&gt;' exists.</msg>
+<status status="PASS" starttime="20211201 11:21:39.462" endtime="20211201 11:21:39.463"/>
+</kw>
+<status status="PASS" starttime="20211201 11:21:39.455" endtime="20211201 11:21:39.463"/>
+</kw>
+<tag>OperatingSystem</tag>
+<status status="PASS" starttime="20211201 11:21:39.455" endtime="20211201 11:21:39.463"/>
+</test>
+<doc>These are some file &amp; directory tests</doc>
+<status status="PASS" starttime="20211201 11:21:39.403" endtime="20211201 11:21:39.463"/>
+</suite>
+<statistics>
+<total>
+<stat pass="4" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="4" fail="0" skip="0">OperatingSystem</stat>
+</tag>
+<suite>
+<stat pass="4" fail="0" skip="0" id="s1" name="Operating System">Operating System</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

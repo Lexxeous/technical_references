@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.1.2 (Python 3.10.0 on win32)" generated="20211201 12:19:31.141" rpa="false" schemaversion="2">
+<suite id="s1" name="API Tests" source="C:\Users\jagibson\Prog_Projects\explore-libraries\tests\API_Tests.robot">
+<test id="s1-t1" name="Make a simple REST API call">
+<kw name="Check Github Username" library="Github">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>my_github_session</arg>
+<arg>https://api.github.com</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20211201 12:19:31.395" level="INFO">Creating Session using : alias=my_github_session, url=https://api.github.com, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20211201 12:19:31.395" endtime="20211201 12:19:31.395"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>my_github_session</arg>
+<arg>users/robotframeworktutorial</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20211201 12:19:31.997" level="INFO">GET Request : url=https://api.github.com/users/robotframeworktutorial 
+ path_url=/users/robotframeworktutorial 
+ headers={'User-Agent': 'python-requests/2.26.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20211201 12:19:31.997" level="INFO">GET Response : url=https://api.github.com/users/robotframeworktutorial 
+ status=200, reason=OK 
+ headers={'Server': 'GitHub.com', 'Date': 'Wed, 01 Dec 2021 18:19:31 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=60, s-maxage=60', 'Vary': 'Accept, Accept-Encoding, Accept, X-Requested-With', 'ETag': 'W/"0db5c7839e044f43b746fd8fbe0620e6cbe0d62ff9ef35ec4589f4af9567f63c"', 'Last-Modified': 'Tue, 08 May 2018 23:55:40 GMT', 'X-GitHub-Media-Type': 'github.v3; format=json', 'Access-Control-Expose-Headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset', 'Access-Control-Allow-Origin': '*', 'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload', 'X-Frame-Options': 'deny', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': '0', 'Referrer-Policy': 'origin-when-cross-origin, strict-origin-when-cross-origin', 'Zontent-Security-Policy': "default-src 'none'", 'Content-Encoding': 'gzip', 'X-RateLimit-Limit': '60', 'X-RateLimit-Remaining': '51', 'X-RateLimit-Reset': '1638386006', 'X-RateLimit-Resource': 'core', 'X-RateLimit-Used': '9', 'Accept-Ranges': 'bytes', 'Content-Length': '562', 'X-GitHub-Request-Id': '1ABD:62DD:13E678D:25FCA6A:61A7BCB3', 'Content-security-policy': "default-src https://*.zscloud.net 'none';"} 
+ body={"login":"robotframeworktutorial","id":12807727,"node_id":"MDQ6VXNlcjEyODA3NzI3","avatar_url":"https://avatars.githubusercontent.com/u/12807727?v=4","gravatar_id":"","url":"https://api.github.com/users/robotframeworktutorial","html_url":"https://github.com/robotframeworktutorial","followers_url":"https://api.github.com/users/robotframeworktutorial/followers","following_url":"https://api.github.com/users/robotframeworktutorial/following{/other_user}","gists_url":"https://api.github.com/users/robotframeworktutorial/gists{/gist_id}","starred_url":"https://api.github.com/users/robotframeworktutorial/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/robotframeworktutorial/subscriptions","organizations_url":"https://api.github.com/users/robotframeworktutorial/orgs","repos_url":"https://api.github.com/users/robotframeworktutorial/repos","events_url":"https://api.github.com/users/robotframeworktutorial/events{/privacy}","received_events_url":"https://api.github.com/users/robotframeworktutorial/received_events","type":"User","site_admin":false,"name":"Bryan Lamb","company":"RobotFrameworkTutorial.com","blog":"http://www.robotframeworktutorial.com","location":"Southern California","email":null,"hireable":null,"bio":"Visionary tech leader with 20 years software development experience.","twitter_username":null,"public_repos":1,"public_gists":0,"followers":16,"following":0,"created_at":"2015-06-09T04:10:30Z","updated_at":"2018-05-08T23:55:40Z"} 
+ </msg>
+<msg timestamp="20211201 12:19:31.997" level="INFO">C:\Python310\lib\site-packages\urllib3\connectionpool.py:981: InsecureRequestWarning: Unverified HTTPS request is being made to host 'api.github.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20211201 12:19:31.997" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20211201 12:19:31.395" endtime="20211201 12:19:31.997"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20211201 12:19:31.998" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20211201 12:19:31.998" endtime="20211201 12:19:31.998"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20211201 12:19:31.999" level="INFO">${json} = {'login': 'robotframeworktutorial', 'id': 12807727, 'node_id': 'MDQ6VXNlcjEyODA3NzI3', 'avatar_url': 'https://avatars.githubusercontent.com/u/12807727?v=4', 'gravatar_id': '', 'url': 'https://api.gith...</msg>
+<status status="PASS" starttime="20211201 12:19:31.999" endtime="20211201 12:19:31.999"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${json['login']}</arg>
+<arg>robotframeworktutorial</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" starttime="20211201 12:19:31.999" endtime="20211201 12:19:32.000"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${json}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20211201 12:19:32.000" level="INFO">{'login': 'robotframeworktutorial', 'id': 12807727, 'node_id': 'MDQ6VXNlcjEyODA3NzI3', 'avatar_url': 'https://avatars.githubusercontent.com/u/12807727?v=4', 'gravatar_id': '', 'url': 'https://api.github.com/users/robotframeworktutorial', 'html_url': 'https://github.com/robotframeworktutorial', 'followers_url': 'https://api.github.com/users/robotframeworktutorial/followers', 'following_url': 'https://api.github.com/users/robotframeworktutorial/following{/other_user}', 'gists_url': 'https://api.github.com/users/robotframeworktutorial/gists{/gist_id}', 'starred_url': 'https://api.github.com/users/robotframeworktutorial/starred{/owner}{/repo}', 'subscriptions_url': 'https://api.github.com/users/robotframeworktutorial/subscriptions', 'organizations_url': 'https://api.github.com/users/robotframeworktutorial/orgs', 'repos_url': 'https://api.github.com/users/robotframeworktutorial/repos', 'events_url': 'https://api.github.com/users/robotframeworktutorial/events{/privacy}', 'received_events_url': 'https://api.github.com/users/robotframeworktutorial/received_events', 'type': 'User', 'site_admin': False, 'name': 'Bryan Lamb', 'company': 'RobotFrameworkTutorial.com', 'blog': 'http://www.robotframeworktutorial.com', 'location': 'Southern California', 'email': None, 'hireable': None, 'bio': 'Visionary tech leader with 20 years software development experience.', 'twitter_username': None, 'public_repos': 1, 'public_gists': 0, 'followers': 16, 'following': 0, 'created_at': '2015-06-09T04:10:30Z', 'updated_at': '2018-05-08T23:55:40Z'}</msg>
+<status status="PASS" starttime="20211201 12:19:32.000" endtime="20211201 12:19:32.000"/>
+</kw>
+<status status="PASS" starttime="20211201 12:19:31.394" endtime="20211201 12:19:32.000"/>
+</kw>
+<tag>API</tag>
+<status status="PASS" starttime="20211201 12:19:31.394" endtime="20211201 12:19:32.000"/>
+</test>
+<test id="s1-t2" name="Display emoji from Github">
+<kw name="Display Emoji" library="Github">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>my_github_session</arg>
+<arg>https://api.github.com</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20211201 12:19:32.002" level="INFO">Creating Session using : alias=my_github_session, url=https://api.github.com, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20211201 12:19:32.002" endtime="20211201 12:19:32.002"/>
+</kw>
+<kw name="GET On Session" library="RequestsLibrary">
+<var>${response}</var>
+<arg>my_github_session</arg>
+<arg>emojis</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<msg timestamp="20211201 12:19:32.455" level="INFO">GET Request : url=https://api.github.com/emojis 
+ path_url=/emojis 
+ headers={'User-Agent': 'python-requests/2.26.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20211201 12:19:32.456" level="INFO">GET Response : url=https://api.github.com/emojis 
+ status=200, reason=OK 
+ headers={'Server': 'GitHub.com', 'Date': 'Wed, 01 Dec 2021 18:19:28 GMT', 'Cache-Control': 'public, max-age=60, s-maxage=60', 'Vary': 'Accept, Accept-Encoding, Accept, X-Requested-With', 'ETag': '"8d67a6d25be5271f6d1defa677e563f927cde121195ef0e23d3141c6f0b18711"', 'Access-Control-Expose-Headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset', 'Access-Control-Allow-Origin': '*', 'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload', 'X-Frame-Options': 'deny', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': '0', 'Referrer-Policy': 'origin-when-cross-origin, strict-origin-when-cross-origin', 'Zontent-Security-Policy': "default-src 'none'", 'Content-Type': 'application/json; charset=utf-8', 'X-GitHub-Media-Type': 'github.v3; format=json', 'Content-Encoding': 'gzip', 'X-RateLimit-Limit': '60', 'X-RateLimit-Remaining': '50', 'X-RateLimit-Reset': '1638386006', 'X-RateLimit-Resource': 'core', 'X-RateLimit-Used': '10', 'Accept-Ranges': 'bytes', 'Content-Length': '20272', 'X-GitHub-Request-Id': '1ABD:62DD:13E67C0:25FCAD3:61A7BCB4', 'Content-security-policy': "default-src https://*.zscloud.net 'none';"} 
+ body={
+  "+1": "https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8",
+  "-1": "https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png?v8",
+  "100": "https://github.githubassets.com/images/icons/emoji/unicode/1f4af.png?v8",
+  "1234": "https://github.githubassets.com/images/icons/emoji/unicode/1f522.png?v8",
+  "1st_place_medal": "https://github.githubassets.com/images/icons/emoji/unicode/1f947.png?v8",
+  "2nd_place_medal": "https://github.githubassets.com/images/icons/emoji/unicode/1f948.png?v8",
+  "3rd_place_medal": "https://github.githubassets.com/images/icons/emoji/unicode/1f949.png?v8",
+  "8ball": "https://github.githubassets.com/images/icons/emoji/unicode/1f3b1.png?v8",
+  "a": "https://github.githubassets.com/images/icons/emoji/unicode/1f170.png?v8",
+  "ab": "https://github.githubassets.com/images/icons/emoji/unicode/1f18e.png?v8",
+  "abacus": "https://github.githubassets.com/images/icons/emoji/unicode/1f9ee.png?v8",
+  "abc": "https://github.githubassets.com/images/icons/emoji/unicode/1f524.png?v8",
+  "abcd": "https://github.githubassets.com/images/icons/emoji/unicode/1f521.png?v8",
+  "accept": "https://github.githubassets.com/images/icons/emoji/unicode/1f251.png?v8",
+  "accordion": "https://github.githubassets.com/images/icons/emoji/unicode/1fa97.png?v8",
+  "adhesive_bandage": "https://github.githubassets.com/images/icons/emoji/unicode/1fa79.png?v8",
+  "adult": "https://github.githubassets.com/images/icons/emoji/unicode/1f9d1.png?v8",
+  "aerial_tramway": "https://github.githubassets.com/images/icons/emoji/unicode/1f6a1.png?v8",
+  "afghanistan": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1eb.png?v8",
+  "airplane": "https://github.githubassets.com/images/icons/emoji/unicode/2708.png?v8",
+  "aland_islands": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1fd.png?v8",
+  "alarm_clock": "https://github.githubassets.com/images/icons/emoji/unicode/23f0.png?v8",
+  "albania": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f1.png?v8",
+  "alembic": "https://github.githubassets.com/images/icons/emoji/unicode/2697.png?v8",
+  "algeria": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e9-1f1ff.png?v8",
+  "alien": "https://github.githubassets.com/images/icons/emoji/unicode/1f47d.png?v8",
+  "ambulance": "https://github.githubassets.com/images/icons/emoji/unicode/1f691.png?v8",
+  "american_samoa": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f8.png?v8",
+  "amphora": "https://github.githubassets.com/images/icons/emoji/unicode/1f3fa.png?v8",
+  "anatomical_heart": "https://github.githubassets.com/images/icons/emoji/unicode/1fac0.png?v8",
+  "anchor": "https://github.githubassets.com/images/icons/emoji/unicode/2693.png?v8",
+  "andorra": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1e9.png?v8",
+  "angel": "https://github.githubassets.com/images/icons/emoji/unicode/1f47c.png?v8",
+  "anger": "https://github.githubassets.com/images/icons/emoji/unicode/1f4a2.png?v8",
+  "angola": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f4.png?v8",
+  "angry": "https://github.githubassets.com/images/icons/emoji/unicode/1f620.png?v8",
+  "anguilla": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1ee.png?v8",
+  "anguished": "https://github.githubassets.com/images/icons/emoji/unicode/1f627.png?v8",
+  "ant": "https://github.githubassets.com/images/icons/emoji/unicode/1f41c.png?v8",
+  "antarctica": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f6.png?v8",
+  "antigua_barbuda": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1ec.png?v8",
+  "apple": "https://github.githubassets.com/images/icons/emoji/unicode/1f34e.png?v8",
+  "aquarius": "https://github.githubassets.com/images/icons/emoji/unicode/2652.png?v8",
+  "argentina": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f7.png?v8",
+  "aries": "https://github.githubassets.com/images/icons/emoji/unicode/2648.png?v8",
+  "armenia": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f2.png?v8",
+  "arrow_backward": "https://github.githubassets.com/images/icons/emoji/unicode/25c0.png?v8",
+  "arrow_double_down": "https://github.githubassets.com/images/icons/emoji/unicode/23ec.png?v8",
+  "arrow_double_up": "https://github.githubassets.com/images/icons/emoji/unicode/23eb.png?v8",
+  "arrow_down": "https://github.githubassets.com/images/icons/emoji/unicode/2b07.png?v8",
+  "arrow_down_small": "https://github.githubassets.com/images/icons/emoji/unicode/1f53d.png?v8",
+  "arrow_forward": "https://github.githubassets.com/images/icons/emoji/unicode/25b6.png?v8",
+  "arrow_heading_down": "https://github.githubassets.com/images/icons/emoji/unicode/2935.png?v8",
+  "arrow_heading_up": "https://github.githubassets.com/images/icons/emoji/unicode/2934.png?v8",
+  "arrow_left": "https://github.githubassets.com/images/icons/emoji/unicode/2b05.png?v8",
+  "arrow_lower_left": "https://github.githubassets.com/images/icons/emoji/unicode/2199.png?v8",
+  "arrow_lower_right": "https://github.githubassets.com/images/icons/emoji/unicode/2198.png?v8",
+  "arrow_right": "https://github.githubassets.com/images/icons/emoji/unicode/27a1.png?v8",
+  "arrow_right_hook": "https://github.githubassets.com/images/icons/emoji/unicode/21aa.png?v8",
+  "arrow_up": "https://github.githubassets.com/images/icons/emoji/unicode/2b06.png?v8",
+  "arrow_up_down": "https://github.githubassets.com/images/icons/emoji/unicode/2195.png?v8",
+  "arrow_up_small": "https://github.githubassets.com/images/icons/emoji/unicode/1f53c.png?v8",
+  "arrow_upper_left": "https://github.githubassets.com/images/icons/emoji/unicode/2196.png?v8",
+  "arrow_upper_right": "https://github.githubassets.com/images/icons/emoji/unicode/2197.png?v8",
+  "arrows_clockwise": "https://github.githubassets.com/images/icons/emoji/unicode/1f503.png?v8",
+  "arrows_counterclockwise": "https://github.githubassets.com/images/icons/emoji/unicode/1f504.png?v8",
+  "art": "https://github.githubassets.com/images/icons/emoji/unicode/1f3a8.png?v8",
+  "articulated_lorry": "https://github.githubassets.com/images/icons/emoji/unicode/1f69b.png?v8",
+  "artificial_satellite": "https://github.githubassets.com/images/icons/emoji/unicode/1f6f0.png?v8",
+  "artist": "https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f3a8.png?v8",
+  "aruba": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1fc.png?v8",
+  "ascension_island": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1e8.png?v8",
+  "asterisk": "https://github.githubassets.com/images/icons/emoji/unicode/002a-20e3.png?v8",
+  "astonished": "https://github.githubassets.com/images/icons/emoji/unicode/1f632.png?v8",
+  "astronaut": "https://github.githubassets.com/images/icons/emoji/unicode/1f9d1-1f680.png?v8",
+  "athletic_shoe": "https://github.githubassets.com/images/icons/emoji/unicode/1f45f.png?v8",
+  "atm": "https://github.githubassets.com/images/icons/emoji/unicode/1f3e7.png?v8",
+  "atom": "https://github.githubassets.com/images/icons/emoji/atom.png?v8",
+  "atom_symbol": "https://github.githubassets.com/images/icons/emoji/unicode/269b.png?v8",
+  "australia": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1fa.png?v8",
+  "austria": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1f9.png?v8",
+  "auto_rickshaw": "https://github.githubassets.com/images/icons/emoji/unicode/1f6fa.png?v8",
+  "avocado": "https://github.githubassets.com/images/icons/emoji/unicode/1f951.png?v8",
+  "axe": "https://github.githubassets.com/images/icons/emoji/unicode/1fa93.png?v8",
+  "azerbaijan": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e6-1f1ff.png?v8",
+  "b": "https://github.githubassets.com/images/icons/emoji/unicode/1f171.png?v8",
+  "baby": "https://github.githubassets.com/images/icons/emoji/unicode/1f476.png?v8",
+  "baby_bottle": "https://github.githubassets.com/images/icons/emoji/unicode/1f37c.png?v8",
+  "baby_chick": "https://github.githubassets.com/images/icons/emoji/unicode/1f424.png?v8",
+  "baby_symbol": "https://github.githubassets.com/images/icons/emoji/unicode/1f6bc.png?v8",
+  "back": "https://github.githubassets.com/images/icons/emoji/unicode/1f519.png?v8",
+  "bacon": "https://github.githubassets.com/images/icons/emoji/unicode/1f953.png?v8",
+  "badger": "https://github.githubassets.com/images/icons/emoji/unicode/1f9a1.png?v8",
+  "badminton": "https://github.githubassets.com/images/icons/emoji/unicode/1f3f8.png?v8",
+  "bagel": "https://github.githubassets.com/images/icons/emoji/unicode/1f96f.png?v8",
+  "baggage_claim": "https://github.githubassets.com/images/icons/emoji/unicode/1f6c4.png?v8",
+  "baguette_bread": "https://github.githubassets.com/images/icons/emoji/unicode/1f956.png?v8",
+  "bahamas": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f8.png?v8",
+  "bahrain": "https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1ed.png?v8",
+  "balance_scale": "https://github.githubassets.com/images/icons/emoji/unicode/2696.png?v8",
+  "bald_man": "https://github.githubassets.com/images/icons/emoji/unicode/1f468-1f9b2.png?v8",
+  "bald_woman": "https://github.githubassets.com/images/icons/emoji/unicode/1f469-1f9b2.png?v8",
+  "ballet_shoes": "https://github.githubassets.com/images/icons/emoji/unicode/1fa70.png?v8",
+  "balloon": "https://github.githubassets.com/images/icons/emoji/unicode/1f388.png?v8",
+  "ballot_box": "https://github.githubassets.com/images/icons/emoji/unicode/1f5f3.png?v8",
+  "ballot_box_with_check": "https://github.githubassets.com/images/icons/emoji/unicode/2611.png?v8",
+  "bamboo": "https://github.githubassets.com/images/icons/emoji/unicode/1f38d.png?v8",
+  "banana": "https://github.githubassets.com/images/icons/emoji/unicode/1f34c.png?v8",
+  "bangbang": "https://github.githubassets.com/images/icons/emoji/unicode/203c.png?v8",
+  "bangladesh": "https://gith... (set the log level to DEBUG or TRACE to see the full content) 
+ </msg>
+<msg timestamp="20211201 12:19:32.456" level="INFO">C:\Python310\lib\site-packages\urllib3\connectionpool.py:981: InsecureRequestWarning: Unverified HTTPS request is being made to host 'api.github.com'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  warnings.warn(</msg>
+<msg timestamp="20211201 12:19:32.456" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20211201 12:19:32.003" endtime="20211201 12:19:32.456"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20211201 12:19:32.457" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;type 'unicode'&gt;</msg>
+<status status="PASS" starttime="20211201 12:19:32.456" endtime="20211201 12:19:32.457"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20211201 12:19:32.459" level="INFO">${json} = {'+1': 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8', '-1': 'https://github.githubassets.com/images/icons/emoji/unicode/1f44e.png?v8', '100': 'https://github.githubassets.c...</msg>
+<status status="PASS" starttime="20211201 12:19:32.457" endtime="20211201 12:19:32.459"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${emoji_url}</var>
+<arg>${json['aerial_tramway']}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20211201 12:19:32.460" level="INFO">${emoji_url} = https://github.githubassets.com/images/icons/emoji/unicode/1f6a1.png?v8</msg>
+<status status="PASS" starttime="20211201 12:19:32.459" endtime="20211201 12:19:32.460"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>${emoji_url}</arg>
+<arg>ie</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20211201 12:19:32.460" level="INFO">Opening browser 'ie' to base url 'https://github.githubassets.com/images/icons/emoji/unicode/1f6a1.png?v8'.</msg>
+<status status="PASS" starttime="20211201 12:19:32.460" endtime="20211201 12:19:33.750"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20211201 12:19:38.760" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20211201 12:19:33.750" endtime="20211201 12:19:38.760"/>
+</kw>
+<kw name="Close Browser" library="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" starttime="20211201 12:19:38.760" endtime="20211201 12:19:41.821"/>
+</kw>
+<status status="PASS" starttime="20211201 12:19:32.002" endtime="20211201 12:19:41.821"/>
+</kw>
+<tag>API</tag>
+<status status="PASS" starttime="20211201 12:19:32.001" endtime="20211201 12:19:41.822"/>
+</test>
+<doc>These are some API tests</doc>
+<status status="PASS" starttime="20211201 12:19:31.142" endtime="20211201 12:19:41.823"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="2" fail="0" skip="0">API</stat>
+</tag>
+<suite>
+<stat pass="2" fail="0" skip="0" id="s1" name="API Tests">API Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

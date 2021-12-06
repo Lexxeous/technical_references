@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.1.2 (Python 3.10.0 on win32)" generated="20211201 12:05:19.331" rpa="false" schemaversion="2">
+<suite id="s1" name="MySql Tests" source="C:\Users\jagibson\Prog_Projects\explore-libraries\tests\MySql_Tests.robot">
+<test id="s1-t1" name="Test DB Connection">
+<kw name="Connect" library="MySql" type="SETUP">
+<kw name="Connect To Database Using Custom Params" library="DatabaseLibrary">
+<arg>pymysql</arg>
+<arg>database='rftutorial', user='rftutorial', password='Demoscript1!', host='localhost', port=3306</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using the map string `db_custom_param_string`.</doc>
+<msg timestamp="20211201 12:05:19.429" level="INFO">Executing : Connect To Database Using Custom Params : pymysql.connect(db_api_2.connect(database='rftutorial', user='rftutorial', password='Demoscript1!', host='localhost', port=3306)) </msg>
+<msg timestamp="20211201 12:05:23.550" level="FAIL">OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")</msg>
+<status status="FAIL" starttime="20211201 12:05:19.391" endtime="20211201 12:05:23.550"/>
+</kw>
+<status status="FAIL" starttime="20211201 12:05:19.391" endtime="20211201 12:05:23.550"/>
+</kw>
+<kw name="Disconnect" library="MySql" type="TEARDOWN">
+<kw name="Disconnect From Database" library="DatabaseLibrary">
+<doc>Disconnects from the database.</doc>
+<msg timestamp="20211201 12:05:23.552" level="INFO">Executing : Disconnect From Database</msg>
+<msg timestamp="20211201 12:05:23.552" level="FAIL">AttributeError: 'NoneType' object has no attribute 'close'</msg>
+<status status="FAIL" starttime="20211201 12:05:23.551" endtime="20211201 12:05:23.552"/>
+</kw>
+<status status="FAIL" starttime="20211201 12:05:23.551" endtime="20211201 12:05:23.552">AttributeError: 'NoneType' object has no attribute 'close'</status>
+</kw>
+<tag>Connect</tag>
+<status status="FAIL" starttime="20211201 12:05:19.390" endtime="20211201 12:05:23.553">Setup failed:
+OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([WinError 10061] No connection could be made because the target machine actively refused it)")
+
+Also teardown failed:
+AttributeError: 'NoneType' object has no attribute 'close'</status>
+</test>
+<doc>These are some MySql Database tests</doc>
+<status status="FAIL" starttime="20211201 12:05:19.333" endtime="20211201 12:05:23.553"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">Connect</stat>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="MySql Tests">MySql Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
