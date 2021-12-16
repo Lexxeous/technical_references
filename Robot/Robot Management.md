@@ -33,11 +33,12 @@
 3. Run `pip install selenium` and `pip install robotframework-seleniumlibrary`
     * Make sure that `selenium`  and `robotframework-seleniumlibrary` are listed as packages (along with their dependencies) after running `pip list`.
 4. Install desired browser applications (Google Chrome, Firefox, Opera, etc).
-5. Install **Selenium** web drivers for each browser.
-    * The [32-bit IE web-driver](https://github.com/SeleniumHQ/selenium/releases/download/selenium-4.0.0/IEDriverServer_Win32_4.0.0.zip) from the [official Selenium downloads page](https://www.selenium.dev/downloads/).
-    * The [32-bit Firefox web-driver](https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-win32.zip) from [Mozilla's official GekoDriver releases page](https://github.com/mozilla/geckodriver/releases).
-    * The [32-bit Google Chome web-driver](https://chromedriver.storage.googleapis.com/96.0.4664.45/chromedriver_win32.zip) from the [Chromium downloads page](https://chromedriver.chromium.org/).
-    * The [32-bit Microsft Edge web-driver (for Edge build 96.0.1054.29)](https://msedgedriver.azureedge.net/96.0.1054.29/edgedriver_win32.zip) from [Microsoft's official web-driver tool downloads page](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/#downloads).
+5. Install **Selenium** web-drivers for each browser.
+    * A 32-bit IE web-driver from the [official Selenium downloads page](https://www.selenium.dev/downloads/).
+    * A 32-bit Firefox web-driver from [Mozilla's official GekoDriver releases page](https://github.com/mozilla/geckodriver/releases).
+    * A 32-bit Google Chrome web-driver from the [Chromium downloads page](https://chromedriver.chromium.org/).
+    * A 32-bit Microsoft Edge web-driver from [Microsoft's official web-driver tool downloads page](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/#downloads).
+      - To find the right Microsoft Edge web-driver, open the Edge web browser, click on the ellipsis (`...`) and choose `Settings`, then click on `About Microsoft Edge`, and note the version number.
 6. // TODO
 
 ### macOS:
@@ -176,6 +177,14 @@ Variables expand the re-usability of scripts, not just for **Robot** framework. 
   * Pass variables into user-defined keywords (like function parameters).
   * Pass variables into scripts at runtime (from the command line).
 
+There also exist a collection of *Built-in Variables* that are declared "under-the-hood".
+  
+  * [Operating System Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#operating-system-variables)
+  * [Number Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#number-variables)
+  * [Boolean and None/Null Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#boolean-and-none-null-variables)
+  * [Space and Empty Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#space-and-empty-variables)
+  * [Automatic Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#automatic-variables)
+
 ##### Scalars:
 
 Scalar variables are meant to hold a single value. We can declare the existence of and initialize a scalar variable by using dollar-sign & curly bracket syntax: `${<variable_name>} =  <variable_value>`. The variable can then be referenced with the same left-hand-side syntax: `${<variable_name>}`. Inside of a **Robot** framework script, it should look something like the following.
@@ -291,6 +300,20 @@ Custom Keyword Phrase
 
 > Optional. Typically put keywords in associated `Resources` files.
 
+Keywords can also return values, like functions/methods. All that is needed is a `[Return]` statement inside the keyword body. You can return scalar values, numeric values, lists, dictionaries, etc. To capture the return value, simply assign a variable to the keyword call.
+
+```robot
+*** Keywords ***
+Sample keyword
+    ${returned_value} =  Keyword that returns something
+    Log  ${returned_value}
+
+
+Keyword that returns something
+    # Do some stuff
+    [Return] <value>
+```
+
 #### Gherkin Syntax:
 
 The use of Gherkin syntax for **Robot** framework is meant to improve the readability of test cases. It produces finer-grained results that may be easier to interpret in some cases. The keywords are based on phrase prefixes.
@@ -328,11 +351,41 @@ https://stackoverflow.com/questions/69749942/getting-error-cannot-import-name-ru
 
 ### Flags:
 
+In alphabetical order:
+
+  * `-c --critical <tags>` - Allows specification of which tag(s) will cause the test report to be red (in failed state) if tagged test(s) fail. By default, all tests are critical, unless otherwise specified.
   * `-d --outputdir <path/to/output/dir>` - Specify output directory for results.
   * `-i --include <tags>` - Include only a subset of tests to run based on custom tags.
+  * `-L --loglevel <level>` - Allows you to specify a log level from the following list: TRACE, DEBUG, INFO (default), WARN, NONE (no logging). You can also use the `Set Log Level` keyword, locally, inside of a script to change the log level at any given point.
+  * `-n --noncritical <tags>` - Allows specification of which tag(s) will not cause the test report to be red (in failed state) if tagged test(s) fail.
   * `-N --name <name>` - Set the name of the top level suite. By default the name is created based on the executed file or directory.
   * `-t --test <name>` - Specify the name of a unique test case that you want to run.
+  * `-T --timestampoutputs` - Prevents result(s)/log(s) from overwriting each other. Preserve multiple results over time.
   * `-v --variable <VAR_NAME>:<values>` - Pass variables into **Robot** script from the command line.
+
+  * `--randomize <all|suites|tests|none>` - Specify a test randomization strategy.
+  * `--reporttitle <title> | --logtitile <title>` - Allows specific title on report/log file(s).
+
+
+### Script Execution Order:
+By default, test script files will normally be executed in alphabetic order. However, we can change the order of test script file execution by prefixing file names with `XX__`, where `XX` is a one or two digit integer, padded on the left with zeros. For example:
+
+The following files:
+```txt
+Tests > 
+    Some_Feature.robot
+    Another_Feature.robot
+```
+will be executed in the order: `Another_Feature.robot --> Some_Feature.robot` by default. However, if we refactor the naming convention of the test script files as:
+```txt
+Tests >
+    01__Some_Feature.robot
+    02__Another_Feature.robot
+```
+then the files will be executed in the order: `01__Some_Feature.robot --> 02__Another_Feature.robot`.
+
+
+Another way to change the execution order of your tests is to use the `--randomize <all|suites|tests|none>` option. This is a good way to find potential defects in your test(s).
 
 
 ### Run Multiple Suites:
