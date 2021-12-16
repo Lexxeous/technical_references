@@ -1,6 +1,6 @@
 <!-- HTML Management -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's HTML Management: <img src="../.pics/HTML & CSS/html_logo.png" width="100"/>
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's HTML Management: <img src="../.pics/HTML/html_logo.png" width="100"/>
 
 
 ## Summary:

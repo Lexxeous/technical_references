@@ -1,6 +1,6 @@
 <!-- XML Management.md -->
 
-# xml management.md
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's XML Management: <img src="../.pics/XML/xml_logo.png" height="80"/>
 
 ## Summary:
 

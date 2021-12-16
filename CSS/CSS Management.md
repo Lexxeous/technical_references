@@ -1,6 +1,6 @@
 <!-- CSS Management.md -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's CSS Management: <img src="../.pics/HTML & CSS/css_logo.png" width="100"/>
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="100px"/> Lexxeous's CSS Management: <img src="../.pics/CSS/css_logo.png" width="80"/>
 
 ## Summary:
 
