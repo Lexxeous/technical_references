@@ -74,18 +74,22 @@ https://www.python.org/downloads/source/
 
 ### Standard:
 
-  * BuiltIn
-  * OperatingSystem
-  * Dialogs
-  * String
-  * XML
-  * Process
-  * Collections (for lists and dictionaries)
-  * DateTime
-  * Screenshot
-  * Remote
-  * Telnet
-  * etc...
+  * [BuiltIn](https://robotframework.org/robotframework/latest/libraries/BuiltIn.html)
+  * [Collections](https://robotframework.org/robotframework/latest/libraries/Collections.html) (for lists and dictionaries)
+  * [DateTime](https://robotframework.org/robotframework/latest/libraries/DateTime.html)
+  * [Dialogs](https://robotframework.org/robotframework/latest/libraries/Dialogs.html)
+  * [Libdoc](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#libdoc)
+  * [OperatingSystem](https://robotframework.org/robotframework/latest/libraries/OperatingSystem.html)
+  * [Process](https://robotframework.org/robotframework/latest/libraries/Process.html)
+  * [Rebot](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#post-processing-outputs)
+  * [Remote](https://github.com/robotframework/RemoteInterface)
+  * [Screenshot](https://robotframework.org/robotframework/latest/libraries/Screenshot.html)
+  * [String](https://robotframework.org/robotframework/latest/libraries/String.html)
+  * [Telnet](https://robotframework.org/robotframework/latest/libraries/Telnet.html)
+  * [Testdoc](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#testdoc)
+  * [Tidy](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#tidy)
+  * [XML](https://robotframework.org/robotframework/latest/libraries/XML.html)
+  
 
 ### External (with `pip install`):
 
@@ -126,9 +130,7 @@ https://www.python.org/downloads/source/
     * /my-custom-robotframework-library
 
 
-## Script File:
-
-### Sections:
+## Script File Sections:
 
 > Sections always begin with 3 asterisks.
 
@@ -138,7 +140,7 @@ https://www.python.org/downloads/source/
 
 > Comments on the same line as keywords must have 2 spaces before the `#` character.
 
-#### Settings:
+### Settings:
 
 ```robot
 ***Settings***
@@ -166,7 +168,7 @@ Test Teardown  <after_test_keyword>
 # Wait before error thrown
 Test Timeout  <global_timeout>
 ```
-#### Variables:
+### Variables:
 
 Variables expand the re-usability of scripts, not just for **Robot** framework. We can:
 
@@ -185,7 +187,7 @@ There also exist a collection of *Built-in Variables* that are declared "under-t
   * [Space and Empty Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#space-and-empty-variables)
   * [Automatic Variables](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#automatic-variables)
 
-##### Scalars:
+#### Scalars:
 
 Scalar variables are meant to hold a single value. We can declare the existence of and initialize a scalar variable by using dollar-sign & curly bracket syntax: `${<variable_name>} =  <variable_value>`. The variable can then be referenced with the same left-hand-side syntax: `${<variable_name>}`. Inside of a **Robot** framework script, it should look something like the following.
 
@@ -209,16 +211,18 @@ Search for user
 
 > **Robot** framework allows you to declare variables that include spaces, but this is not recommended as they can be easily confused with library keywords and user-defined keywords.
 
-##### Lists:
+#### Lists:
+
+> From the built-in [Collections](https://robotframework.org/robotframework/latest/libraries/Collections.html) library.
 
 // TODO
 
 Allows you to hold a series of values
 
-`@{var_name} =  <val0>  <val1>  <valN>`
-`@{var_name}[0]`
-`@{var_name}[1:]`
-`@{var_name}[:2]`
+  * `@{var_name} =  <val0>  <val1>  <valN>`
+  * `@{var_name}[0]`
+  * `@{var_name}[1:]`
+  * `@{var_name}[:2]`
 
 **Keywords**:
   * Evaluate
@@ -227,11 +231,31 @@ Allows you to hold a series of values
 
 > Must have 2 spaces in between each value in the list. The two spaces acts as a delimiter instead of commas or some other non-alpha character.
 
-##### Dictionaries:
+#### Dictionaries:
+
+> From the built-in [Collections](https://robotframework.org/robotframework/latest/libraries/Collections.html) library.
+
+Allows you to hold a series of named values (key-value pairs):
+
+**Define:** Dictionaries are declared/defined using an ampersand (`&`) but are not accessed the same way.
+```robot
+*** Variables ***
+&{<dict_name>}  <key1>=<val1>  <key2>=<val2>  <keyN>=<valN>
+# other declared variables
+```
+
+**Access:** Dictionaries are accessed using the same syntax as scalar variables, using the dollar sign (`$`).
+```robot
+*** Test Cases ***
+Access dictionary value
+    [Tags]  dictionary
+    Log  ${dict_name}.${key_name}
+    # other stuff
+```
 
 // TODO
 
-##### Scope:
+#### Scope:
 
 // TODO
 
@@ -246,7 +270,7 @@ Command Line > Script/suite > Keyword parameters
 use uppercase for variables section global scope
 user lowercase for internal test case scope
 
-##### Passing Variables to Keywords:
+#### Passing Variables to Keywords:
 
 // TODO
 
@@ -265,13 +289,13 @@ user lowercase for internal test case scope
     Do Something Else  ${argN}
 ```
 
-##### Passing Variables at Runtime:
+#### Passing Variables at Runtime:
 
 // TODO
 
 `python -m robot -v BROWSER:edge -v SEARCH_TERM:"Ferrari Enzo" -d Results/Main/ Tests/main.robot`
 
-#### Test Cases:
+### Test Cases:
 
 ```robot
 *** Test Cases***
@@ -286,7 +310,7 @@ user lowercase for internal test case scope
     # Post-conditions (clean up after test actions)
 ```
 
-#### Keywords:
+### Keywords:
 
 You can "prototype" user-defined keyword definitions. This is similar to prototyping custom functions in general purpose programming languages. When the user-defined keyword(s) are in the same file, from which they are being called, they do not prefix a resource location in the results. If the user-defined keyword(s) are abstracted to an external file, and imported as a resource, they do prefix a resource location in the results.
 
@@ -438,3 +462,70 @@ https://saucelabs.com/
 // can be complex to configure
 // test cases live in a git repo
 // have to install Jenkins and RF plugin
+
+## Script Control Flow:
+
+### Run Keyword If/ELSE IF/ELSE:
+
+```robot
+*** Test Cases ***
+Conditional Example 1
+    [Tags]  control_flow
+    Run Keyword If  ${<val1>} == <val2>  Keyword 1
+
+Conditional Example 2
+    [Tags]  control_flow
+    Run Keyword If  ${<val1>} > <val2>  Keyword 1  ELSE Keyword 2
+
+Conditional Example 3
+    [Tags]  control_flow
+    Run Keyword If  ${<val1>} <= <val2>  Keyword 1
+    ...  ELSE IF  ${<val3>} < <val4>  Keyword 2
+    ...  ELSE  Keyword 3  #  use an ellipsis and two spaces on next line to break up control flow
+
+*** Keywords ***
+Keyword 1
+    # do something
+
+Keyword 2
+    # do different thing
+
+Keyword 3
+    # do another thing
+```
+
+### Loops:
+
+**For RF v3.1+:**
+```robot
+FOR  ${<item>}  IN  item1  item2  item3
+    Keyword  ${item}
+    # more stuff
+END
+```
+
+
+**For RF v2.x ~ v3.0:**
+```robot
+:FOR  ${<item>}  IN  item1  item2  item3
+\    Keyword  ${item}
+\    # more stuff
+```
+
+#### Loop Usage:
+
+**`IN RANGE`:**
+  * `FOR  ${i}  IN RANGE  <int>` - Loop `<int>` times with 0-based indexing
+  * `FOR  ${i}  IN RANGE  <start>  <end>` - Loop with specific starting and ending integers.
+  * `FOR  ${i}  IN RANGE  <start>  <end>  <step>` - Loop with starting and ending integers and an integer step size.
+  * `FOR  ${item}  IN RANGE  @{items}` - Loop through a pre-defined, variable list of items.
+
+**`Exit/Continue For Loop`:**
+  * `Exit For Loop` - Will exit out of the `FOR` loop no matter the current iteration (same as `break` from other general purpose programming languages)
+  * `Continue For Loop` - // TODO
+
+**`Repeat Keyword`:**
+  * `Repeat Keyword  <int>  <keyword>` - Repeat `<keyword>` an `<int>` number of times.
+  * `Repeat Keyword  <int> times  <keyword>` - Repeat `<keyword>` an `<int>` number of times.
+  * `Repeat Keyword  <int> x  <keyword>` - Repeat `<keyword>` an `<int>` number of times.
+  * `Repeat Keyword  [hrs] h [mins] m <secs> s  <keyword>` - Repeat `<keyword>` as many times as possible with in the given amount of time.
