@@ -47,7 +47,7 @@ Insert Record
     ${insert_command} =  Set Variable  INSERT INTO DemoItems (ItemName, FirstName) VALUES ('New Item ${current_date}', '${FIRST_NAME}')
     Execute SQL String  ${insert_command}
 
-    # Execute SQL Script  Inputs/SQL/insert.txt
+    # Execute SQL Script  Inputs/sql/insert.txt
 
 Verify New Record Added
     ${new_row_count} =  Row Count  SELECT * FROM DemoItems;

@@ -4,7 +4,7 @@ ${BROWSER} =  chrome
 ${ENVIRONMENT} =  prod
 
 # Note that the "dev" and "qa" environments of cars.com do not exist, but are used only for dictionary demonstration
-&{BASE_URL}  dev=https://dev.cars.com/  qa=https://qa.cars.com/  prod=https://www.cars.com/
+&{BASE_URL}  dev=https://dev.cars.com  qa=https://qa.cars.com  prod=https://www.cars.com
 ${LOGIN_URL} =  /signin
 
 # Input Data

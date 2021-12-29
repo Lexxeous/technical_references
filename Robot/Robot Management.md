@@ -297,6 +297,8 @@ user lowercase for internal test case scope
 
 ### Test Cases:
 
+The following is a "normal" setup for a **Robot** test case:
+
 ```robot
 *** Test Cases***
 <Test case title>
@@ -309,6 +311,29 @@ user lowercase for internal test case scope
     # Test case steps (test actions)
     # Post-conditions (clean up after test actions)
 ```
+
+You can also use test case template abstractions to avoid repetition, to convert keyword-driven design into a data-driven design.
+
+```robot
+***  Settings  ***
+Test Template    <keyword_to_use>  # applies template to all test cases in this suite/file
+
+*** Test Cases ***
+    [Template]  <keyword_to_use>  # for individual test case template specification
+    $[arg1]  $[arg2]  ...  $[argN]  # round 1 of optional parameter passing
+    $[arg1]  $[arg2]  ...  $[argN]  # round 2 of optional parameter passing
+    ...
+    $[arg1]  $[arg2]  ...  $[argN]  # round N of optional parameter passing
+
+*** Keywords ***
+<keyword_to_use> 
+    [Arguments]  $[arg1]  $[arg2]  ...  $[argN]  # can also be imported from a keyword/resource file
+    #  code to execute
+```
+
+> Use the *group* `Test Template` option OR the *individual* `[Template]` option when declaring templated test cases; don't use both options in the same file, it's bad practice and can cause issues.
+
+
 
 ### Keywords:
 

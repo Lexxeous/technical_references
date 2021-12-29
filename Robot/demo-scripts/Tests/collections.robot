@@ -7,6 +7,8 @@ Resource  ../Resources/collections/collections.robot
 Test Setup  common.Begin Web Test
 Test Teardown  common.End Web Test
 
+# Test Template  Test Multiple Login Scenarios  # applies template to all test cases in this suite/file
+
 # python -m robot -d Results/collections/ Tests/collections.robot
 # python -m robot -d Results/collections/ -i Collections Tests/
 # python -m robot -d Results/collections/ -v ENVIRONMENT:dev -v BROWSER:ie Tests/collections.robot
@@ -51,3 +53,10 @@ Should show error message with different invalid credentials
         collections.Verify Login Page Error Message  ${cred_dict.ExpectedErrorMessage}
         Sleep  2s
     END
+
+# This 1 data-driven test case replaces all 4 of the previous test cases with test case templating
+Should show error message with different invalid credentials as test case template
+    [Template]  Test Multiple Login Scenarios  # for individual test case template specification
+    ${UNREGISTERED_USER}
+    ${INVALID_PASSWORD_USER}
+    ${BLANK_CREDENTIALS_USER}

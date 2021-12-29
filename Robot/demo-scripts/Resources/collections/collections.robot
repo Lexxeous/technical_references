@@ -2,6 +2,12 @@
 Resource  po/sign-in.robot
 
 *** Keywords ***
+Test Multiple Login Scenarios
+    [Arguments]  ${Credentials}
+    Navigate to Sign In Page
+    Attempt Login  ${Credentials}
+    Verify Login Page Error Message  ${Credentials.ExpectedErrorMessage}
+
 Navigate to Sign In Page
     sign-in.Navigate To
 
