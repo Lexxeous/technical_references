@@ -1,9 +1,10 @@
 *** Settings ***
 Documentation  These are some Collections tests demonstrating a need for data-driven testing
 Library  Collections
-Resource  ../Inputs/collections/collections_data.robot
+Resource  ../Inputs/collections/collections-data.robot
 Resource  ../Resources/common.robot
 Resource  ../Resources/collections/collections.robot
+Resource  ../Resources/collections/data-manager.robot
 Test Setup  common.Begin Web Test
 Test Teardown  common.End Web Test
 
@@ -54,9 +55,14 @@ Should show error message with different invalid credentials
         Sleep  2s
     END
 
-# This 1 data-driven test case replaces all 4 of the previous test cases with test case templating
+# This 1 data-driven test case can replace all 4 of the previous test cases with test case templating
 Should show error message with different invalid credentials as test case template
     [Template]  Test Multiple Login Scenarios  # for individual test case template specification
     ${UNREGISTERED_USER}
     ${INVALID_PASSWORD_USER}
     ${BLANK_CREDENTIALS_USER}
+
+# This 1 data-driven test case can replace all 5 of the previous test cases with CSV data reading
+Should show error message with different invalid credentials as CSV reader
+    ${InvalidLoginScenarios} =  data-manager.Get CSV Data  ${INVALID_CREDENTIALS_PATH_CSV}  # returns an array [[<EMAIL>, <PASSWORD>, <ERR_MSG>], [...], [...]]
+    collections.Login with Many Invalid Credentials  ${InvalidLoginScenarios}

@@ -7,9 +7,12 @@ ${ENVIRONMENT} =  prod
 &{BASE_URL}  dev=https://dev.cars.com  qa=https://qa.cars.com  prod=https://www.cars.com
 ${LOGIN_URL} =  /signin
 
-# Input Data
+# Raw/manual input data
 &{UNREGISTERED_USER}  Email=admin@robotframeworktutorial.com  Password=AdminPassword!  ExpectedErrorMessage=We were unable to sign you in.
 &{INVALID_PASSWORD_USER}  Email=test@gmail.com  Password=TestPassword!  ExpectedErrorMessage=We were unable to sign you in.
 &{BLANK_CREDENTIALS_USER}  Email=#BLANK  Password=#BLANK  ExpectedErrorMessage=We were unable to sign you in.
 
 @{ATTEMPT_DATA} =  ${UNREGISTERED_USER}  ${INVALID_PASSWORD_USER}  ${BLANK_CREDENTIALS_USER}
+
+# For CSV data
+${INVALID_CREDENTIALS_PATH_CSV} =  ${CURDIR}${/}.\\users.csv

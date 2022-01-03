@@ -545,7 +545,7 @@ END
   * `FOR  ${i}  IN RANGE  <start>  <end>  <step>` - Loop with starting and ending integers and an integer step size.
   * `FOR  ${item}  IN RANGE  @{items}` - Loop through a pre-defined, variable list of items.
 
-**`Exit/Continue For Loop`:**
+**`Exit`/`Continue For Loop`:**
   * `Exit For Loop` - Will exit out of the `FOR` loop no matter the current iteration (same as `break` from other general purpose programming languages)
   * `Continue For Loop` - // TODO
 
