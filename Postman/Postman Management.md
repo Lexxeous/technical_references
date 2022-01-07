@@ -6,6 +6,8 @@
 
 **Postman** is a quick and powerful way to test custom and 3rd-party back-end APIs without the need for a front-end interface. As long as the back-end API runs with HTTP RESTful actions, **Postman** is a great pick (however, there are options to run **Postman** requests with legacy API systems).
 
+For more information, please see the [official **Postman** documentation](https://learning.postman.com/docs/getting-started/introduction/).
+
 ## II. Installation:
 
   * [Web Application](https://www.postman.com/) - (*Easiest*)
@@ -14,11 +16,15 @@
 
 ## III. GUI Sections:
 
-### III.i. Request Builder:
+### III.i. [Request Builder](https://learning.postman.com/docs/sending-requests/requests/):
 
 <img src="../.pics/Postman/section_request_builder.png" width="100%" style="border: 5px solid orange;"/>
 
-> Click on the <img src="../.pics/Postman/section_request_builder_eye.png" width="40px"/> button (in the top right corner) to get a quick view of the current environment. This includes things like environment and global variable initial/current values.
+> Click on the <img src="../.pics/Postman/section_request_builder_eye.png" width="40px"/> button (in the top right corner) to get a quick view of the current environment. This includes things like environment/global/collection variable initial/current values.
+
+> Variables in **Postman** can have environment, global, or collection-level scope.
+
+> A request should follow the following format: `<request_type> <protocol>://<website_name>/<endpoint>`.
 
 #### III.i.a. Builder Request Types: 
 
@@ -48,6 +54,21 @@ The variable on the LHS of the equals sign is the *key* and the quantity/string 
 
 
 #### III.i.c. Request Builder Authorization:
+
+Authentication with the request builder provides you with the following options:
+
+  * Inherit Auth From Parent
+  * No Auth
+  * API Key
+  * Bearer Token
+  * Basic Auth
+  * Digest Auth
+  * OAuth 1.0
+  * OAuth 2.0
+  * Hawk Authentication
+  * AWS Signature
+  * NTLM (New Technology LAN Manager) Authentication
+  * Akamai EdgeGrid
 
 #### III.i.d. Request Builder Headers:
 
@@ -105,7 +126,7 @@ and allows the data to be interpreted as the following file formats:
 
 When you write *Tests* with the *Request Builder*, if those tests make assertions or attempt to validate the existance or value of something, then the results of those *Tests* will be displayed in this section.
 
-### III. Collections:
+### III.ii Collections:
 
 *Collections* allow you to store groups of requests that are useful for a particular project, website, etc. This allows greater for greater granularity on organization for projects. *Collections* and their requests can be documented, forked, commented on, watched, organized into folders, & can provide relevant code snippets.
 
@@ -117,16 +138,74 @@ The *Collections Runner* allows you to run all of the requests in a given collec
 
 <img src="../.pics/Postman/section_collections_runner.png" width="100%" style="border: 5px solid orange;"/>
 
-### III.ii APIs:
+#### III.ii.a Authorization:
 
-### III.iii Environments:
+*Collections* in **Postman** provide all of the same authentication options except for "Inherit Auth From Parent", because *collections* have no parent to inherit from. When setting the authentication method for the *collection*, all child requests that are set to inherit the authentication method from the parent will use the method defined for the *collection*. Otherwise, you can set a different authentication method for each individual request, if desired.
 
-### III.iv Mock Servers:
+#### III.ii.b Pre-request Script:
 
-### III.v Monitors:
+*Scripts* defined at the collection level will run before every request in said collection.
 
-### III.vi Flows:
+#### III.ii.c Tests:
 
-### III.vii History:
+*Tests* defined at the collection level will run before every request in said collection.
+
+#### III.ii.d Variables:
+
+*Variables* defined at the collection level (within the collection's scope) are available only to said collection and can be referenced in a request using the `{{<var}}` interpolation syntax.
+
+
+
+<img src="../.pics/Postman/section_collections_variables.png" width="90%" style="border: 5px solid orange;"/>
+
+### III.iii APIs:
+
+### III.iv Environments:
+
+### III.v Mock Servers:
+
+### III.vi Monitors:
+
+### III.vii Flows:
+
+### III.viii History:
 
 ## IV. Misc:
+
+### IV.i. Endpoints:
+
+Endpoints represent different addresses/paths/locations/pages available on the website for the API. Endpoints are typically denoted with a different webpage suffix: `/<path>/[to]/[endpoint]`.
+
+### IV.ii. Variables:
+
+> You can highlight a subset of the request text to initiate a variable helper popup window.
+> You can hover over an interpolated variable in the request builder to view its data.
+
+#### IV.ii.a Initial vs. Current Value:
+
+**Current Value**:
+
+  * **Postman** uses this value by default when sending requests.
+  * This values is never synced with **Postman** servers.
+  * If blank/untouched, this value assumes the initial value.
+  * This value will not be shared with collaborators.
+  * Use this value to store sensitive data that will not be synced or shared.
+
+**Initial Value**:
+
+  * This value is shared with teams and other collaborating individuals when you share a collection, request, etc...
+  * This value is synced with **Postman** servers.
+  * Use the initial value to store general/default/template data.
+
+### IV.iii. Importing Complex Requests from a Web Browser:
+
+Anytime you do something on a webpage, there is probably at least one HTTP request being served in the background. If you want to capture the HTTP request of a specific action:
+
+  * Inspect your current page
+  * Go to the "Network" tab
+  * Check the "Preserve log" box (optional)
+  * Use the filers and options available to find the request you want
+  * Right click on the request and copy as `cURL (Bash)`
+  * *Import* the `cURL (Bash)` request as "Raw Text" into **Postman**
+
+<img src="../.pics/Postman/amazon_ferrari_458_search_request.png" width="100%" style="border: 5px solid orange;"/>
