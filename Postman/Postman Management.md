@@ -52,6 +52,10 @@ For more information, please see the [official **Postman** documentation](https:
 
 The variable on the LHS of the equals sign is the *key* and the quantity/string on the RHS of the equals sign is the *value*. These are *key*-*value* pairs that are very similar to JSON and **Python** dictionary notation. You can provide the *key*-*value* pair manually in the request, or you can provide them in the *Query Params* section.
 
+There is a difference between "path parameters" and "query parameters". Path parameters are required in the URL path (the endpoint that is specified with forward slashes `/`.) Query parameters always come after the URL path and the question mark character `?`.
+
+> Optionally, with **Postman** you can include path parameters as "pseudo-variables", dynamically, by prefixing a colon character and the name of the path variable like: `:<path_var_name>`. Then, **Postman** provides an extra section under *Params* to enter custom values for path variables.
+
 
 #### III.i.c. Request Builder Authorization:
 
@@ -108,6 +112,18 @@ and allows the data to be interpreted as the following file formats:
   * etc...
 
 > One of the best ways to get started with **Postman** *tests* is to use the provided snippets. The snippets will automatically inject the relevant code for the task you wish to run in the script. Otherwise, you can learn more about writing **Postman** *tests* with [the "Writing tests" documentation](https://learning.postman.com/docs/writing-scripts/test-scripts/).
+
+A single request can have multiple *tests* and they run after the request is completed. Most *tests* are assertion based, asserting that a value or statement is true, false, exists, or doesn't exist. If any of the assertions fail after a request is made, the entire *test* fails.
+
+> Make sure that you write *tests*/assertions that CAN fail.
+
+The code below is an example of a simple **Postman** assertion/*test* that checks the value of the status code for a request's response. This test checks for a status code of `200`. The **Postman** `test()` function, in this case, takes a string and a call-back function as its input arguments.
+
+```js
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+```
 
 
 #### III.i.h. Request Builder Settings:
