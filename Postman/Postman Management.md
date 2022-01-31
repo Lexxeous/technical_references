@@ -22,7 +22,7 @@ For more information, please see the [official **Postman** documentation](https:
 
 > Click on the <img src="../.pics/Postman/section_request_builder_eye.png" width="40px"/> button (in the top right corner) to get a quick view of the current environment. This includes things like environment/global/collection variable initial/current values.
 
-> Variables in **Postman** can have environment, global, or collection-level scope.
+> Variables in **Postman** can have global, collection, environment, data, or local-level scope.
 
 > A request should follow the following format: `<request_type> <protocol>://<website_name>/<endpoint>`.
 
@@ -30,11 +30,11 @@ For more information, please see the [official **Postman** documentation](https:
 
 | Request    | Description                                                                                  |
 |:----------:|:---------------------------------------------------------------------------------------------|
-| GET        |  |
-| POST       |  |
-| PUT        |  |
-| PATCH      |  |
-| DELETE     |  |
+| GET        | retrieve resource representation/information only; not modify data in any way |
+| POST       | create new subordinate resources |
+| PUT        | to update an existing resource (if resource doesn't exist, the specific API decides what to do) |
+| PATCH      | make a partial update on a resource |
+| DELETE     | delete the resources |
 | COPY       |  |
 | HEAD       |  |
 | OPTIONS    |  |
@@ -100,6 +100,15 @@ and allows the data to be interpreted as the following file formats:
 > Global variables can be referenced in the *body* with string interpolation, using the `"{{<var>}}"` syntax.
 
 #### III.i.f. Request Builder Pre-request Script:
+
+These scripts will run prior to a request actually being sent/executed. However, you cannot write tests/assertions because there is no response to act upon.
+
+An example of some useful pre-request script actions could be:
+
+  * calculating current timestamps
+  * generating some random data
+  * save data to variable(s) for use in the post-request test(s)
+  * setup output logging
 
 #### III.i.g. Request Builder Tests:
 
@@ -170,7 +179,42 @@ The *Collections Runner* allows you to run all of the requests in a given collec
 
 *Variables* defined at the collection level (within the collection's scope) are available only to said collection and can be referenced in a request using the `{{<var}}` interpolation syntax.
 
+The following diagram represents the scope of variables in **Postman**. By default, the variable values will be overwritten by its most narrow scope. For example, if a variable exists in a collection-level scope but also exists in the local-level scope, the local-level scope will take precedence.
 
+<img src="../.pics/Postman/variable_scope.jpg" width="50%" style="border: 5px solid orange;"/>
+
+**Variable scope pros and cons**:
+
+  * Global (`pm.globals`):
+    - Good for quick prototyping
+    - Can be accessed from anywhere
+    - Creates messy/sloppy code
+    - Should be avoided and not used in permanent solutions
+
+  * Collection (`pm.collectionVariables`):
+    - Tied to a specific collection for values that should not change
+    - Can be updated with a script
+    - Useful for specific group(s) of API calls, not for whole environment testing
+    - Can eliminate duplicate environment variable data
+
+  * Environment (`pm.environment`):
+    - Ideal for working with different servers and isolated services
+    - Tied to the currently selected **Postman** environment
+    - Can pass data to other requests
+    - Use for URLs, authentication, etc...
+
+  * Data (???):
+    - Used when working with multiple datasets
+    - Exist only during the execution of an iteration
+    - Can only be set from a CSV or JSON file
+
+  * Local (`pm.variables`):
+    - Can pass data within a specific request, within a collection, or between Collection Runner and Newman iterations
+    - Only created with scripts, no GUI manipulation offered
+    - Local variable no longer exists after its request script has been executed
+    - Will override all other scopes
+
+> For more information about **Postman** variables and variable scope, see [Demystifying Postman Variables: HOW and WHEN to use Different Variable Scopes](https://medium.com/apis-with-valentine/demystifying-postman-variables-how-and-when-to-use-different-variable-scopes-66ad8dc11200).
 
 <img src="../.pics/Postman/section_collections_variables.png" width="90%" style="border: 5px solid orange;"/>
 
