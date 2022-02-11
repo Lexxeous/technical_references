@@ -134,6 +134,14 @@ pm.test("Status code is 200", function () {
 });
 ```
 
+> ! ! !
+> IMPORTANT NOTE: Using `.equal()` and `.eql()` do not provide the same functionality. The former function checks that object `<A>` is the exact same object as object `<B>`. This is not typically useful as it is more common to check the values of the properties contained within objects. The latter function exhibits such behavior.
+> ! ! !
+
+**Using the Chai Assertion Library for Tests**:
+
+**[Chai](https://www.chaijs.com/api)** is a behavior-driven assertion library that is built into **Postman** that is able to create very human-readable assertion chains.
+
 
 #### III.i.h. Request Builder Settings:
 
@@ -143,9 +151,21 @@ pm.test("Status code is 200", function () {
 
 ##### III.i.j.1. Request Builder Response Body:
 
+HTTP REST API responses can come in a variety of formats.
+
+  * JSON - `pm.response.json()` (most common)
+  * XML - `xml2Json(pm.response)`
+  * HTML - `cheerio(pm.response.text())` ([Cheerio](https://github.com/cheeriojs/cheerio) is a built-in library for **Postman**)
+  * Plain-Text - `pm.response.text()`
+  * CSV - `csv-parse/lib/sync`
+
 ##### III.i.j.2. Request Builder Response Cookies:
 
+`pm.response.cookies`
+
 ##### III.i.j.3. Request Builder Response Headers:
+
+`pm.response.headers`
 
 ##### III.i.j.4. Request Builder Response Test Results:
 
