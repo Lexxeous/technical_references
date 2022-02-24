@@ -183,6 +183,8 @@ The *Collections Runner* allows you to run all of the requests in a given collec
 
 <img src="../.pics/Postman/section_collections_runner.png" width="100%" style="border: 5px solid orange;"/>
 
+> You can share a collection in a variety of ways: inviting collaborators via email, making your collection public and allowing forks, and sending current state URL links to JSON data. Keep in mind that URL links to JSON data are only valid for a single state of the collection. An updated link is required if an update was made to the collection.
+
 #### III.ii.a Authorization:
 
 *Collections* in **Postman** provide all of the same authentication options except for "Inherit Auth From Parent", because *collections* have no parent to inherit from. When setting the authentication method for the *collection*, all child requests that are set to inherit the authentication method from the parent will use the method defined for the *collection*. Otherwise, you can set a different authentication method for each individual request, if desired.
@@ -242,9 +244,25 @@ The following diagram represents the scope of variables in **Postman**. By defau
 
 ### III.iv Environments:
 
+Environments in **Postman** are very similar to system-level and user-level environments for standard operating systems. You should use environments and environment variables when you intend to separate information that is specific to a particular collection or service under test. For example, if you needed to test 2 or more mutually exclusive APIs, but both required an API key, for authentication, you could use environments to specify the same variable, `api-key`, but simply switch environments between said isolated API tests.
+
+> As a forewarning, environment (and global) variables do not persist, during runtime, when using test automation tools like Monitors, **Newman**, and **Jenkins**. You will have to use an alternate method to specify necessary parameters. This can be in the form of collection variables with *Initial Value*s, command line flags/arguments, or setting the desired variables on the server that will be running the automated tests.
+
 ### III.v Mock Servers:
 
 ### III.vi Monitors:
+
+Monitors in **Postman** are primarily offered to *Pro* user accounts, but are also available in limited amounts to free accounts (1000 API calls per month).
+
+Monitors allow you to run a set of tests at regular time intervals.
+
+<img src="../.pics/Postman/section_create_monitor.png" width="90%" style="border: 5px solid orange;"/>
+
+Known limitations to **Postman** monitors are:
+  * The servers running the tests are not on the same network as you.
+  * Monitors cannot import currently existing global variables, only currently existing environment variables.
+  * Global & environment variables are not persisted through sequential tests during runtime.
+    - May be best to use collection variables instead.
 
 ### III.vii Flows:
 
@@ -289,3 +307,50 @@ Anytime you do something on a webpage, there is probably at least one HTTP reque
   * *Import* the `cURL (Bash)` request as "Raw Text" into **Postman**
 
 <img src="../.pics/Postman/amazon_ferrari_458_search_request.png" width="100%" style="border: 5px solid orange;"/>
+
+### IV.iv. Test Automation Tools:
+
+Using automation can reduce repetitive manual work, allows instant feedback when something does not work anymore, and enables identification of software bugs early in the development process.
+
+  1. Collection Runner
+
+See the [**Collections** section](https://github.com/Lexxeous/technical_references/blob/master/Postman/Postman%20Management.md#iiiii-collections) for more information about the Collection Runner that is built into **Postman**.
+
+  2. Postman Monitors (w/ *Pro* account)
+
+See the [**Monitors** section](https://github.com/Lexxeous/technical_references/blob/master/Postman/Postman%20Management.md#iiivi-monitors) for more information about the Monitors that are built into **Postman**.
+
+  3. **Newman**
+
+**Newman** is a CLI tool that allows a user to run **Postman** collections directly from the command line. It is installed as a global command line tool using NodeJS and NPM by running the following command: `npm install -g newman`. Validate the installation of **Newman** by running `newman --version`. Then, you can execute a **Postman** collection by running `newman run <url_link_to_collection>`.
+
+> If you encounter an error that **Newman** is "*unable to get local issuer certificate*", you can either run the collection with the `--insecure` flag, or add an environment variable for NodeJS called `NODE_EXTRA_CA_CERTS` and set it equal to a path to any `.cer` file.
+
+<img src="../.pics/Postman/newman_nytimes_run.png" width="100%" style="border: 5px solid orange;"/>
+
+An alternative way to run a collection using **Newman** is with its UID and a **Postman** API key. The [**Newman** documentation](https://github.com/postmanlabs/newman#readme) has a section on [Using **Newman** with the Postman API](https://github.com/postmanlabs/newman#using-newman-with-the-postman-api).
+
+  * First, generate an API key, `<api-key>`, from [your personal account API key settings page](https://web.postman.co/settings/me/api-keys).
+  * Next, use a GET request in **Postman** to retrieve a list of your collections using `https://api.getpostman.com/collections?apikey=<api_key>`.
+  * Then, locate the desired collection UID, `<collection_uid>`.
+  * Next, use a separate GET request in **Postman** to retrieve a list of your environments using `https://api.getpostman.com/environments?apikey=<api_key>` (optional).
+  * Similarly, locate the desired environment UID, `env_uid` (optional).
+  * Finally, you can run **Newman** with an unchanging collection URL link by combining the aforementioned information as follows:
+
+```sh
+# Note the use of different UIDs for the desired collection and the desired environment.
+
+$ newman run "https://api.getpostman.com/collections/<collection_uid>?apikey=<api_key>" \
+    --environment "https://api.getpostman.com/environments/<env_uid>?apikey=<api_key>"
+```
+
+This method provides a way to run **Postman** collections with **Newman** without ever having to re-export or regenerate URL links or JSON files. The changes to a **Postman** collection are automatically synced to your personal profile, then the **Postman** API always retrieves the current state information.
+
+> ! ! ! IMPORTANT NOTE: Collection variables will only persist for **Newman** calls if their *Initial Value* is set. !!!
+
+> Use `newman --help` and `newman run --help` for more information.
+
+  4. **Newman** + **Jenkins**
+  5. **Newman** + other CI services
+
+> **Newman** is a command line tool made by the same developers who created **Postman**. It is offered as a companion product. **Newman** can run tests independently from **Postman** and is ideal for running tests on a CI server like **Jenkins**.
