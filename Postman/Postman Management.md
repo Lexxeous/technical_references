@@ -54,7 +54,7 @@ The variable on the LHS of the equals sign is the *key* and the quantity/string 
 
 There is a difference between "path parameters" and "query parameters". Path parameters are required in the URL path (the endpoint that is specified with forward slashes `/`.) Query parameters always come after the URL path and the question mark character `?`.
 
-> Optionally, with **Postman** you can include path parameters as "pseudo-variables", dynamically, by prefixing a colon character and the name of the path variable like: `:<path_var_name>`. Then, **Postman** provides an extra section under *Params* to enter custom values for path variables.
+> Optionally, with **Postman** you can include path parameters as "pseudo-variables", dynamically, by prefixing a colon character and the name of the path variable like: `:<path_var_name>:`. Then, **Postman** provides an extra section under *Params* to enter custom values for path variables.
 
 
 #### III.i.c. Request Builder Authorization:
@@ -332,7 +332,7 @@ An alternative way to run a collection using **Newman** is with its UID and a **
 
   * First, generate an API key, `<api-key>`, from [your personal account API key settings page](https://web.postman.co/settings/me/api-keys).
   * Next, use a GET request in **Postman** to retrieve a list of your collections using `https://api.getpostman.com/collections?apikey=<api_key>`.
-  * Then, locate the desired collection UID, `<collection_uid>`.
+  * Then, locate the desired collection UID, `<coll_uid>`.
   * Next, use a separate GET request in **Postman** to retrieve a list of your environments using `https://api.getpostman.com/environments?apikey=<api_key>` (optional).
   * Similarly, locate the desired environment UID, `env_uid` (optional).
   * Finally, you can run **Newman** with an unchanging collection URL link by combining the aforementioned information as follows:
@@ -340,13 +340,44 @@ An alternative way to run a collection using **Newman** is with its UID and a **
 ```sh
 # Note the use of different UIDs for the desired collection and the desired environment.
 
-$ newman run "https://api.getpostman.com/collections/<collection_uid>?apikey=<api_key>" \
-    --environment "https://api.getpostman.com/environments/<env_uid>?apikey=<api_key>"
+$ newman run "https://api.getpostman.com/collections/<coll_uid>?apikey=<api_key>" \ # specify collection & API key
+    --environment "https://api.getpostman.com/environments/<env_uid>?apikey=<api_key>" \ # specify env (optional)
 ```
 
 This method provides a way to run **Postman** collections with **Newman** without ever having to re-export or regenerate URL links or JSON files. The changes to a **Postman** collection are automatically synced to your personal profile, then the **Postman** API always retrieves the current state information.
 
-> ! ! ! IMPORTANT NOTE: Collection variables will only persist for **Newman** calls if their *Initial Value* is set. !!!
+> ! ! !
+> IMPORTANT NOTE: Variables will only persist for **Newman** calls if their "*Initial Value*" is set. The "*Current Value*" is for locally stored variables on your host machine. 
+> ! ! !
+
+**Newman Reporters**
+
+```sh
+# You can use reporting flags to format your Newman output: 
+
+    --reporters [cli|json|junit|progress|emojitrain|html|htmlextra|...] \ # choose <reporter_name> (optional)
+    --reporter-<reporter_name>-export "newman/<filename>.[txt|xml|json|...]" # export results to file (optional)
+
+# You can specify an absolute path for file export, otherwise, the report will be placed
+# in your current directory.
+```
+
+According to the [**Newman** "Configuring Reporters" documentation](https://www.npmjs.com/package/newman-reporter-html),
+
+the default **Newman** reporters are
+
+  * cli - Outputs to the CLI
+  * json - Outputs a JSON file.
+  * junit - Outputs an XML file.
+  * progress - Prints a standard ASCII progress bar on the command line.
+  * emojitrain - Prints an emoji-based progress bar on the command line.
+
+and more **Newman** reporters are available for install as well by running `npm install -g newman-reporter-<reporter_name>` while `<reporter_name>` is:
+
+  * [html](https://www.npmjs.com/package/newman-reporter-html) - Also allows customization of the [default report template](https://github.com/postmanlabs/newman-reporter-html/blob/develop/lib/template-default.hbs) with additional [reporter CLI options](https://www.npmjs.com/package/newman-reporter-html#options).
+  * [htmlextra](https://www.npmjs.com/package/newman-reporter-htmlextra)
+  * [csv](https://github.com/matt-ball/newman-reporter-csv)
+  * etc...
 
 > Use `newman --help` and `newman run --help` for more information.
 
@@ -354,3 +385,37 @@ This method provides a way to run **Postman** collections with **Newman** withou
   5. **Newman** + other CI services
 
 > **Newman** is a command line tool made by the same developers who created **Postman**. It is offered as a companion product. **Newman** can run tests independently from **Postman** and is ideal for running tests on a CI server like **Jenkins**.
+
+### IV.v. Converting Postman Collections:
+
+The current version of **Postman** no longer supports the import or use of version 1 (v1) collections. If you wish to use old **Postman** collections, you will have to convert them to version 2 (v2). Fortunately, there is a **Postman** collection version conversion tool available with NPM.
+
+> For more information regarding the conversion tool, see the [Converting Postman Collections from v1 to v2 documentation](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#converting-postman-collections-from-v1-to-v2).
+
+Install the conversion tool globally with NPM by running:
+
+```sh
+npm install -g postman-collection-transformer
+```
+
+Validate the package installation using:
+
+```sh
+postman-collection-transformer [-V|--version]
+```
+
+Get more help and information about the conversion tool by running:
+
+```sh
+postman-collection-transformer convert [-h|--help]
+```
+
+Then, convert the desired v1 file into a v2 file using:
+
+```sh
+postman-collection-transformer convert -i <path/to/input/v1/file>.json \ # input file
+                                       -o <path/to/output/v2/file>.json \ # output file
+                                       -j 1.0.0 \ # input version
+                                       -p 2.0.0 \ # output version
+                                       -P # pretty print output (optional)
+```
