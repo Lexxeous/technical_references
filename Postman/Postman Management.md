@@ -195,7 +195,7 @@ The *Collections Runner* allows you to run all of the requests in a given collec
 
 #### III.ii.c Tests:
 
-*Tests* defined at the collection level will run before every request in said collection.
+*Tests* defined at the collection level will run after every request in said collection.
 
 #### III.ii.d Variables:
 
@@ -264,7 +264,97 @@ Known limitations to **Postman** monitors are:
   * Global & environment variables are not persisted through sequential tests during runtime.
     - May be best to use collection variables instead.
 
-### III.vii Flows:
+### III.vii Workflows, Flows, & Scenarios:
+
+By default, the **Postman** collection runner will allow you to manually skip over requests, but all of the requests will still execute in order. Furthermore, all of the requests that are made must be within the same collection. With *workflows*, it is possible to change the default execution order of requests within a collection.
+
+There are 4 primary functions that are available that can assist in the *workflow* of collection requests.
+
+  * `postman.setNextRequest("<req_name>")` - Sets which request, in the same collection, will be next to execute.
+  * `postman.setNextRequest("<req_id>")` - Sets which request, in the same collection, will be next to execute.
+  * `pm.info.requestName()` - Gets the current request name and returns it as a string.
+  * `pm.info.requestId()` - Gets the current request ID and returns it as a string.
+
+The placement/location of the aforementioned functions in the request test, or in the pre-request script, is inconsequential. The current request will still execute all of its test and pre-request logic, as normal, then proceed to the appropriate "next request". Additionally, you can halt the execution of all subsequent requests by using `postman.setNextRequest(null)`.
+
+#### III.vii.a: Flows:
+
+Flows are similar to *workflows* in the fact that you can maneuver around requests in a non-sequential manner. However, *flows* allow you to call any request from any collection, with any environment for each unique request. You can also create custom flowchart-type connections for data checks, concatenation, conditionals, data creation, durable data creation, delay, loops, grouping, lists, merging, terminal output, variable creation and assignment, test summaries, and data validation. All of these aforementioned functions are available on a smooth drag-and-drop canvas GUI that can be easily edited and documented via annotations.
+
+<img src="../.pics/Postman/section_create_workflow.png" width="100%" style="border: 5px solid orange;"/>
+
+#### III.vii.b Router Scenarios:
+
+Another way to maneuver between different request "paths", is to create router scenarios. Before using the **Postman** collection runner, you can import a JSON data file that has desired, hard-coded routes. This data file pre-defines a set of orders that you want your requests to be executed in.
+
+```jsonc
+// Example routes.json data file. 
+
+// <request_1_name>
+// <request_2_name>
+// <request_3_name>
+// <request_4_name>
+// <request_5_name>
+// <request_6_name>
+
+[
+  {
+    "routes": [
+      "Request 1", // <request_1_name>
+      "Request 2", // <request_2_name>
+      "Request 3", // <request_3_name>
+      "Request 4" // <request_4_name>
+    ]
+  },
+  {
+    "routes": [
+      "Request 1", // <request_1_name>
+      "Request 3", // <request_3_name>
+      "Request 5", // <request_5_name>
+      "Request 6" // <request_6_name>
+    ]
+  },
+  {
+    // Add any arbitrary amount of pre-defined routes...
+  }
+]
+```
+
+In order for your requests to communicate with the "router", we also need some JS logic to handle the parsing of the `routes.json` data file. Comparatively speaking, this type of communication is similar to how multiple hardware routers in a networking system behave.
+
+```js
+// getNextRequest.js
+// This script will get called after every request in the collection.
+
+postman.setNextRequest(getNextRequest());
+
+function getNextRequest() {
+  let routes;
+  if(Array.isArray(pm.globals.get("remainingRoutes")) === true) {
+    routes = pm.globals.get("remainingRoutes");
+  }
+  else {
+    routes = pm.iterationData.get("routes");
+  }
+
+  const nextRequest = routes.shift();
+  pm.globals.set("remainingRoutes", routes);
+
+  if(nextRequest === undefined) {
+    pm.globals.clear("remainingRoutes");
+    return null;
+  }
+
+  return nextRequest;
+}
+```
+
+There are 2 ways to enable the routing for collection requests:
+
+1. Define an independent request (named "Router") that acts as the router, then use `getNextRequest.js` to handle the routing logic in its test script, while having all requests use `postman.setNextRequest("Router")`, in their test scripts. In this case, you need to include `<request_1_name>` as the first request in all of your JSON `routes` arrays.
+2. Remove any independent request that acts as a router, then attach the `getNextRequest.js` script directly to the collection itself as a test. Also remove all references to `postman.setNextRequest("Router")`, in every request. In this way, the collection itself will become its own router and automatically call the JS routing logic after every request.
+
+> See [my public "Router Scenarios" collection](https://www.postman.com/lexxeous/workspace/public-workspace/collection/18131443-1df520ff-5471-4bae-a9ce-df6a17366624?ctx=documentation) as an example.
 
 ### III.viii History:
 
@@ -372,7 +462,7 @@ the default **Newman** reporters are
   * progress - Prints a standard ASCII progress bar on the command line.
   * emojitrain - Prints an emoji-based progress bar on the command line.
 
-and more **Newman** reporters are available for install as well by running `npm install -g newman-reporter-<reporter_name>` while `<reporter_name>` is:
+and more **Newman** reporters are available for install as well by running `npm install -g newman-reporter-<reporter_name>` where `<reporter_name>` is:
 
   * [html](https://www.npmjs.com/package/newman-reporter-html) - Also allows customization of the [default report template](https://github.com/postmanlabs/newman-reporter-html/blob/develop/lib/template-default.hbs) with additional [reporter CLI options](https://www.npmjs.com/package/newman-reporter-html#options).
   * [htmlextra](https://www.npmjs.com/package/newman-reporter-htmlextra)
