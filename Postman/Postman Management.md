@@ -225,9 +225,10 @@ The following diagram represents the scope of variables in **Postman**. By defau
     - Can pass data to other requests
     - Use for URLs, authentication, etc...
 
-  * Data (???):
-    - Used when working with multiple datasets
+  * Data (`pm.iterationData`):
+    - Used when working with external datasets
     - Exist only during the execution of an iteration
+    - Import when using collection runner
     - Can only be set from a CSV or JSON file
 
   * Local (`pm.variables`):
@@ -249,6 +250,34 @@ Environments in **Postman** are very similar to system-level and user-level envi
 > As a forewarning, environment (and global) variables do not persist, during runtime, when using test automation tools like Monitors, **Newman**, and **Jenkins**. You will have to use an alternate method to specify necessary parameters. This can be in the form of collection variables with *Initial Value*s, command line flags/arguments, or setting the desired variables on the server that will be running the automated tests.
 
 ### III.v Mock Servers:
+
+A mock server is a fake/dummy API that simulates a server response in an attempt to behave like the "real" API. They can be used to serve canned responses to specific requests.
+
+Mock servers are useful for API design, prototyping, development, and testing. For example, mock servers can be used as an alternative to continued API development, when the "real" server is down. If it is already known what the response for certain requests is supposed to look like, development can continue by hard-coding said responses, then moving the API prototype design to the "real" server later. Another example is to use a mock server that emulates the behavior of an external server entity for testing purposes. If you don't want to send real, sensitive data during testing and know how the "real" external server is supposed to respond, you can separate the sending of test data and sensitive data between the mock and "real" servers, respectively.
+
+> **Postman** provides free integration for mock servers, right within the application.
+
+After clicking the "Mock Servers" and starting the creation process, you should be presented with the following view. Here, you are able to define any arbitrary request method, request URL, response code, and response body that you would like to simulate.
+
+> ! ! !
+> IMPORTANT: The mock server creation process will provide you with a unique base-URL by default, there is no reason to specify it during this step or come up with your own.
+> ! ! !
+
+<img src="../.pics/Postman/section_create_mock_server_1.png" width="100%" style="border: 5px solid orange;"/>
+
+The next step allows you to name your mock server, create an environment for it, make it public or private, and to specify a certain amount of simulated network delay (in ms).
+
+> The default URL environment variable is set to `{{url}}`.
+
+<img src="../.pics/Postman/section_create_mock_server_2.png" width="100%" style="border: 5px solid orange;"/>
+
+When the mock server is created, **Postman** will provide you with the unique base-URL and will list the new mock server in the "Mock Servers" tab and in the "Collections" tab. From the "Collections" tab, you can drill down to the requests and edit their default behaviors. The format of the custom base-URL that gets generated for you is: `https://<hex_val_1>-<hex_val_2>-<hex_val_3>-<hex_val_4>-<hex_val_5>.mock.pstmn.io`.
+
+<img src="../.pics/Postman/section_create_mock_server_3.png" width="100%" style="border: 5px solid orange;"/>
+
+From the "Collections" tab, you can select a specific request, click on the ellipsis in the top right corner, and add an example that behaves differently than the default behavior.
+
+<img src="../.pics/Postman/section_create_mock_server_4.png" width="100%" style="border: 5px solid orange;"/>
 
 ### III.vi Monitors:
 
@@ -334,7 +363,7 @@ function getNextRequest() {
     routes = pm.globals.get("remainingRoutes");
   }
   else {
-    routes = pm.iterationData.get("routes");
+    routes = pm.iterationData.get("routes"); // get data from JSON file
   }
 
   const nextRequest = routes.shift();
