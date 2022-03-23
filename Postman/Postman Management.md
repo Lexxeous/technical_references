@@ -142,6 +142,28 @@ pm.test("Status code is 200", function () {
 
 **[Chai](https://www.chaijs.com/api)** is a behavior-driven assertion library that is built into **Postman** that is able to create very human-readable assertion chains.
 
+**Recycling Tests**:
+
+If you want to re-use previously defined tests somewhere else in **Postman**, you can define them inside of an anonymous function, set that function to a variable, declare the variable as an environment string, then evaluate the string, upon retrieval from the environment.
+
+> The `eval()` function can be very dangerous, as it runs any code that is placed inside of it. Only run stringified code inside of `eval()` that you wrote yourself, that you completely understand its implications, and/or that you totally trust.
+
+```js
+// Define tests to re-use
+let common_tests = () => {
+  pm.test("Status code is 200", function() {
+    pm.response.to.have.status(200);
+  });
+
+  // more tests...
+}
+
+// Set tests as string variable in an environment
+pm.environment.set("common_tests", common_tests.toString());
+
+// Retrieve and evaluate re-usable tests
+eval(pm.environment.get("common_tests"))();
+```
 
 #### III.i.h. Request Builder Settings:
 
@@ -157,7 +179,51 @@ HTTP REST API responses can come in a variety of formats.
   * XML - `xml2Json(pm.response)`
   * HTML - `cheerio(pm.response.text())` ([Cheerio](https://github.com/cheeriojs/cheerio) is a built-in library for **Postman**)
   * Plain-Text - `pm.response.text()`
-  * CSV - `csv-parse/lib/sync`
+  * CSV - `csv-parse/lib/sync` ([Sync API](https://csv.js.org/parse/api/sync/)), `Papa.parse(csv)` ([PapaParse](https://www.papaparse.com/))
+
+CSV is the only format for which **Postman** does not have a built-in way to parse, but rather relies on external libraries. Below is an example of how to use the *PapaParse* library to parse CSV data.
+
+First, we can get the most recent version of a *GitHub* library in a minimized format.
+
+```js
+// 1. Setup
+// GET "https://raw.githubusercontent.com/mholt/PapaParse/master/papaparse.min.js" for latest version of library
+
+pm.globals.set("PapaParseLibrary", response_body);
+```
+
+Then we can write a test script for the request that returns CSV data in its response body.
+
+```js
+// 2. Using PapaParse in a solution
+// GET <request_that_returns_csv_response>
+
+// Put the PapaParse library into a string
+eval(pm.globals.get("PapaParseLibrary"));
+let Papa = this.Papa;
+
+// Set the header config property to "true" if there is a CSV header to parse
+const parserConfig = {
+  header: true;
+}
+
+// Parse the response body
+let parsedBody = Papa.parse(response_body, parserConfig);
+console.log(parsedBody);
+
+// Example test to check for values in a CSV response body
+pm.test("ABC123 was done properly", function() {
+  for(let invoice of parsedBody.data) {
+    console.log(invoice);
+    if(invoice.code = "ABC123") {
+      pm.expect(invoice.value).to.eql("$1000");
+    }
+  }
+});
+
+// Clean up environment
+pm.globals.unset("PapaParseLibrary");
+```
 
 ##### III.i.j.2. Request Builder Response Cookies:
 
@@ -538,3 +604,73 @@ postman-collection-transformer convert -i <path/to/input/v1/file>.json \ # input
                                        -p 2.0.0 \ # output version
                                        -P # pretty print output (optional)
 ```
+
+### IV.vi. Writing **Postman** Results to a File:
+
+There is no built-in way to write request and response bodies to a local file system, with the **Postman** desktop application, for security reasons. However, there is a work-around to writing data to a local file, indirectly with **Newman**. To do this, setup a local directory as a `nodejs` project. You also must have a copy of the exported **Postman** collection JSON file. For a new project, run the following commands so that the project has the correct contents.
+
+```bash
+# Create and move to new directory
+mkdir <node_js_proj>
+cd <node_js_proj>
+
+# Initialize new NodeJS project and install Newman
+npm init
+npm install newman
+
+# Ensure required directory contents
+ls
+
+Mode              LastWriteTime     Length  Name
+----              -------------     ------  ----
+d----   MM/DD/YYYY   hh:mm A/PM              node_modules
+-a---   MM/DD/YYYY   hh:mm A/PM  <file_sz>   package-lock.json
+-a---   MM/DD/YYYY   hh:mm A/PM  <file_sz>   package.json
+-a---   MM/DD/YYYY   hh:mm A/PM  <file_sz>   <pm_collection>.json
+
+
+```
+
+Then, insert the following code into your `index.js` file:
+
+```js
+// index.js
+
+// Import libraries 
+const fs = require('fs'); // file system library
+const newman = require('newman');
+
+// Run collection with Newman
+newman.run({
+  collection: require('./<pm_collection>.json'), // use local JSON collection file
+  reporters: 'cli'
+}).on('beforeRequest', function (err, args) {
+  if(err) {
+    console.error(err);
+  }
+  else {
+    // Write request to file with file system library
+    let filename = Date.now() + '-request.txt';
+    fs.writeFile(filename, args.request.body.raw, function(error) {
+      if(error) {
+        console.error(error);
+      }
+    });
+  }
+}).on('request', function (err, args) {
+  if(err) {
+    console.error(err);
+  }
+  else {
+    // Write response to file with file system library
+    let filename = Date.now() + '-response.txt';
+    fs.writeFile(filename,args.response.stream, function(error) {
+      if(error) {
+        console.error(error);
+      }
+    });
+  }
+});
+```
+
+Finally, run the **JavaScript** file either with `npm start` or `node index.js`.
