@@ -26,6 +26,25 @@ For more information, please see the [official **Postman** documentation](https:
 
 > A request should follow the following format: `<request_type> <protocol>://<website_name>/<endpoint>`.
 
+You can also send requests inside of a pre-request or test script asynchronously with the parent request by using [`pm.sendRequest()`](https://learning.postman.com/docs/writing-scripts/script-references/postman-sandbox-api-reference/#sending-requests-from-scripts).
+
+```js
+// By default a GET request is sent, but complete syntax allow more specification
+
+pm.sendRequest({
+    url: 'https://example.com/post',
+    method: 'POST',
+    header: 'header_1:value_1',
+    body: {
+        mode: 'raw',
+        raw: JSON.stringify({ key: "json example" })
+    }
+}, function (err, res) {
+    if(err) { console.error(err); }
+    console.log(res);
+});
+```
+
 #### III.i.a. Builder Request Types: 
 
 | Request    | Description                                                                                  |
@@ -674,3 +693,64 @@ newman.run({
 ```
 
 Finally, run the **JavaScript** file either with `npm start` or `node index.js`.
+
+### IV.vii. Validating JSON Schemas:
+
+Below is a definition of an example JSON schema and the corresponding **Postman** test to validate it. You can use JSON schema validation in pre-request scripts or in test scripts with **Postman**. The aforementioned JSON schema has the following requirements:
+
+The JSON data must...
+  * be an object,
+  * have 3 (required) properties:
+    1. `"code"` - a string
+    2. `"error"` - an object &
+    3. `"tags"` - an array
+  * use `"error"` which requires a property `"message"` - a string
+  * use `"tags"` which requires a minimum of 1 item, a maximum of 3 items, and the items must be strings (`"tags"` is a required JSON property because of the `minItems` specification) &
+  * not contain any additional properties.
+ 
+
+```js
+// test_script.js
+
+const schema = {
+  "type": "object",
+  "properties": {
+    "code": { "type": "string"},
+    "error": {
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" }
+      },
+      "required": ["message"]
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["code", "error"],
+  "additionalProperties": false
+};
+
+pm.test("Validate JSON Schema", () => {
+  pm.response.to.have.jsonSchema(schema);
+});
+```
+
+The following is an example of valid JSON data that would comply with the schema specifications:
+
+```json
+{
+  "code": "example string",
+  "error": {
+    "message": "This is an example error message."
+  },
+  "tags": ["fatal", "error", "warning"]
+}
+```
+
+Please see [official JSON schema documentation](https://json-schema.org/) for more information about JSON schemas.
