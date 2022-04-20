@@ -1,0 +1,111 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "apiProfile": "",
+    "parameters": {
+        "<parameter-name>" : {
+            "type" : "<type-of-parameter-value>",
+            "defaultValue": "<default-value-of-parameter>",
+            "allowedValues": [ "<array-of-allowed-values>" ],
+            "minValue": "<minimum-value-for-int>",
+            "maxValue": "<maximum-value-for-int>",
+            "minLength": "<minimum-length-for-string-or-array>",
+            "maxLength": "<maximum-length-for-string-or-array-parameters>",
+            "metadata": {
+                "description": "<description-of-the parameter>"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS",
+                "Premium_LRS"
+            ],
+            "metadata": {
+                "description": "Storage Account type."
+            }
+        },
+        "locationAccountSubset": {
+            "type": "string",
+            "defaultValue": "[resource().location]",
+            "allowedValues": [
+                "eastus",
+                "eastus2",
+                "westus",
+                "westus2"
+            ],
+            "metadata": {
+                "description": "Allowed location(s)."
+            }
+        },
+        "storageName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "metadata": {
+                "description": "Name of the Azure storage resource."
+            }
+        }
+    },
+    "variables": {},
+    "functions": [],
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-04-01",
+            "tags": {
+                "displayName": "[parameters('storageName')]"
+            },
+            "name": "[parameters('storageName')]",
+            "location": "[parameters('locationAccountSubset')]",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            }
+        }
+    ],
+    "outputs": {
+        "<output_name>": {
+            "condition": "<bool-whether-to-output-value-or-not>",
+            "type": "<output-value-type>",
+            "value": "<output-value-expression>",
+            "copy": {
+                "count": "<int>",
+                "input": "<values-for-the-variable>"
+            }
+        },
+        "singleStorageEndpoint": {
+            "type": "object",
+            "value": "[reference(parameters('storageName')).primaryEndpoints]"
+       },
+       "storageEndpoints": {
+           "type": "object",
+           "value": {
+                "blob": "<https://<endpoint-uri>.blob.core.windows.net/",
+                "dfs": "<https://<endpoint-uri>.dfs.core.windows.net/",
+                "file": "<https://<endpoint-uri>.file.core.windows.net/",
+                "queue": "<https://<endpoint-uri>.queue.core.windows.net/",
+                "table": "<https://<endpoint-uri>.table.core.windows.net/",
+                "web": "<https://<endpoint-uri>.web.core.windows.net/",
+           }
+       }
+    }
+}

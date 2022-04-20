@@ -1,0 +1,5 @@
+# YAML Coding Reference
+
+# YAML = YAML Ain't Markup Language ; recursive definition
+
+# Similar to JSON as it is a key-value file format that can be used for configurations and IaC (Infrastructure as Code)

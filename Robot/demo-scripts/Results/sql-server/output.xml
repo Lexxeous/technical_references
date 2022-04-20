@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20150711 18:31:28.192" generator="Robot 2.8.7 (Python 2.7.9 on win32)">
+<suite source="C:\development\robot-scripts\intro\tests\SQL_Server_Tests.robot" id="s1" name="SQL Server Tests">
+<test id="s1-t1" name="Insert a Record">
+<kw type="setup" name="SQL_Server.Connect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Connect To Database">
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to</doc>
+<arguments>
+<arg>pymssql</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:28.707" starttime="20150711 18:31:28.268"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:28.707" starttime="20150711 18:31:28.267"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Save Current Row Count">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="${current_row_count} = DatabaseLibrary.Row Count">
+<doc>Uses the input `selectStatement` to query the database and returns</doc>
+<arguments>
+<arg>SELECT * FROM DemoItems;</arg>
+</arguments>
+<msg timestamp="20150711 18:31:28.853" level="INFO">${current_row_count} = 6</msg>
+<status status="PASS" endtime="20150711 18:31:28.853" starttime="20150711 18:31:28.709"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Suite Variable">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${PREVIOUS_ROW_COUNT}</arg>
+<arg>${current_row_count}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:28.854" level="INFO">${PREVIOUS_ROW_COUNT} = 6</msg>
+<status status="PASS" endtime="20150711 18:31:28.854" starttime="20150711 18:31:28.854"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Log">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${current_row_count}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:28.855" level="INFO">6</msg>
+<status status="PASS" endtime="20150711 18:31:28.855" starttime="20150711 18:31:28.854"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:28.855" starttime="20150711 18:31:28.708"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Get Input Data">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="${name} = Dialogs.Get Value From User">
+<doc>Pauses test execution and asks user to input a value.</doc>
+<arguments>
+<arg>Enter a First Name</arg>
+</arguments>
+<msg timestamp="20150711 18:31:39.989" level="INFO">${name} = Jennifer</msg>
+<status status="PASS" endtime="20150711 18:31:39.988" starttime="20150711 18:31:28.858"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Suite Variable">
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<arguments>
+<arg>${FIRST_NAME}</arg>
+<arg>${name}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:39.996" level="INFO">${FIRST_NAME} = Jennifer</msg>
+<status status="PASS" endtime="20150711 18:31:39.996" starttime="20150711 18:31:39.989"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:39.996" starttime="20150711 18:31:28.857"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Insert Record">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Execute Sql String">
+<doc>Executes the sqlString as SQL commands.</doc>
+<arguments>
+<arg>INSERT INTO DemoItems (ItemName, FirstName) VALUES ('New Item: ' + CAST(GetDate() as VARCHAR(50)), '${FIRST_NAME}');</arg>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:40.260" starttime="20150711 18:31:39.998"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.260" starttime="20150711 18:31:39.997"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Verify New Record Added">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="${new_row_count} = DatabaseLibrary.Row Count">
+<doc>Uses the input `selectStatement` to query the database and returns</doc>
+<arguments>
+<arg>SELECT * FROM DemoItems;</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.402" level="INFO">${new_row_count} = 7</msg>
+<status status="PASS" endtime="20150711 18:31:40.402" starttime="20150711 18:31:40.262"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Log">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${new_row_count}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.403" level="INFO">7</msg>
+<status status="PASS" endtime="20150711 18:31:40.403" starttime="20150711 18:31:40.403"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Should Be Equal As Numbers">
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<arguments>
+<arg>${new_row_count}</arg>
+<arg>${PREVIOUS_ROW_COUNT + 1 }</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.404" level="INFO">Argument types are:
+&lt;type 'int'&gt;
+&lt;type 'int'&gt;</msg>
+<status status="PASS" endtime="20150711 18:31:40.404" starttime="20150711 18:31:40.404"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.404" starttime="20150711 18:31:40.261"></status>
+</kw>
+<kw type="teardown" name="SQL_Server.Disconnect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Disconnect From Database">
+<doc>Disconnects from the database.</doc>
+<arguments>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:40.406" starttime="20150711 18:31:40.406"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.406" starttime="20150711 18:31:40.405"></status>
+</kw>
+<doc></doc>
+<tags>
+<tag>SqlServerDB</tag>
+</tags>
+<status status="PASS" endtime="20150711 18:31:40.407" critical="yes" starttime="20150711 18:31:28.266"></status>
+</test>
+<test id="s1-t2" name="Verify Insert Contains Correct Input Data">
+<kw type="setup" name="SQL_Server.Connect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Connect To Database">
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to</doc>
+<arguments>
+<arg>pymssql</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:40.761" starttime="20150711 18:31:40.411"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.762" starttime="20150711 18:31:40.410"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Verify Last Record">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="${queryResults} = DatabaseLibrary.Query">
+<doc>Uses the input `selectStatement` to query for the values that</doc>
+<arguments>
+<arg>SELECT TOP 1 * FROM DemoItems ORDER BY ItemId DESC</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.908" level="INFO">${queryResults} = [(7, u'New Item: Jul 11 2015  8:31PM', u'Jennifer')]</msg>
+<status status="PASS" endtime="20150711 18:31:40.908" starttime="20150711 18:31:40.764"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Should Be Equal As Strings">
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<arguments>
+<arg>${queryResults[0][2]}</arg>
+<arg>${FIRST_NAME}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.909" level="INFO">Argument types are:
+&lt;type 'unicode'&gt;
+&lt;type 'str'&gt;</msg>
+<status status="PASS" endtime="20150711 18:31:40.909" starttime="20150711 18:31:40.909"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Log">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>${queryResults[0][2]}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:40.910" level="INFO">Jennifer</msg>
+<status status="PASS" endtime="20150711 18:31:40.910" starttime="20150711 18:31:40.909"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.910" starttime="20150711 18:31:40.763"></status>
+</kw>
+<kw type="teardown" name="SQL_Server.Disconnect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Disconnect From Database">
+<doc>Disconnects from the database.</doc>
+<arguments>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:40.912" starttime="20150711 18:31:40.912"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:40.912" starttime="20150711 18:31:40.911"></status>
+</kw>
+<doc></doc>
+<tags>
+<tag>SqlServerDB</tag>
+</tags>
+<status status="PASS" endtime="20150711 18:31:40.913" critical="yes" starttime="20150711 18:31:40.409"></status>
+</test>
+<test id="s1-t3" name="Log All Rows">
+<kw type="setup" name="SQL_Server.Connect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Connect To Database">
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to</doc>
+<arguments>
+<arg>pymssql</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER_NAME}</arg>
+<arg>${DB_USER_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:41.272" starttime="20150711 18:31:40.917"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:41.272" starttime="20150711 18:31:40.916"></status>
+</kw>
+<kw type="kw" name="SQL_Server.Log All Rows">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="${queryResults} = DatabaseLibrary.Query">
+<doc>Uses the input `selectStatement` to query for the values that</doc>
+<arguments>
+<arg>SELECT * FROM DemoItems ORDER BY ItemId</arg>
+</arguments>
+<msg timestamp="20150711 18:31:41.416" level="INFO">${queryResults} = [(1, u'New Item: Jul 11 2015  7:44PM', u'Bryan'), (2, u'New Item: Jul 11 2015  7:46PM', u'John'), (3, u'New Item: Jul 11 2015  7:48PM', u'Bocephus'), (4, u'New Item: Jul 11 2015  7:49PM', u'Jamie'), (...</msg>
+<status status="PASS" endtime="20150711 18:31:41.416" starttime="20150711 18:31:41.274"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Log Many">
+<doc>Logs the given messages as separate entries using the INFO level.</doc>
+<arguments>
+<arg>${queryResults}</arg>
+</arguments>
+<msg timestamp="20150711 18:31:41.417" level="INFO">[(1, u'New Item: Jul 11 2015  7:44PM', u'Bryan'), (2, u'New Item: Jul 11 2015  7:46PM', u'John'), (3, u'New Item: Jul 11 2015  7:48PM', u'Bocephus'), (4, u'New Item: Jul 11 2015  7:49PM', u'Jamie'), (5, u'New Item: Jul 11 2015  7:51PM', u'Brad'), (6, u'New Item: Jul 11 2015  7:54PM', u'Randy'), (7, u'New Item: Jul 11 2015  8:31PM', u'Jennifer')]</msg>
+<status status="PASS" endtime="20150711 18:31:41.417" starttime="20150711 18:31:41.416"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:41.417" starttime="20150711 18:31:41.273"></status>
+</kw>
+<kw type="teardown" name="SQL_Server.Disconnect">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="DatabaseLibrary.Disconnect From Database">
+<doc>Disconnects from the database.</doc>
+<arguments>
+</arguments>
+<status status="PASS" endtime="20150711 18:31:41.419" starttime="20150711 18:31:41.418"></status>
+</kw>
+<status status="PASS" endtime="20150711 18:31:41.419" starttime="20150711 18:31:41.418"></status>
+</kw>
+<doc></doc>
+<tags>
+</tags>
+<status status="PASS" endtime="20150711 18:31:41.419" critical="yes" starttime="20150711 18:31:40.915"></status>
+</test>
+<doc>These are some SQL Server Database tests</doc>
+<metadata>
+</metadata>
+<status status="PASS" endtime="20150711 18:31:41.422" starttime="20150711 18:31:28.193"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="3">Critical Tests</stat>
+<stat fail="0" pass="3">All Tests</stat>
+</total>
+<tag>
+<stat info="" links="" doc="" combined="" pass="2" fail="0">SqlServerDB</stat>
+</tag>
+<suite>
+<stat fail="0" pass="3" id="s1" name="SQL Server Tests">SQL Server Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
