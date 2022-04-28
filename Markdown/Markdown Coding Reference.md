@@ -11,6 +11,8 @@ Certification(s) w/ an external link:
 Cercification(s) w/o an external link:
 ![License](https://camo.githubusercontent.com/890acbdcb87868b382af9a4b1fac507b9659d9bf/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6c6963656e73652d4d49542d626c75652e737667)
 
+<hr>
+
 # This is the largest title heading (h1).
 ## This is a smaller title heading (h2).
 ### This is a smaller-er title heading (h3).
@@ -26,9 +28,13 @@ This is what normal text looks like.
 
 > This is how to make a block comment or prospective user question.
 
+<hr>
+
 This is how to make a [link](http://www.ascii-middle-finger.com/) to a specific web page.
 
  - [ ] This is how to make a checkbox.
+
+<hr>
 
 Make numbered lists like this (must have an empty line in between description and list):
 
@@ -46,6 +52,8 @@ Make numbered lists like this (must have an empty line in between description an
 12.	I am a list item.
 13.	I am a list item.
 
+<hr>
+
 Make un-numbered (bulleted) lists like this (must have an empty line in between):
 
   * I am a list item.
@@ -58,6 +66,8 @@ Make un-numbered (bulleted) lists like this (must have an empty line in between)
     - I am a sub-list item.
     - I am a sub-list item.
 
+<hr>
+
 This is how to make a table:
 
 | Tables   |      Are      |  Cool |
@@ -66,8 +76,24 @@ This is how to make a table:
 | col 2 is |    centered   |   $12 |
 | col 3 is | right-aligned |    $1 |
 
-This is how to display in-line code:
-`for (i = 0, i < 10, i++)`
+<hr>
+
+This is how to display in-line code: `for (i = 0, i < 10, i++)`
+
+<hr>
+
+This is how to create collapsible sections:
+<details>
+  <summary>Click to expand!</summary>
+  
+  ### Example Heading
+
+  > Example Comment
+
+  <p>Example Paragraph Text</p>
+</details>
+
+<hr>
 
 This is how to display blocks of code with a specific style types
 (Ruby, Bash, CSS, HTML, JS, etc...):
@@ -127,6 +153,7 @@ architecture arch_name of entity_name is
 end architecture arch_name;
 ```
 
+<hr>
 
 Here's a full list of supported languages:
 
@@ -257,12 +284,12 @@ Here's a full list of supported languages:
 * xslt (`*.xsl`, `*.xslt`)
 * yaml (`*.yaml`, `*.yml`)
 
-<br>
+<hr>
 
 Use two spaces `"  "` at the end of a line or the HTML line break element `<br>` to initialize a line break.
 > Typically it's better to use `<br>` since it's actually visable and some text editors/interpreters rid trailing white space.
 
-<br>
+<hr>
 
 ### Indent with Markdown
 
