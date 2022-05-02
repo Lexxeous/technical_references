@@ -1,6 +1,6 @@
 <!-- Angular Management.md -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's Angular Management: <img src="../.pics/JS/angular_logo.png" width="90px"/>
+# <img src="../../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's Angular Management: <img src="../../.pics/JS/Angular/angular_logo.png" width="90px"/>
 
 # Summary:
 

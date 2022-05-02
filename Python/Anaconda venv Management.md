@@ -1,6 +1,6 @@
-<!-- Conda V_ENV Reference.md  -->
+<!-- Anaconda venv Management.md  -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90"/> Lexxeous's Conda V_ENV Management <img src="../.pics/Python/conda_logo.png" width="90"/>
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90"/> Lexxeous's Anaconda venv Management <img src="../.pics/Python/conda_logo.png" width="90"/>
 
 ### Create/Delete Environment(s)
 

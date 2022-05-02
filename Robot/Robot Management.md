@@ -1,6 +1,6 @@
 <!-- Robot Management.md -->
 
-# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's Robot Management: <img src="../.pics/Python/Robot/robot_logo.jpg" width="90px"/>
+# <img src="../.pics/Lexxeous/lexx_headshot_clear.png" width="90px"/> Lexxeous's Robot Management: <img src="../.pics/Robot/robot_logo.jpg" width="90px"/>
 
 ## Summary:
 
