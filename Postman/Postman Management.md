@@ -328,6 +328,8 @@ The following diagram represents the scope of variables in **Postman**. By defau
 
 ### III.iii APIs:
 
+The APIs tab in **Postman** provides you with an ADE (API Development Environment). Here you can create an API, from an intuitive GUI, that can potentially have a schema definition, custom documentation, tests, CI/CD integrations, deployments, and monitoring. You can also create multiple versions of the same API and generate collections for each version, complete with request examples.
+
 ### III.iv Environments:
 
 Environments in **Postman** are very similar to system-level and user-level environments for standard operating systems. You should use environments and environment variables when you intend to separate information that is specific to a particular collection or service under test. For example, if you needed to test 2 or more mutually exclusive APIs, but both required an API key, for authentication, you could use environments to specify the same variable, `api-key`, but simply switch environments between said isolated API tests.
